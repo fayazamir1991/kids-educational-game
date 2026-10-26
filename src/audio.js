@@ -1,4 +1,5 @@
 import { asset } from './assets.js';
+import audioReview from './audio-review.json' with { type: 'json' };
 
 let context;
 let activeSource;
@@ -20,7 +21,11 @@ async function loadRecording(id) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
       try {
-        const response = await fetch(asset(`/audio/${id}.mp3`), { signal: controller.signal });
+        const location = asset(`/audio/${id}.mp3`);
+        // A revised recording must not reuse a previous browser/CDN cache entry.
+        const version = audioReview.animals[id]?.sha256;
+        const url = location.startsWith('data:') ? location : `${location}?v=${version}`;
+        const response = await fetch(url, { signal: controller.signal });
         if (!response.ok) throw new Error(`Recording unavailable: ${id}`);
         return await getContext().decodeAudioData(await response.arrayBuffer());
       } finally { clearTimeout(timeout); }

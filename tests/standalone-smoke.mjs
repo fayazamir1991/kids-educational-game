@@ -3,7 +3,7 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { chromium, expect } from '@playwright/test';
-import { ANIMALS, createRounds } from '../src/game.js';
+import { ANIMALS, PLAYABLE_ANIMALS, createRounds } from '../src/game.js';
 
 const artifact = resolve(process.argv[2] || 'dist/little-farm.html');
 const outputDirectory = resolve(process.env.PREVIEW_DIRECTORY || 'test-results/standalone');
@@ -114,6 +114,20 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight + 1), true);
   await page.waitForTimeout(400);
   await page.screenshot({ path: `${outputDirectory}/little-farm-mobile.png`, fullPage: true });
+  await page.locator('#settings-button').click();
+  await page.locator('.review-details summary').click();
+  await expect(page.locator('#withheld-list li')).toHaveCount(ANIMALS.length - PLAYABLE_ANIMALS.length);
+  await page.locator('#credits-button').click();
+  await expect(page.locator('[data-audition]')).toHaveCount(ANIMALS.length);
+  for (const [index, id] of ['lion', 'crow'].entries()) {
+    await page.locator(`[data-audition="${id}"]`).click();
+    await expect(page.locator(`[data-audition="${id}"]`)).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(7 + index);
+    assert.equal(await page.evaluate((animalId) => window.__audioFetches.includes(globalThis.__LITTLE_FARM_ASSETS__[`/audio/${animalId}.mp3`]), id), true);
+    await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+  }
+  await page.locator('[data-close="credits-dialog"]').click();
+  await expect(page.locator('#listen-button')).not.toHaveClass(/is-playing/);
   assert.deepEqual(errors, [], 'No browser exceptions');
   assert.deepEqual(failures, [], 'No failed asset requests');
   assert.deepEqual(networkRequests, [], 'No network dependencies');
@@ -124,6 +138,8 @@ try {
     documentDelivery: directFileNavigation ? 'file navigation' : 'offline page.setContent using exact HTML bytes',
     directFileNavigationValidated: directFileNavigation,
     recordingsDecoded: recordings.length,
+    playableAnimals: PLAYABLE_ANIMALS.length,
+    withheldAnimals: ANIMALS.length - PLAYABLE_ANIMALS.length,
     roundsCompleted: rounds.length,
     realAudioPlays: await page.evaluate(() => window.__audioStarts.length),
     errors, failures, networkRequests, extraFiles,

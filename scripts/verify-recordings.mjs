@@ -11,6 +11,10 @@ const sources = [
   ...await readJSON('public/audio/sources-wild.json'),
 ];
 const catalog = await readJSON('src/recordings.json');
+const review = await readJSON('src/audio-review.json');
+if (review.model?.sha256 !== '10c95ea3eb9a7bb4cb8bddf6feb023250381008177ac162ce169694d05c317de') {
+  throw new Error('Semantic screening model provenance must be reviewed when changed.');
+}
 if (sources.length !== ANIMALS.length || new Set(sources.map(({ id }) => id)).size !== ANIMALS.length) {
   throw new Error('The real-recording catalog must contain each animal exactly once.');
 }
@@ -26,6 +30,11 @@ for (const { id } of ANIMALS) {
   const contents = await readFile(path.join(root, 'public', source.file));
   const digest = createHash('sha256').update(contents).digest('hex');
   if (digest !== source.sha256) throw new Error(`Recording changed without provenance update: ${id}`);
+  if (review.animals[id]?.sha256 !== digest) throw new Error(`Semantic screening is stale: ${id}`);
+  if (!['machine-screened', 'withheld'].includes(review.animals[id]?.status)) throw new Error(`Missing screening status: ${id}`);
+  if (review.animals[id].enabled && review.animals[id].status !== 'machine-screened') {
+    throw new Error(`Unscreened recording cannot be active: ${id}`);
+  }
   if (JSON.stringify(catalog.find((item) => item.id === id)) !== JSON.stringify(source)) {
     throw new Error(`In-app credits are stale: ${id}`);
   }
@@ -35,4 +44,4 @@ if (catalog.length !== ANIMALS.length) throw new Error('In-app credits have miss
 if (JSON.stringify(await readJSON('public/audio/sources.json')) !== JSON.stringify(catalog)) {
   throw new Error('Downloadable provenance does not match in-app credits.');
 }
-console.log(`Verified ${ANIMALS.length} real-recording files, SHA256 hashes, source/license records, credits, and animal illustrations.`);
+console.log(`Verified ${ANIMALS.length} recording files, source/license records, credits, illustrations, and hash-bound screening evidence. This is not human listening.`);

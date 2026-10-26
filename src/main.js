@@ -2,7 +2,7 @@ import '@fontsource/vazirmatn/arabic-500.css';
 import '@fontsource/vazirmatn/arabic-700.css';
 import '@fontsource/vazirmatn/arabic-800.css';
 import './style.css';
-import { ANIMALS, ROUND_COUNT, animalById, createRounds, checkAnswer } from './game.js';
+import { ANIMALS, PLAYABLE_ANIMALS, AUDIO_REVIEW, ROUND_COUNT, animalById, createRounds, checkAnswer } from './game.js';
 import { playAnimal, stopSound, chime, speakPersian } from './audio.js';
 import { asset } from './assets.js';
 import recordings from './recordings.json';
@@ -55,15 +55,17 @@ document.querySelector('#app').innerHTML = `
     <label class="volume-label" for="volume">بلندی صدا <span id="volume-value">۶۵٪</span></label>
     <input id="volume" type="range" min="15" max="100" value="65" />
     <label class="toggle-row"><span>تشویق گفتاری فارسی<small>با صدای فارسیِ دستگاه، در صورت پشتیبانی</small></span><input id="narration" type="checkbox" role="switch" checked /><span class="toggle-track" aria-hidden="true"></span></label>
-    <p class="parent-note">${fa(ANIMALS.length)} حیوان با ضبط صدای واقعی؛ در هر نوبت سه گزینهٔ تصادفی، بدون محدودیت زمانی و امتیاز منفی.</p>
-    <button class="secondary-button" id="credits-button">${icon('info')}منابع و مجوز صداها</button>
+    <p class="parent-note">بازبینی صداها · نسخهٔ ۲<br />${fa(PLAYABLE_ANIMALS.length)} صدای فعال از ${fa(ANIMALS.length)} حیوان؛ در هر نوبت سه گزینهٔ تصادفی، بدون محدودیت زمانی و امتیاز منفی.</p>
+    <details class="review-details"><summary>صداهایی که فعلاً وارد سؤال‌ها نمی‌شوند</summary><ul id="withheld-list">${ANIMALS.filter((animal) => !AUDIO_REVIEW.animals[animal.id]?.enabled).map((animal) => `<li><strong>${animal.name}:</strong> ${escapeHTML(AUDIO_REVIEW.animals[animal.id].reason_fa)}</li>`).join('')}</ul></details>
+    <button class="secondary-button" id="credits-button">${icon('info')}شنیدن و منابع صداها</button>
     <button class="secondary-button" id="restart-button">${icon('replay')}شروع دوبارهٔ بازی</button>
   </dialog>
   <dialog id="credits-dialog" class="modal credits-modal" aria-labelledby="credits-title">
     <button class="icon-button modal-close" data-close="credits-dialog" aria-label="بستن منابع">${icon('close')}</button>
-    <h2 id="credits-title">صداهای واقعی، با ذکر منبع</h2>
-    <p class="credits-intro">ضبط‌ها برای بازی کوتاه و بلندی صدایشان یکدست شده است. اطلاعات ضبط اصلی و مجوز استفاده:</p>
-    <ul class="credits-list">${recordings.map((recording) => `<li><strong>${escapeHTML(animalById(recording.id)?.name || recording.id)}</strong><span>${escapeHTML(recording.source_title)} · ${escapeHTML(recording.creator)} · ${escapeHTML(recording.license)}</span><a href="${safeURL(recording.source_url)}" target="_blank" rel="noopener noreferrer">ضبط اصلی</a><a href="${safeURL(recording.license_url)}" target="_blank" rel="noopener noreferrer">متن مجوز</a></li>`).join('')}</ul>
+    <h2 id="credits-title">بشنوید و منبع را ببینید</h2>
+    <p class="credits-intro">ضبط‌ها کوتاه و بلندی صداها یکدست شده است. بررسی ماشینی کمک کرده نمونه‌های مشکوک کنار گذاشته شوند؛ این بررسی معادل تأیید شنیداری انسانی نیست.</p>
+    <p class="sr-only" id="audition-status" role="status" aria-live="polite"></p>
+    <ul class="credits-list">${recordings.map((recording) => `<li data-recording="${recording.id}"><strong>${escapeHTML(animalById(recording.id)?.name || recording.id)}</strong><button class="audition-button" data-audition="${recording.id}" aria-pressed="false" aria-label="شنیدن صدای ${escapeHTML(animalById(recording.id)?.name || recording.id)}">${icon('sound')}<span>بشنو</span></button><small class="review-status ${AUDIO_REVIEW.animals[recording.id]?.enabled ? '' : 'withheld'}">${AUDIO_REVIEW.animals[recording.id]?.enabled ? 'فعال در سؤال‌ها' : 'فعلاً خارج از سؤال‌ها'}</small><span>${escapeHTML(recording.source_title)} · ${escapeHTML(recording.creator)} · ${escapeHTML(recording.license)}</span><a href="${safeURL(recording.source_url)}" target="_blank" rel="noopener noreferrer">منبع ضبط</a><a href="${safeURL(recording.license_url)}" target="_blank" rel="noopener noreferrer">اطلاعات مجوز</a></li>`).join('')}</ul>
   </dialog>
   <dialog id="celebration-dialog" class="modal celebration-modal" aria-labelledby="celebration-title">
     <div class="bouquet" aria-hidden="true">${flower()}${flower()}${flower()}</div><h2 id="celebration-title">چه خوب گوش دادی!</h2><p>پنج دوست رو پیدا کردی! باز هم بازی کنیم؟</p>
@@ -85,6 +87,7 @@ const state = { rounds: createRounds(), round: 0, started: false, heard: false, 
 let advanceTimer;
 let feedbackTimer;
 let audioRequest = 0;
+let auditionRequest = 0;
 const isPortrait = () => innerWidth < 700 && innerHeight > innerWidth;
 const hasModal = () => !!document.querySelector('dialog[open]');
 const saveSettings = () => { try { localStorage.setItem('little-farm-settings', JSON.stringify(settings)); } catch { /* optional */ } };
@@ -149,10 +152,20 @@ function confetti() {
   }
 }
 
+function stopAudition() {
+  auditionRequest++;
+  stopSound();
+  for (const button of document.querySelectorAll('[data-audition]')) {
+    button.setAttribute('aria-pressed', 'false');
+    button.querySelector('span').textContent = 'بشنو';
+  }
+}
+
 function pauseAudio() {
   audioRequest++;
-  stopSound();
+  stopAudition();
   state.playing = false;
+  state.heard = false;
   if (!state.locked && !state.completed && state.started) message('آماده‌ای؟ دوباره صدا رو بشنو');
   render();
 }
@@ -240,6 +253,23 @@ $('#narration').checked = settings.narration;
 $('#narration').addEventListener('change', (event) => { settings.narration = event.target.checked; saveSettings(); });
 $('#restart-button').addEventListener('click', () => { $('#settings-dialog').close(); reset(); $('#listen-button').focus({ preventScroll: true }); });
 $('#credits-button').addEventListener('click', () => { $('#settings-dialog').close(); $('#credits-dialog').showModal(); });
+$('#credits-dialog').addEventListener('click', async (event) => {
+  const button = event.target.closest('[data-audition]');
+  if (!button) return;
+  if (button.getAttribute('aria-pressed') === 'true') { stopAudition(); return; }
+  pauseAudio();
+  if (settings.muted) { settings.muted = false; updateSoundControl(); saveSettings(); }
+  const request = auditionRequest;
+  const id = button.dataset.audition;
+  button.setAttribute('aria-pressed', 'true');
+  button.querySelector('span').textContent = 'در حال پخش';
+  $('#audition-status').textContent = `پخش نمونهٔ ${animalById(id).name}`;
+  const success = await playAnimal(id, settings.volume);
+  if (request !== auditionRequest) return;
+  stopAudition();
+  $('#audition-status').textContent = success ? 'پخش نمونه تمام شد' : 'پخش نشد؛ دوباره امتحان کنید';
+});
+$('#credits-dialog').addEventListener('close', stopAudition);
 $('#play-again').addEventListener('click', () => { $('#celebration-dialog').close(); reset(); void listen(); });
 for (const button of document.querySelectorAll('[data-close]')) button.addEventListener('click', () => {
   $(`#${button.dataset.close}`).close();

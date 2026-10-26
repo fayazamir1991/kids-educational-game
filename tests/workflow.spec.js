@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createRounds } from '../src/game.js';
+import { ANIMALS, PLAYABLE_ANIMALS, AUDIO_REVIEW, createRounds } from '../src/game.js';
 
 const rounds = createRounds(() => 0.25);
 
@@ -91,7 +91,10 @@ test('real recordings, a gentle retry, random trios, automatic next sound, and r
   await expectChoices(page, rounds[0].choices);
   await expectStarted(page, 6);
   expect(await page.evaluate(() => window.__audioDecoded.length)).toBeGreaterThanOrEqual(5);
-  expect(await page.evaluate(() => window.__audioFetches.every((url) => url.endsWith('.mp3')))).toBe(true);
+  expect(await page.evaluate(() => window.__audioFetches.every((url) => {
+    const parsed = new URL(url, location.href);
+    return parsed.pathname.endsWith('.mp3') && /^[0-9a-f]{64}$/.test(parsed.searchParams.get('v'));
+  }))).toBe(true);
   expect(errors).toEqual([]);
 });
 
@@ -161,4 +164,34 @@ test('recording sources and licenses are accessible to the parent', async ({ pag
   await expect(page.locator('#credits-dialog')).toBeVisible();
   expect(await page.locator('#credits-dialog a[href^="http"]').count()).toBeGreaterThanOrEqual(17);
   await expect(page.locator('#credits-dialog')).toContainText(/CC0|CC BY|Creative Commons/);
+});
+
+test('parents can audition actual lion/crow clips without starting the quiz and see held-out recordings', async ({ page }) => {
+  const initialChoices = await page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal));
+  const heldOut = ANIMALS.filter(({ id }) => !PLAYABLE_ANIMALS.some((animal) => animal.id === id));
+  await page.locator('#settings-button').click();
+  await page.locator('.review-details summary').click();
+  await expect(page.locator('#withheld-list')).toBeVisible();
+  await expect(page.locator('#withheld-list li')).toHaveCount(heldOut.length);
+  for (const animal of heldOut) await expect(page.locator('#withheld-list')).toContainText(animal.name);
+  await page.locator('#credits-button').click();
+  await expect(page.locator('[data-audition]')).toHaveCount(ANIMALS.length);
+  await expect(page.locator('.review-status.withheld')).toHaveCount(heldOut.length);
+  for (const [index, id] of ['lion', 'crow'].entries()) {
+    const audition = page.locator(`[data-audition="${id}"]`);
+    await audition.click();
+    await expect(audition).toHaveAttribute('aria-pressed', 'true');
+    await expectStarted(page, index + 1);
+    expect(await page.evaluate(({ animalId, fingerprint }) => window.__audioFetches.some((url) => {
+      const parsed = new URL(url, location.href);
+      return parsed.pathname === `/audio/${animalId}.mp3` && parsed.searchParams.get('v') === fingerprint;
+    }), { animalId: id, fingerprint: AUDIO_REVIEW.animals[id].sha256 })).toBe(true);
+    await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+    await expect(page.locator('#round-label')).toContainText('آماده‌ای');
+  }
+  await page.locator('[data-close="credits-dialog"]').click();
+  await expect(page.locator('#credits-dialog')).not.toBeVisible();
+  await expect(page.locator('#listen-button')).not.toHaveClass(/is-playing/);
+  expect(await page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal))).toEqual(initialChoices);
+  await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
 });

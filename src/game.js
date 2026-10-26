@@ -1,3 +1,6 @@
+import audioReview from './audio-review.json' with { type: 'json' };
+
+export const AUDIO_REVIEW = audioReview;
 export const ANIMALS = [
   { id: 'cow', name: 'گاو', color: '#efd7b1' },
   { id: 'sheep', name: 'گوسفند', color: '#e8dbf5' },
@@ -18,6 +21,10 @@ export const ANIMALS = [
   { id: 'frog', name: 'قورباغه', color: '#d0e0ad' },
 ];
 
+// Uncertain recordings remain available for parent review, but cannot teach an
+// unverified association as either an answer or a distractor in the child quiz.
+export const PLAYABLE_ANIMALS = ANIMALS.filter((animal) => audioReview.animals[animal.id]?.enabled === true);
+
 export const ROUND_COUNT = 5;
 export const animalById = (id) => ANIMALS.find((animal) => animal.id === id);
 
@@ -33,10 +40,10 @@ function shuffle(items, random) {
 // Three distinct animals per question; the answer changes between questions.
 // Avoid a bee/fly discrimination task: both have similar buzzing calls.
 export function createRounds(random = Math.random) {
-  const targets = shuffle(ANIMALS, random).slice(0, ROUND_COUNT);
+  const targets = shuffle(PLAYABLE_ANIMALS, random).slice(0, ROUND_COUNT);
   return targets.map((target) => {
     const choices = [target];
-    const candidates = shuffle(ANIMALS.filter((animal) => animal.id !== target.id), random);
+    const candidates = shuffle(PLAYABLE_ANIMALS.filter((animal) => animal.id !== target.id), random);
     for (const candidate of candidates) {
       if (candidate.soundFamily && choices.some((animal) => animal.soundFamily === candidate.soundFamily)) continue;
       choices.push(candidate);
