@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="body" cx=".34" cy=".22" r=".95"><stop stop-color="#B8D18A"/><stop offset="1" stop-color="#7FAB69"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#C4DE99"/><stop offset="1" stop-color="#8AB575"/></radialGradient><radialGradient id="belly" cx=".34" cy=".22" r=".95"><stop stop-color="#F4F0BC"/><stop offset="1" stop-color="#DFDF9F"/></radialGradient><radialGradient id="leg" cx=".34" cy=".22" r=".95"><stop stop-color="#A7C77B"/><stop offset="1" stop-color="#719E60"/></radialGradient><radialGradient id="eye" cx=".34" cy=".22" r=".95"><stop stop-color="#FFFBE4"/><stop offset="1" stop-color="#E9EDCC"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- strong bent back legs and broad webbed feet -->
+<ellipse cx="107" cy="321" rx="54" ry="57" transform="rotate(20 107 321)" fill="url(#leg)"/><ellipse cx="313" cy="321" rx="54" ry="57" transform="rotate(-20 313 321)" fill="url(#leg)"/>
+<path d="M107 356c-22 0-52 15-58 26 10 10 23 0 33 3 7 9 20 7 24-2 18 3 32-1 30-13l-4-15Z" fill="url(#leg)"/>
+<path d="M313 356c22 0 52 15 58 26-10 10-23 0-33 3-7 9-20 7-24-2-18 3-32-1-30-13l4-15Z" fill="url(#leg)"/>
+<ellipse cx="210" cy="292" rx="100" ry="80" fill="url(#body)"/>
+<ellipse cx="210" cy="301" rx="63" ry="60" fill="url(#belly)"/>
+<!-- raised eyes on recognisable frog brow -->
+<circle cx="151" cy="139" r="45" fill="url(#head)"/><circle cx="269" cy="139" r="45" fill="url(#head)"/>
+<path d="M85 203c0-45 40-70 125-70 86 0 125 25 125 70 0 57-48 84-125 84-76 0-125-27-125-84Z" fill="url(#head)"/>
+<ellipse cx="151" cy="145" rx="28" ry="32" fill="url(#eye)"/><ellipse cx="269" cy="145" rx="28" ry="32" fill="url(#eye)"/>
+<ellipse cx="154" cy="149" rx="12" ry="16" fill="#43352E"/><ellipse cx="266" cy="149" rx="12" ry="16" fill="#43352E"/><circle cx="151" cy="145" r="3.2" fill="#FFFDF4"/><circle cx="263" cy="145" r="3.2" fill="#FFFDF4"/><ellipse cx="126" cy="216" rx="18" ry="10" fill="#EBA393" opacity=".65"/><ellipse cx="294" cy="216" rx="18" ry="10" fill="#EBA393" opacity=".65"/>
+<ellipse cx="194" cy="196" rx="3" ry="4" fill="#6A9256"/><ellipse cx="226" cy="196" rx="3" ry="4" fill="#6A9256"/>
+<path d="M160 229q50 39 100 0" stroke="#62894D" stroke-width="4" stroke-linecap="round"/>
+<path d="M146 225q1 9 9 11m119-11q-1 9-9 11" stroke="#62894D" stroke-width="3" stroke-linecap="round"/>
+<path d="M156 294q-8 31-9 67l-17 17q4 14 24 7 16 10 24-4 4-21 1-40m85-47q8 31 9 67l17 17q-4 14-24 7-16 10-24-4-4-21-1-40" fill="url(#head)"/>
+<path d="M117 301q-10 10-13 23m210-23q10 10 13 23" stroke="#C6DC9A" stroke-width="6" stroke-linecap="round" opacity=".6"/>
+<circle cx="102" cy="200" r="6" fill="#A1C17D"/><circle cx="318" cy="200" r="6" fill="#A1C17D"/>
+</svg>

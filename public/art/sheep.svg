@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none">
+<defs>
+ <radialGradient id="wool" cx=".4" cy=".2" r=".95"><stop stop-color="#FFFCED"/><stop offset=".55" stop-color="#F7EFD8"/><stop offset="1" stop-color="#E7D6B5"/></radialGradient>
+ <radialGradient id="fluff" cx=".34" cy=".25" r=".9"><stop stop-color="#FFFEF3"/><stop offset="1" stop-color="#F0E4CA"/></radialGradient>
+ <radialGradient id="face" cx=".35" cy=".2" r=".9"><stop stop-color="#E3BB88"/><stop offset="1" stop-color="#BC8B58"/></radialGradient>
+ <linearGradient id="leg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#CAA16E"/><stop offset="1" stop-color="#A8794F"/></linearGradient>
+ <linearGradient id="hoof" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#685345"/><stop offset="1" stop-color="#47392F"/></linearGradient>
+ <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<ellipse cx="213" cy="391" rx="117" ry="13" fill="#75643A" opacity=".14" filter="url(#soft)"/>
+<!-- back feet -->
+<path d="M119 317h37l-1 59c-1 13-33 13-35 0Z" fill="url(#leg)"/>
+<path d="M265 317h37l-1 59c-1 13-33 13-35 0Z" fill="url(#leg)"/>
+<path d="M119 366c12-5 25-5 37 0v14c-1 12-35 12-36 0Z" fill="url(#hoof)"/>
+<path d="M265 366c12-5 25-5 37 0v14c-1 12-35 12-36 0Z" fill="url(#hoof)"/>
+<!-- body, soft scalloped wool -->
+<path d="M92 242c-26-15-33-49-10-68-10-28 4-53 33-57 0-28 29-43 51-32 18-23 44-23 63-7 28-17 56-6 61 19 28-3 49 17 46 43 29 9 38 38 20 61 22 26 12 55-12 66 7 29-14 50-43 49-15 26-44 31-65 16-25 18-54 9-67-11-30 10-55-6-56-31-27-3-41-26-21-48Z" fill="url(#wool)"/>
+<ellipse cx="211" cy="243" rx="119" ry="91" fill="url(#wool)"/>
+<!-- subtle rounded lower curls -->
+<circle cx="103" cy="258" r="31" fill="url(#fluff)"/>
+<circle cx="125" cy="299" r="32" fill="url(#fluff)"/>
+<circle cx="168" cy="321" r="32" fill="url(#fluff)"/>
+<circle cx="211" cy="328" r="32" fill="url(#fluff)"/>
+<circle cx="254" cy="320" r="32" fill="url(#fluff)"/>
+<circle cx="296" cy="298" r="32" fill="url(#fluff)"/>
+<circle cx="322" cy="260" r="31" fill="url(#fluff)"/>
+<!-- front feet -->
+<path d="M153 331h36l-2 47c-1 13-32 13-33 0Z" fill="url(#leg)"/>
+<path d="M235 331h36l-2 47c-1 13-32 13-33 0Z" fill="url(#leg)"/>
+<path d="M153 368c11-4 23-4 35 0l-1 16c-1 12-32 12-33 0Z" fill="url(#hoof)"/>
+<path d="M235 368c11-4 23-4 35 0l-1 16c-1 12-32 12-33 0Z" fill="url(#hoof)"/>
+<path d="M171 384v5M253 384v5" stroke="#9C8170" stroke-width="2" stroke-linecap="round"/>
+<!-- downturned velvet ears -->
+<path d="M139 147c-19-15-48-11-56 10-9 24 21 49 39 35 11-8 17-26 17-45Z" fill="url(#face)"/>
+<path d="M112 153c-13-4-22 7-15 21 4 7 12 9 17 4" stroke="#B58363" stroke-width="8" stroke-linecap="round"/>
+<path d="M279 147c19-15 48-11 56 10 9 24-21 49-39 35-11-8-17-26-17-45Z" fill="url(#face)"/>
+<path d="M306 153c13-4 22 7 15 21-4 7-12 9-17 4" stroke="#B58363" stroke-width="8" stroke-linecap="round"/>
+<!-- tan face -->
+<path d="M133 166c0-41 30-62 77-62 49 0 78 21 78 63 0 59-30 101-78 101-46 0-77-42-77-102Z" fill="url(#face)"/>
+<!-- crown of big fluffy curls -->
+<circle cx="142" cy="125" r="29" fill="url(#fluff)"/>
+<circle cx="165" cy="99" r="31" fill="url(#fluff)"/>
+<circle cx="204" cy="87" r="32" fill="url(#fluff)"/>
+<circle cx="243" cy="96" r="31" fill="url(#fluff)"/>
+<circle cx="273" cy="120" r="31" fill="url(#fluff)"/>
+<circle cx="180" cy="124" r="28" fill="url(#fluff)"/>
+<circle cx="221" cy="121" r="29" fill="url(#fluff)"/>
+<circle cx="251" cy="136" r="26" fill="url(#fluff)"/>
+<!-- eyes and rose cheeks -->
+<ellipse cx="170" cy="188" rx="9" ry="12" fill="#3F3029"/>
+<ellipse cx="249" cy="188" rx="9" ry="12" fill="#3F3029"/>
+<circle cx="167" cy="184" r="3" fill="#FFF7E3"/>
+<circle cx="246" cy="184" r="3" fill="#FFF7E3"/>
+<ellipse cx="152" cy="213" rx="16" ry="10" fill="#E89B83" opacity=".85"/>
+<ellipse cx="267" cy="213" rx="16" ry="10" fill="#E89B83" opacity=".85"/>
+<!-- tiny soft heart nose -->
+<path d="M198 214c-6-8 0-15 11-9 11-6 18 1 12 9l-12 10Z" fill="#71503D"/>
+<path d="M209 222v8m0 0c-5 8-14 8-19 2m19-2c5 8 14 8 19 2" stroke="#71503D" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M120 238c-10 2-16 8-16 15M294 235c12 0 18 7 18 15M145 281c8-6 17-5 22 3M259 287c7-6 16-5 21 2" stroke="#DDCCAC" stroke-width="3" opacity=".55" stroke-linecap="round"/>
+</svg>

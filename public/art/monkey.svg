@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="fur" cx=".34" cy=".22" r=".95"><stop stop-color="#C38A57"/><stop offset="1" stop-color="#98613D"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#D5A271"/><stop offset="1" stop-color="#AD774B"/></radialGradient><radialGradient id="cream" cx=".34" cy=".22" r=".95"><stop stop-color="#FFF0CA"/><stop offset="1" stop-color="#EBC996"/></radialGradient><radialGradient id="inner" cx=".34" cy=".22" r=".95"><stop stop-color="#E5AD88"/><stop offset="1" stop-color="#CC9474"/></radialGradient><radialGradient id="feet" cx=".34" cy=".22" r=".95"><stop stop-color="#B77B4F"/><stop offset="1" stop-color="#8A5739"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- long curled tail -->
+<path d="M290 311c80 26 98-57 61-64-26-6-38 23-20 34" stroke="#9D673F" stroke-width="19" stroke-linecap="round"/>
+<path d="M104 239q-43 35-34 94c3 23 26 27 34 7l19-76m174-25q43 35 34 94c-3 23-26 27-34 7l-19-76" fill="url(#fur)"/>
+<ellipse cx="92" cy="337" rx="18" ry="21" fill="url(#cream)"/><ellipse cx="312" cy="337" rx="18" ry="21" fill="url(#cream)"/>
+<path d="M130 315q-15 26-10 61c-28 1-31 15-13 19h56q16-20 13-52m107-28q15 26 10 61c28 1 31 15 13 19h-56q-16-20-13-52" fill="url(#feet)"/>
+<ellipse cx="205" cy="289" rx="88" ry="80" fill="url(#fur)"/>
+<ellipse cx="205" cy="292" rx="51" ry="57" fill="url(#cream)"/>
+<circle cx="101" cy="164" r="43" fill="url(#fur)"/><circle cx="313" cy="164" r="43" fill="url(#fur)"/>
+<circle cx="101" cy="164" r="27" fill="url(#inner)"/><circle cx="313" cy="164" r="27" fill="url(#inner)"/>
+<path d="M109 170c0-62 31-99 98-99 69 0 100 38 100 99 0 65-37 99-100 99-62 0-98-34-98-99Z" fill="url(#head)"/>
+<path d="M171 90q-19-36 4-36 17 1 20 23 7-32 25-22 10 8-1 31" fill="url(#head)"/>
+<!-- heart-shaped light face -->
+<path d="M207 142c-37-53-79-4-78 43 0 47 25 75 78 75 54 0 80-28 80-75 1-47-42-96-80-43Z" fill="url(#cream)"/>
+<ellipse cx="164" cy="183" rx="10" ry="13" fill="#43352E"/><ellipse cx="251" cy="183" rx="10" ry="13" fill="#43352E"/><circle cx="161" cy="179" r="3.2" fill="#FFFDF4"/><circle cx="248" cy="179" r="3.2" fill="#FFFDF4"/><ellipse cx="141" cy="213" rx="18" ry="10" fill="#EBA393" opacity=".65"/><ellipse cx="274" cy="213" rx="18" ry="10" fill="#EBA393" opacity=".65"/>
+<ellipse cx="207" cy="211" rx="13" ry="9" fill="#986345"/>
+<path d="M207 221v7m-17 0q17 21 34 0" stroke="#86553B" stroke-width="4" stroke-linecap="round"/>
+<path d="m136 384 0 7m11-7v7m118-7v7m11-7v7" stroke="#74503B" stroke-width="2" stroke-linecap="round"/>
+</svg>

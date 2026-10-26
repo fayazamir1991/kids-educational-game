@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="body" cx=".34" cy=".22" r=".95"><stop stop-color="#E7B17A"/><stop offset="1" stop-color="#BF7E47"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#F6CEA0"/><stop offset="1" stop-color="#D6A06C"/></radialGradient><radialGradient id="wing" cx=".34" cy=".22" r=".95"><stop stop-color="#D99F63"/><stop offset="1" stop-color="#B57640"/></radialGradient><radialGradient id="red" cx=".34" cy=".22" r=".95"><stop stop-color="#ED8671"/><stop offset="1" stop-color="#C85A50"/></radialGradient><radialGradient id="feet" cx=".34" cy=".22" r=".95"><stop stop-color="#E6B768"/><stop offset="1" stop-color="#CF8B3D"/></radialGradient><radialGradient id="cream" cx=".34" cy=".22" r=".95"><stop stop-color="#F8DFC0"/><stop offset="1" stop-color="#E7BD8B"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- short layered brown tail -->
+<path d="M291 261c36-48 65-43 53-17 29-17 45 4 23 22 30-5 36 18 7 30l-56 15Z" fill="url(#wing)"/>
+<path d="m163 340-4 35m89-35 4 35m-93 0-25 14m25-14 3 17m-3-17 25 13m68-13-25 13m25-13-3 17m3-17 25 14" stroke="#D89545" stroke-width="10" stroke-linecap="round"/>
+<path d="M94 267c0-64 43-105 112-105 70 0 115 41 115 105 0 62-40 95-115 95-73 0-112-33-112-95Z" fill="url(#body)"/>
+<path d="M106 243c-27 8-37 39-20 65 11 20 35 27 55 12l-9-14 13-6-13-11 9-13Z" fill="url(#wing)"/>
+<path d="M302 240c27 8 36 39 19 65-11 20-35 27-55 12l9-14-13-6 13-11-9-13Z" fill="url(#wing)"/>
+<ellipse cx="203" cy="301" rx="54" ry="33" fill="url(#cream)" opacity=".45"/>
+<path d="M176 109c-16-11-14-32 1-35 13-3 19 12 20 21 3-23 25-29 30-11 4 13-4 23-15 28Z" fill="url(#red)"/>
+<path d="M107 184c0-53 38-85 96-85 62 0 100 32 100 85 0 56-39 88-100 88-59 0-96-32-96-88Z" fill="url(#head)"/>
+<path d="m112 212-7 14 12 7-5 15 14 6m170-42 7 14-12 7 5 15-14 6" fill="#E5B684"/>
+<ellipse cx="158" cy="181" rx="10" ry="13" fill="#43352E"/><ellipse cx="250" cy="181" rx="10" ry="13" fill="#43352E"/><circle cx="155" cy="177" r="3.2" fill="#FFFDF4"/><circle cx="247" cy="177" r="3.2" fill="#FFFDF4"/><ellipse cx="135" cy="208" rx="18" ry="10" fill="#EBA393" opacity=".65"/><ellipse cx="272" cy="208" rx="18" ry="10" fill="#EBA393" opacity=".65"/>
+<ellipse cx="204" cy="239" rx="13" ry="20" fill="url(#red)"/>
+<path d="M181 210q23-27 48 0-23 25-48 0Z" fill="#EBA54E"/>
+<path d="M183 211q22 7 44 0" stroke="#C8843A" stroke-width="3" stroke-linecap="round"/>
+<path d="m167 301 8 5 8-5m26 14 8 5 8-5m17-24 8 5 8-5" stroke="#B9804A" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+</svg>

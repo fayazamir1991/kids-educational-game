@@ -1,0 +1,132 @@
+import assert from 'node:assert/strict';
+import { mkdir, readFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+import { chromium, expect } from '@playwright/test';
+import { ANIMALS, createRounds } from '../src/game.js';
+
+const artifact = resolve(process.argv[2] || 'dist/little-farm.html');
+const outputDirectory = resolve(process.env.PREVIEW_DIRECTORY || 'test-results/standalone');
+// Managed Chromium blocks file:// in this cloud machine. Exact HTML bytes can
+// still be tested as a self-contained document with the browser network offline.
+const directFileNavigation = process.env.STANDALONE_FILE_NAVIGATION === '1';
+await mkdir(outputDirectory, { recursive: true });
+const browser = await chromium.launch({
+  executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
+  headless: true,
+  args: ['--no-sandbox'],
+});
+
+function instrumentAudio() {
+  Math.random = () => 0.25;
+  window.__audioStarts = [];
+  window.__audioFetches = [];
+  const nativeFetch = window.fetch;
+  window.fetch = function (...args) {
+    const url = String(args[0]);
+    if (/\/audio\/.*\.mp3(?:$|\?)/.test(url) || url.startsWith('data:audio/')) window.__audioFetches.push(url);
+    return nativeFetch.apply(this, args);
+  };
+  const nativeStart = AudioBufferSourceNode.prototype.start;
+  AudioBufferSourceNode.prototype.start = function (...args) {
+    const result = nativeStart.apply(this, args);
+    window.__audioStarts.push({ duration: this.buffer?.duration, frames: this.buffer?.length });
+    return result;
+  };
+}
+
+try {
+  const context = await browser.newContext({ viewport: { width: 844, height: 390 }, offline: true });
+  if (directFileNavigation) await context.addInitScript(instrumentAudio);
+  const page = await context.newPage();
+  const errors = [];
+  const failures = [];
+  const networkRequests = [];
+  const extraFiles = [];
+  const artifactUrl = pathToFileURL(artifact).href;
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('requestfailed', (request) => failures.push(request.url()));
+  page.on('request', (request) => {
+    if (/^https?:/.test(request.url())) networkRequests.push(request.url());
+    if (request.url().startsWith('file:') && request.url() !== artifactUrl) extraFiles.push(request.url());
+  });
+  if (directFileNavigation) await page.goto(artifactUrl);
+  else {
+    await page.evaluate(instrumentAudio);
+    await page.setContent(await readFile(artifact, 'utf8'));
+  }
+  const initialUrl = page.url();
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('#listen-button')).toBeVisible();
+  await expect(page.locator('[data-animal]')).toHaveCount(3);
+  await expect.poll(() => page.locator('.animal img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:')))).toBe(true);
+  assert.match(await page.locator('.game-canvas').evaluate((element) => getComputedStyle(element).backgroundImage), /data:image\//, 'The landscape background must be embedded');
+  assert.equal(await page.evaluate(() => [...document.fonts].some((font) => font.family.includes('Vazirmatn') && font.status === 'loaded')), true, 'Persian font must load offline');
+
+  const recordings = await page.evaluate(async (ids) => {
+    const context = new OfflineAudioContext(1, 1, 44100);
+    const facts = [];
+    for (const id of ids) {
+      const image = globalThis.__LITTLE_FARM_ASSETS__?.[`/art/${id}.svg`];
+      const url = globalThis.__LITTLE_FARM_ASSETS__?.[`/audio/${id}.mp3`];
+      if (!url?.startsWith('data:audio/') || !image?.startsWith('data:image/')) throw new Error(`Missing embedded assets for ${id}`);
+      const response = await fetch(url);
+      const audio = await context.decodeAudioData(await response.arrayBuffer());
+      let peak = 0;
+      let sum = 0;
+      for (const value of audio.getChannelData(0)) { peak = Math.max(peak, Math.abs(value)); sum += value * value; }
+      facts.push({ id, duration: audio.duration, frames: audio.length, peak, rms: Math.sqrt(sum / audio.length) });
+    }
+    return facts;
+  }, ANIMALS.map(({ id }) => id));
+  assert.equal(recordings.length, ANIMALS.length);
+  for (const recording of recordings) {
+    assert.ok(recording.duration > 0.5 && recording.duration < 15, `${recording.id}: playable short recording`);
+    assert.ok(recording.peak <= 1.001 && recording.rms > 0.0001, `${recording.id}: non-silent, non-clipping audio`);
+  }
+  await page.screenshot({ path: `${outputDirectory}/little-farm-preview.png`, fullPage: true });
+
+  const rounds = createRounds(() => 0.25);
+  await page.locator('#listen-button').click();
+  for (const [index, round] of rounds.entries()) {
+    await expect.poll(() => page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal).sort())).toEqual([...round.choices].sort());
+    await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(index + 1);
+    const played = await page.evaluate(() => window.__audioStarts.at(-1));
+    assert.ok(played.duration > 0.5 && played.frames > 1000, 'A real decoded recording must start');
+    if (index === 0) {
+      await page.locator(`[data-animal="${round.choices.find((id) => id !== round.target)}"]`).click();
+      await expect(page.locator('#message-text')).toContainText(/اشکالی|دوباره/);
+      await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+    }
+    await page.locator(`[data-animal="${round.target}"]`).click();
+    await expect(page.locator('.progress-flower.earned')).toHaveCount(index + 1);
+  }
+  await expect(page.locator('#celebration-dialog')).toBeVisible();
+  await page.locator('#play-again').click();
+  await expect(page.locator('#celebration-dialog')).not.toBeVisible();
+  await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(6);
+
+  await page.locator('#settings-button').click();
+  await page.locator('#restart-button').click();
+  await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+  assert.equal(page.url(), initialUrl, 'Restart must stay in the standalone document');
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight + 1), true);
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: `${outputDirectory}/little-farm-mobile.png`, fullPage: true });
+  assert.deepEqual(errors, [], 'No browser exceptions');
+  assert.deepEqual(failures, [], 'No failed asset requests');
+  assert.deepEqual(networkRequests, [], 'No network dependencies');
+  assert.deepEqual(extraFiles, [], 'No external local files');
+  assert.equal(await page.evaluate(() => window.__audioFetches.every((url) => url.startsWith('data:audio/'))), true);
+  console.log(JSON.stringify({
+    passed: true, artifact,
+    documentDelivery: directFileNavigation ? 'file navigation' : 'offline page.setContent using exact HTML bytes',
+    directFileNavigationValidated: directFileNavigation,
+    recordingsDecoded: recordings.length,
+    roundsCompleted: rounds.length,
+    realAudioPlays: await page.evaluate(() => window.__audioStarts.length),
+    errors, failures, networkRequests, extraFiles,
+    screenshots: [`${outputDirectory}/little-farm-preview.png`, `${outputDirectory}/little-farm-mobile.png`],
+  }, null, 2));
+} finally { await browser.close(); }

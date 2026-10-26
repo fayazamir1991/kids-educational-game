@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="gold" cx=".34" cy=".22" r=".95"><stop stop-color="#FFE898"/><stop offset="1" stop-color="#EFB744"/></radialGradient><radialGradient id="stripe" cx=".34" cy=".22" r=".95"><stop stop-color="#665446"/><stop offset="1" stop-color="#42382F"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#FFED9B"/><stop offset="1" stop-color="#F1C052"/></radialGradient><radialGradient id="wing" cx=".34" cy=".22" r=".95"><stop stop-color="#F4FFFF"/><stop offset="1" stop-color="#BFDBE1"/></radialGradient><radialGradient id="leg" cx=".34" cy=".22" r=".95"><stop stop-color="#9E7750"/><stop offset="1" stop-color="#694E36"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- antennae -->
+<path d="M164 138q-30-47-45-30m131 30q30-47 45-30" stroke="#6C5741" stroke-width="8" stroke-linecap="round"/>
+<circle cx="117" cy="107" r="9" fill="#69533E"/><circle cx="297" cy="107" r="9" fill="#69533E"/>
+<!-- four translucent wings -->
+<ellipse cx="125" cy="218" rx="47" ry="81" transform="rotate(-48 125 218)" fill="url(#wing)" stroke="#ACCBD4" stroke-width="3" opacity=".88"/>
+<ellipse cx="292" cy="218" rx="47" ry="81" transform="rotate(48 292 218)" fill="url(#wing)" stroke="#ACCBD4" stroke-width="3" opacity=".88"/>
+<path d="m85 178 78 79m170-79-78 79" stroke="#B1D0D6" stroke-width="3" opacity=".7"/>
+<!-- six little legs -->
+<path d="m150 277-38 15-12 25m44-10-27 31 3 22m51-22-12 35m109-96 38 15 12 25m-44-10 27 31-3 22m-51-22 12 35" stroke="#7D6142" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- rounded striped abdomen -->
+<path d="M134 264c0-57 28-83 74-83 47 0 76 26 76 83 0 62-28 105-76 105-47 0-74-43-74-105Z" fill="url(#gold)"/>
+<path d="M136 244q72 18 146 0v26q-76 17-148 0Z" fill="url(#stripe)"/>
+<path d="M143 299q66 15 132 0l-9 26q-57 15-114-1Z" fill="url(#stripe)"/>
+<path d="m193 363 15 20 14-20" fill="#67513C"/>
+<!-- soft round expressive head -->
+<ellipse cx="208" cy="180" rx="86" ry="77" fill="url(#head)"/>
+<path d="M149 149q16-18 37-22" stroke="#FFF5BE" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+<ellipse cx="172" cy="178" rx="9" ry="12" fill="#43352E"/><ellipse cx="244" cy="178" rx="9" ry="12" fill="#43352E"/><circle cx="169" cy="174" r="3.2" fill="#FFFDF4"/><circle cx="241" cy="174" r="3.2" fill="#FFFDF4"/><ellipse cx="149" cy="205" rx="18" ry="10" fill="#EBA393" opacity=".65"/><ellipse cx="267" cy="205" rx="18" ry="10" fill="#EBA393" opacity=".65"/><path d="M196 219q14 16 28 0" stroke="#865743" stroke-width="4" stroke-linecap="round" fill="none"/>
+<ellipse cx="185" cy="334" rx="15" ry="8" fill="#FFEC9A" opacity=".6"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="body" cx=".34" cy=".22" r=".95"><stop stop-color="#A5AAA7"/><stop offset="1" stop-color="#636C6A"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#B7BCB5"/><stop offset="1" stop-color="#818D86"/></radialGradient><radialGradient id="wing" cx=".34" cy=".22" r=".95"><stop stop-color="#F8FFFF"/><stop offset="1" stop-color="#C6DCE1"/></radialGradient><radialGradient id="eye" cx=".34" cy=".22" r=".95"><stop stop-color="#C67F6C"/><stop offset="1" stop-color="#A25249"/></radialGradient><radialGradient id="leg" cx=".34" cy=".22" r=".95"><stop stop-color="#7A8075"/><stop offset="1" stop-color="#505D58"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- two broad transparent wings -->
+<path d="M175 230C102 115 43 146 66 221c18 56 63 76 111 56Z" fill="url(#wing)" stroke="#BDD0D6" stroke-width="3" opacity=".92"/>
+<path d="M244 230c73-115 132-84 109-9-18 56-63 76-111 56Z" fill="url(#wing)" stroke="#BDD0D6" stroke-width="3" opacity=".92"/>
+<path d="m81 186 86 65m-73-36 62 33m181-62-86 65m73-36-62 33" stroke="#ADC7D0" stroke-width="2.5" opacity=".65"/>
+<!-- six slender feet -->
+<path d="m157 254-39 22-12 28m45-13-28 35 3 24m46-20-14 40m104-116 39 22 12 28m-45-13 28 35-3 24m-46-20 14 40" stroke="#62736A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="209" cy="285" rx="66" ry="78" fill="url(#body)"/>
+<path d="M150 274q60 22 120 0m-115 31q55 22 110 0m-98 29q43 16 86 0" stroke="#53615B" stroke-width="7" opacity=".4"/>
+<path d="M175 137q-19-39-34-31m103 31q19-39 34-31" stroke="#697A6F" stroke-width="7" stroke-linecap="round"/>
+<circle cx="140" cy="106" r="7" fill="#718278"/><circle cx="279" cy="106" r="7" fill="#718278"/>
+<ellipse cx="210" cy="185" rx="79" ry="73" fill="url(#head)"/>
+<!-- recognisable big reddish fly eyes, softened for children -->
+<ellipse cx="155" cy="177" rx="33" ry="43" transform="rotate(-15 155 177)" fill="url(#eye)"/>
+<ellipse cx="265" cy="177" rx="33" ry="43" transform="rotate(15 265 177)" fill="url(#eye)"/>
+<ellipse cx="159" cy="178" rx="11" ry="15" fill="#493A35"/><ellipse cx="261" cy="178" rx="11" ry="15" fill="#493A35"/>
+<circle cx="156" cy="173" r="4" fill="#FFF7E5"/><circle cx="258" cy="173" r="4" fill="#FFF7E5"/>
+<path d="m145 150 6 4m-12 6 6 4m129-14-6 4m12 6-6 4" stroke="#E3A390" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+<ellipse cx="210" cy="223" rx="12" ry="10" fill="#6D7B71"/>
+<path d="M196 236q14 15 28 0" stroke="#53675B" stroke-width="4" stroke-linecap="round"/>
+<path d="M174 313q-7-10-10-18" stroke="#D8DFD4" stroke-width="7" stroke-linecap="round" opacity=".4"/>
+</svg>

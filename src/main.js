@@ -1,0 +1,274 @@
+import '@fontsource/vazirmatn/arabic-500.css';
+import '@fontsource/vazirmatn/arabic-700.css';
+import '@fontsource/vazirmatn/arabic-800.css';
+import './style.css';
+import { ANIMALS, ROUND_COUNT, animalById, createRounds, checkAnswer } from './game.js';
+import { playAnimal, stopSound, chime, speakPersian } from './audio.js';
+import { asset } from './assets.js';
+import recordings from './recordings.json';
+
+const paths = {
+  sound: '<path d="m11 4-5 4H3v8h3l5 4z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
+  muted: '<path d="m11 4-5 4H3v8h3l5 4z"/><path d="m16 9 6 6m0-6-6 6"/>',
+  settings: '<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m9 3-.6 2.1-2 .9-2-.5-2 3.5 1.5 1.6v2.8L2.4 15l2 3.5 2-.5 2 .9L9 21h4l.6-2.1 2-.9 2 .5 2-3.5-1.5-1.6v-2.8l1.5-1.6-2-3.5-2 .5-2-.9L13 3Z"/>',
+  replay: '<path d="M3 10a9 9 0 1 1 2.7 8.4M3 4v6h6"/>',
+  expand: '<path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5"/>',
+  close: '<path d="m6 6 12 12M6 18 18 6"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/>',
+};
+const icon = (name) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+const flower = () => '<svg class="flower" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 17C9-3 0 21 16 24-4 34 20 48 24 32c7 20 25 0 9-8 21-7 0-25-9-7Z" fill="currentColor"/><circle cx="24" cy="24" r="6" fill="#e9b94e"/></svg>';
+const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+const safeURL = (value) => { try { const url = new URL(value); return url.protocol === 'https:' ? escapeHTML(url.href) : '#'; } catch { return '#'; } };
+const $ = (selector) => document.querySelector(selector);
+const fa = (value) => value.toLocaleString('fa-IR');
+
+document.querySelector('#app').innerHTML = `
+  <main class="game-canvas" aria-label="بازی کی صدا کرد؟">
+    <header class="game-toolbar">
+      <h1>کی صدا کرد؟ <span aria-hidden="true">✧</span></h1>
+      <div id="progress" class="flower-progress" aria-label="صفر گل از پنج گل">${Array.from({ length: ROUND_COUNT }, (_, index) => `<span class="progress-flower" data-flower="${index}">${flower()}</span>`).join('')}</div>
+      <div class="toolbar-controls">
+        <button class="icon-button" id="sound-toggle" aria-label="خاموش کردن صدا" aria-pressed="false">${icon('sound')}</button>
+        <button class="icon-button" id="fullscreen-button" aria-label="تمام‌صفحه">${icon('expand')}</button>
+        <button class="icon-button" id="settings-button" aria-label="تنظیمات برای بزرگ‌ترها">${icon('settings')}</button>
+      </div>
+    </header>
+    <section class="animal-stage" aria-label="حیوان درست را پیدا کن">
+      <div class="scene-message" id="scene-message" aria-live="polite" aria-atomic="true"><span id="message-text">بزن تا بشنوی، بعد پیداش کن!</span></div>
+      <span class="sr-only" id="round-label">آماده‌ای بازی کنیم؟</span>
+      <div class="animals" id="animals"></div>
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+    </section>
+    <div class="play-controls">
+      <button class="listen-button" id="listen-button"><span class="listen-icon">${icon('sound')}</span><span id="listen-title">بزن تا بشنوی</span><span class="listen-deco" aria-hidden="true">♪</span></button>
+    </div>
+  </main>
+  <aside id="orientation-notice" class="orientation-notice" aria-label="گوشی را افقی نگه دارید">
+    <svg class="rotate-phone" viewBox="0 0 130 130" fill="none" aria-hidden="true"><rect x="43" y="24" width="44" height="80" rx="9" stroke="currentColor" stroke-width="5"/><path d="M58 94h14M17 58a50 50 0 0 1 86-28m-1-14 4 17-18-1M113 72a50 50 0 0 1-86 28m1 14-4-17 18 1" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h2>گوشی رو بچرخون!</h2><p>دوست‌هات توی صفحهٔ افقی منتظرتن</p>
+  </aside>
+  <dialog id="settings-dialog" class="modal" aria-labelledby="settings-title">
+    <button class="icon-button modal-close" data-close="settings-dialog" aria-label="بستن تنظیمات">${icon('close')}</button>
+    <h2 id="settings-title">برای بزرگ‌ترها</h2>
+    <label class="volume-label" for="volume">بلندی صدا <span id="volume-value">۶۵٪</span></label>
+    <input id="volume" type="range" min="15" max="100" value="65" />
+    <label class="toggle-row"><span>تشویق گفتاری فارسی<small>با صدای فارسیِ دستگاه، در صورت پشتیبانی</small></span><input id="narration" type="checkbox" role="switch" checked /><span class="toggle-track" aria-hidden="true"></span></label>
+    <p class="parent-note">${fa(ANIMALS.length)} حیوان با ضبط صدای واقعی؛ در هر نوبت سه گزینهٔ تصادفی، بدون محدودیت زمانی و امتیاز منفی.</p>
+    <button class="secondary-button" id="credits-button">${icon('info')}منابع و مجوز صداها</button>
+    <button class="secondary-button" id="restart-button">${icon('replay')}شروع دوبارهٔ بازی</button>
+  </dialog>
+  <dialog id="credits-dialog" class="modal credits-modal" aria-labelledby="credits-title">
+    <button class="icon-button modal-close" data-close="credits-dialog" aria-label="بستن منابع">${icon('close')}</button>
+    <h2 id="credits-title">صداهای واقعی، با ذکر منبع</h2>
+    <p class="credits-intro">ضبط‌ها برای بازی کوتاه و بلندی صدایشان یکدست شده است. اطلاعات ضبط اصلی و مجوز استفاده:</p>
+    <ul class="credits-list">${recordings.map((recording) => `<li><strong>${escapeHTML(animalById(recording.id)?.name || recording.id)}</strong><span>${escapeHTML(recording.source_title)} · ${escapeHTML(recording.creator)} · ${escapeHTML(recording.license)}</span><a href="${safeURL(recording.source_url)}" target="_blank" rel="noopener noreferrer">ضبط اصلی</a><a href="${safeURL(recording.license_url)}" target="_blank" rel="noopener noreferrer">متن مجوز</a></li>`).join('')}</ul>
+  </dialog>
+  <dialog id="celebration-dialog" class="modal celebration-modal" aria-labelledby="celebration-title">
+    <div class="bouquet" aria-hidden="true">${flower()}${flower()}${flower()}</div><h2 id="celebration-title">چه خوب گوش دادی!</h2><p>پنج دوست رو پیدا کردی! باز هم بازی کنیم؟</p>
+    <button class="primary-button" id="play-again">${icon('replay')}باز هم بازی کنیم</button>
+    <button class="text-button" data-close="celebration-dialog">یک کم استراحت کنیم</button>
+  </dialog>
+`;
+
+const settings = { volume: 0.65, muted: false, narration: true };
+try {
+  const saved = JSON.parse(localStorage.getItem('little-farm-settings'));
+  if (saved && typeof saved === 'object') {
+    if (typeof saved.volume === 'number' && Number.isFinite(saved.volume)) settings.volume = Math.max(0.15, Math.min(1, saved.volume));
+    if (typeof saved.muted === 'boolean') settings.muted = saved.muted;
+    if (typeof saved.narration === 'boolean') settings.narration = saved.narration;
+  }
+} catch { /* The game works when preference storage is unavailable. */ }
+const state = { rounds: createRounds(), round: 0, started: false, heard: false, playing: false, locked: false, completed: false, run: 0 };
+let advanceTimer;
+let feedbackTimer;
+let audioRequest = 0;
+const isPortrait = () => innerWidth < 700 && innerHeight > innerWidth;
+const hasModal = () => !!document.querySelector('dialog[open]');
+const saveSettings = () => { try { localStorage.setItem('little-farm-settings', JSON.stringify(settings)); } catch { /* optional */ } };
+
+function message(text, kind = '') {
+  $('#message-text').textContent = text;
+  $('#scene-message').className = `scene-message ${kind}`;
+}
+
+function drawAnimals() {
+  $('#animals').innerHTML = state.rounds[state.round].choices.map((id) => {
+    const animal = animalById(id);
+    return `<button class="animal" data-animal="${id}" aria-label="${animal.name}" style="--animal-color:${animal.color}"><span class="animal-art"><span class="animal-halo"></span><img src="${asset(`/art/${id}.svg`)}" alt="" draggable="false" /><span class="correct-check">${icon('check')}</span></span><span class="animal-name">${animal.name}</span></button>`;
+  }).join('');
+}
+
+function updateSoundControl() {
+  $('#sound-toggle').innerHTML = icon(settings.muted ? 'muted' : 'sound');
+  $('#sound-toggle').setAttribute('aria-pressed', String(settings.muted));
+  $('#sound-toggle').setAttribute('aria-label', settings.muted ? 'روشن کردن صدا' : 'خاموش کردن صدا');
+}
+
+function render() {
+  const found = state.completed ? ROUND_COUNT : state.round + (state.locked ? 1 : 0);
+  $('#round-label').textContent = state.completed ? 'همهٔ دوست‌ها رو پیدا کردی!' : state.started ? `دوست ${fa(state.round + 1)} از ${fa(ROUND_COUNT)}` : 'آماده‌ای بازی کنیم؟';
+  $('#progress').setAttribute('aria-label', `${fa(found)} گل از ${fa(ROUND_COUNT)} گل`);
+  document.querySelectorAll('[data-flower]').forEach((element, index) => element.classList.toggle('earned', index < found));
+  $('#listen-button').disabled = state.locked;
+  $('#listen-button').classList.toggle('is-playing', state.playing);
+  $('#listen-button').setAttribute('aria-label', state.completed ? 'شروع دوبارهٔ بازی' : state.playing ? 'دوباره پخش کردن صدای حیوان' : state.started ? 'دوباره شنیدن صدای حیوان' : 'شروع بازی و شنیدن صدای حیوان');
+  $('#listen-title').textContent = state.completed ? 'باز هم بازی کنیم' : state.playing ? 'خوب گوش کن...' : state.started ? 'دوباره بشنو' : 'بزن تا بشنوی';
+  document.querySelectorAll('[data-animal]').forEach((button) => { button.disabled = state.locked || state.completed; });
+}
+
+async function listen() {
+  if (state.locked || isPortrait() || hasModal() || document.hidden) return;
+  if (state.completed) reset();
+  if (settings.muted) { settings.muted = false; updateSoundControl(); saveSettings(); }
+  state.started = true;
+  state.heard = false;
+  state.playing = true;
+  const request = ++audioRequest;
+  const run = state.run;
+  message('خوب گوش کن... کی صدا کرد؟');
+  render();
+  const success = await playAnimal(state.rounds[state.round].target, settings.volume);
+  if (request !== audioRequest || run !== state.run || state.locked) return;
+  state.playing = false;
+  state.heard = success;
+  message(success ? 'صدای کدوم دوست بود؟' : 'صدا پخش نشد؛ دوباره دکمه رو بزن', success ? '' : 'gentle');
+  render();
+}
+
+function confetti() {
+  $('#confetti').replaceChildren();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  for (let i = 0; i < 20; i++) {
+    const piece = document.createElement('span');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `--x:${10 + Math.random() * 80}%;--delay:${Math.random() * 0.2}s;--rotate:${Math.random() * 360}deg;--drift:${(Math.random() - 0.5) * 120}px;background:${['#efbd56', '#b8a0d4', '#9cba87', '#edac94'][i % 4]}`;
+    $('#confetti').append(piece);
+  }
+}
+
+function pauseAudio() {
+  audioRequest++;
+  stopSound();
+  state.playing = false;
+  if (!state.locked && !state.completed && state.started) message('آماده‌ای؟ دوباره صدا رو بشنو');
+  render();
+}
+
+function choose(id, button) {
+  if (state.locked || state.completed || isPortrait() || hasModal()) return;
+  if (!state.started || (!state.heard && !state.playing)) {
+    message('اول دکمهٔ صدا رو بزن!');
+    $('#listen-button').classList.remove('nudge');
+    requestAnimationFrame(() => $('#listen-button').classList.add('nudge'));
+    return;
+  }
+  if (!checkAnswer(state.rounds, state.round, id)) {
+    button.classList.remove('try-again');
+    requestAnimationFrame(() => button.classList.add('try-again'));
+    message('اشکالی نداره، دوباره گوش کن!', 'gentle');
+    clearTimeout(feedbackTimer);
+    feedbackTimer = setTimeout(() => button.classList.remove('try-again'), 600);
+    return;
+  }
+  state.locked = true;
+  state.playing = false;
+  audioRequest++;
+  stopSound();
+  clearTimeout(feedbackTimer);
+  button.classList.remove('try-again');
+  button.classList.add('is-correct');
+  message(`آفرین! صدای ${animalById(id).name} بود!`, 'success');
+  if (!settings.muted) {
+    chime(settings.volume);
+    if (settings.narration) speakPersian(`آفرین! ${animalById(id).name} بود!`, settings.volume);
+  }
+  confetti();
+  render();
+  advanceTimer = setTimeout(() => {
+    state.round++;
+    state.locked = false;
+    state.heard = false;
+    if (state.round >= ROUND_COUNT) {
+      state.completed = true;
+      message('همهٔ دوست‌هات رو پیدا کردی!', 'success');
+      render();
+      // Re-enable these existing cards on reset, not during the celebration.
+      if (!hasModal()) $('#celebration-dialog').showModal();
+    } else {
+      drawAnimals();
+      message('یک صدای تازه، یک دوست تازه!');
+      render();
+      if (!document.hidden && !isPortrait() && !settings.muted && !hasModal()) void listen();
+    }
+  }, 1400);
+}
+
+function reset() {
+  clearTimeout(advanceTimer);
+  clearTimeout(feedbackTimer);
+  audioRequest++;
+  stopSound();
+  Object.assign(state, { rounds: createRounds(), round: 0, started: false, heard: false, playing: false, locked: false, completed: false, run: state.run + 1 });
+  $('#confetti').replaceChildren();
+  drawAnimals();
+  message('بزن تا بشنوی، بعد پیداش کن!');
+  render();
+}
+
+$('#animals').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-animal]');
+  if (button) choose(button.dataset.animal, button);
+});
+$('#listen-button').addEventListener('click', listen);
+$('#sound-toggle').addEventListener('click', () => {
+  settings.muted = !settings.muted;
+  if (settings.muted) { pauseAudio(); state.heard = false; }
+  updateSoundControl(); saveSettings();
+});
+$('#settings-button').addEventListener('click', () => { pauseAudio(); $('#settings-dialog').showModal(); });
+$('#volume').value = Math.round(settings.volume * 100);
+$('#volume-value').textContent = `${fa(Math.round(settings.volume * 100))}٪`;
+$('#volume').addEventListener('input', (event) => {
+  settings.volume = Number(event.target.value) / 100;
+  $('#volume-value').textContent = `${fa(Number(event.target.value))}٪`;
+  saveSettings();
+});
+$('#narration').checked = settings.narration;
+$('#narration').addEventListener('change', (event) => { settings.narration = event.target.checked; saveSettings(); });
+$('#restart-button').addEventListener('click', () => { $('#settings-dialog').close(); reset(); $('#listen-button').focus({ preventScroll: true }); });
+$('#credits-button').addEventListener('click', () => { $('#settings-dialog').close(); $('#credits-dialog').showModal(); });
+$('#play-again').addEventListener('click', () => { $('#celebration-dialog').close(); reset(); void listen(); });
+for (const button of document.querySelectorAll('[data-close]')) button.addEventListener('click', () => {
+  $(`#${button.dataset.close}`).close();
+  $('#listen-button').focus({ preventScroll: true });
+});
+for (const dialog of document.querySelectorAll('dialog')) dialog.addEventListener('click', (event) => {
+  if (event.target !== dialog) return;
+  const bounds = dialog.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+});
+$('#fullscreen-button').addEventListener('click', async () => {
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen();
+    else {
+      await document.documentElement.requestFullscreen?.();
+      // Orientation lock is optional; unsupported devices keep the rotate hint.
+      if (document.fullscreenElement) await screen.orientation?.lock?.('landscape').catch(() => {});
+    }
+  } catch { /* iOS browsers may not expose document fullscreen. */ }
+});
+function updateFullscreenLabel() { $('#fullscreen-button').setAttribute('aria-label', document.fullscreenElement ? 'خروج از تمام‌صفحه' : 'تمام‌صفحه'); }
+for (const event of ['fullscreenchange', 'webkitfullscreenchange']) document.addEventListener(event, updateFullscreenLabel);
+let wasPortrait = isPortrait();
+window.addEventListener('resize', () => {
+  const portrait = isPortrait();
+  if (portrait && !wasPortrait) pauseAudio();
+  wasPortrait = portrait;
+});
+document.addEventListener('visibilitychange', () => { if (document.hidden) pauseAudio(); });
+updateSoundControl();
+drawAnimals();
+render();

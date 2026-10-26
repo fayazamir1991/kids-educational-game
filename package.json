@@ -1,0 +1,35 @@
+{
+  "name": "kids-educational-game",
+  "version": "1.0.0",
+  "description": "A gentle Persian listening game for toddlers",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "node scripts/verify-recordings.mjs && vite build",
+    "build:standalone": "npm run build && node scripts/build-standalone.mjs",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test tests/game.test.js",
+    "test:e2e": "playwright test",
+    "test:standalone": "npm run build:standalone && node tests/standalone-smoke.mjs",
+    "test:audio": "node scripts/verify-recordings.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fayazamir1991/kids-educational-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/fayazamir1991/kids-educational-game/issues"
+  },
+  "homepage": "https://github.com/fayazamir1991/kids-educational-game#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "@fontsource/vazirmatn": "^5.3.0"
+  },
+  "private": true
+}

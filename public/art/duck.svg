@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="body" cx=".34" cy=".22" r=".95"><stop stop-color="#FFFDF1"/><stop offset="1" stop-color="#E6DBC2"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#FFFFF6"/><stop offset="1" stop-color="#F0E7D1"/></radialGradient><radialGradient id="wing" cx=".34" cy=".22" r=".95"><stop stop-color="#FAF6E7"/><stop offset="1" stop-color="#DFD4BC"/></radialGradient><radialGradient id="feet" cx=".34" cy=".22" r=".95"><stop stop-color="#F4B458"/><stop offset="1" stop-color="#DC8A32"/></radialGradient><radialGradient id="bill" cx=".34" cy=".22" r=".95"><stop stop-color="#FFBF69"/><stop offset="1" stop-color="#E4953B"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- broad webbed orange feet -->
+<path d="M162 337v31c-16-1-42 15-40 24 10 6 20-1 29 0 10 7 15 2 23-2 13 0 21-5 13-14l-9-10v-29Z" fill="url(#feet)"/>
+<path d="M248 337v31c16-1 42 15 40 24-10 6-20-1-29 0-10 7-15 2-23-2-13 0-21-5-13-14l9-10v-29Z" fill="url(#feet)"/>
+<path d="M280 267c33-30 60-23 43-4 30-9 40 12 14 26 28 3 22 26-12 27l-30-7Z" fill="url(#wing)"/>
+<path d="M94 271c0-69 43-107 113-107 72 0 116 38 116 107 0 60-40 88-116 88-74 0-113-28-113-88Z" fill="url(#body)"/>
+<path d="M109 245c-29 9-37 40-20 65 12 19 34 22 53 9l-10-15 13-8-14-10 10-12Z" fill="url(#wing)"/>
+<path d="M306 245c29 9 37 40 20 65-12 19-34 22-53 9l10-15-13-8 14-10-10-12Z" fill="url(#wing)"/>
+<ellipse cx="207" cy="179" rx="98" ry="94" fill="url(#head)"/>
+<path d="M179 96c-17-17-12-32-1-29 9 2 13 13 16 24 2-24 19-30 26-18 4 7 0 16-5 22" fill="#F6EDD5"/>
+<path d="M134 150q15-24 39-30" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".8"/>
+<ellipse cx="157" cy="179" rx="10" ry="13" fill="#43352E"/><ellipse cx="257" cy="179" rx="10" ry="13" fill="#43352E"/><circle cx="154" cy="175" r="3.2" fill="#FFFDF4"/><circle cx="254" cy="175" r="3.2" fill="#FFFDF4"/><ellipse cx="134" cy="209" rx="18" ry="10" fill="#EBA393" opacity=".65"/><ellipse cx="280" cy="209" rx="18" ry="10" fill="#EBA393" opacity=".65"/>
+<!-- unmistakably wide flat duck bill -->
+<path d="M161 220c3-17 24-23 46-23 23 0 46 6 49 23 2 17-23 26-49 26-25 0-48-9-46-26Z" fill="url(#bill)"/>
+<path d="M166 221q41 13 84 0" stroke="#CE8133" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="187" cy="210" rx="3" ry="2" fill="#C58139"/><ellipse cx="228" cy="210" rx="3" ry="2" fill="#C58139"/>
+<path d="m172 306 8 5 8-5m26 14 8 5 8-5m14-24 8 5 8-5" stroke="#D4C9AD" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+</svg>

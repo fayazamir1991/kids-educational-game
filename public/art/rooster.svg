@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none"><defs><filter id="shadow"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="body" cx=".34" cy=".22" r=".95"><stop stop-color="#FFD68B"/><stop offset="1" stop-color="#D78C3E"/></radialGradient><radialGradient id="head" cx=".34" cy=".22" r=".95"><stop stop-color="#FFE4A2"/><stop offset="1" stop-color="#E6AC56"/></radialGradient><radialGradient id="wing" cx=".34" cy=".22" r=".95"><stop stop-color="#EFB467"/><stop offset="1" stop-color="#C77B35"/></radialGradient><radialGradient id="red" cx=".34" cy=".22" r=".95"><stop stop-color="#F17D65"/><stop offset="1" stop-color="#CB514C"/></radialGradient><radialGradient id="green" cx=".34" cy=".22" r=".95"><stop stop-color="#7CAA98"/><stop offset="1" stop-color="#365F5B"/></radialGradient><radialGradient id="blue" cx=".34" cy=".22" r=".95"><stop stop-color="#88AAB5"/><stop offset="1" stop-color="#496E84"/></radialGradient><radialGradient id="feet" cx=".34" cy=".22" r=".95"><stop stop-color="#E4B15B"/><stop offset="1" stop-color="#CA8739"/></radialGradient></defs><ellipse cx="210" cy="392" rx="112" ry="12" fill="#6F683E" opacity=".13" filter="url(#shadow)"/>
+<!-- tall multi-colour sweeping rooster tail -->
+<path d="M282 267c-1-91 78-166 94-132 8 19-48 61-47 108 21-64 67-91 70-58 2 20-34 48-47 77 51-31 70-14 50 9-18 20-42 27-80 40Z" fill="url(#green)"/>
+<path d="M297 265c9-82 56-133 73-109 8 16-33 62-39 109 32-48 66-58 67-35-6 21-40 42-70 64Z" fill="url(#blue)"/>
+<path d="m165 338-5 39m86-39 4 39m-90-3-25 16m25-16 2 19m-2-19 24 15m66-15-24 15m24-15-2 19m2-19 26 16" stroke="#CF9246" stroke-width="10" stroke-linecap="round"/>
+<path d="M92 270c0-65 43-104 106-104 70 0 117 35 117 99 0 62-40 96-115 96-68 0-108-31-108-91Z" fill="url(#body)"/>
+<path d="M109 242c-28 9-35 41-17 67 13 19 39 26 63 11l-14-15 13-9-18-10 9-13Z" fill="url(#wing)"/>
+<path d="M283 232c30 6 40 36 26 61-11 21-34 30-58 18l11-16-14-7 16-12-12-11Z" fill="url(#wing)"/>
+<!-- large scarlet crown -->
+<path d="M156 115c-26-19-15-54 5-42-8-32 23-50 34-17 11-39 45-28 37 6 28-19 47 12 23 34l-23 29Z" fill="url(#red)"/>
+<path d="M105 181c0-52 34-85 95-85 62 0 96 33 96 85 0 57-34 92-96 92-60 0-95-35-95-92Z" fill="url(#head)"/>
+<path d="m126 245 10 23 13-15 10 29 17-18 16 24 18-23 18 18 11-24 14 12 8-27" fill="#F8CE7C"/>
+<ellipse cx="156" cy="181" rx="10" ry="13" fill="#43352E"/><ellipse cx="247" cy="181" rx="10" ry="13" fill="#43352E"/><circle cx="153" cy="177" r="3.2" fill="#FFFDF4"/><circle cx="244" cy="177" r="3.2" fill="#FFFDF4"/><ellipse cx="136" cy="209" rx="18" ry="10" fill="#EBA393" opacity=".65"/><ellipse cx="268" cy="209" rx="18" ry="10" fill="#EBA393" opacity=".65"/>
+<!-- red dangling wattle and orange bill -->
+<path d="M193 222c-24 7-24 45-2 46 9 0 15-6 17-13 5 11 19 10 24 1 9-15-5-35-18-37Z" fill="url(#red)"/>
+<path d="M179 210q24-29 48 0-23 25-48 0Z" fill="#EEA148"/>
+<path d="M181 211q22 7 44 0" stroke="#CF813A" stroke-width="3" stroke-linecap="round"/>
+<path d="m176 305 8 6 8-6m19 16 8 6 8-6m20-26 8 6 8-6" stroke="#B37835" stroke-width="3" stroke-linecap="round" opacity=".4"/>
+</svg>
