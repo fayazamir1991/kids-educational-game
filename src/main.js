@@ -3,11 +3,12 @@ import '@fontsource/vazirmatn/arabic-700.css';
 import '@fontsource/vazirmatn/arabic-800.css';
 import './style.css';
 import { ANIMALS, PLAYABLE_ANIMALS, AUDIO_REVIEW, ROUND_COUNT, animalById, createRounds, checkAnswer } from './game.js';
-import { playAnimal, stopSound, chime, speakPersian } from './audio.js';
+import { playAnimal, stopSound, chime, tryAgainTone, speakPersian } from './audio.js';
 import { asset } from './assets.js';
 import recordings from './recordings.json';
 import { renderHome } from './home.js';
 import { GAMES } from './catalog.js';
+import { createFeedback } from './feedback.js';
 
 const paths = {
   sound: '<path d="m11 4-5 4H3v8h3l5 4z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
@@ -90,7 +91,10 @@ try {
     if (typeof saved.narration === 'boolean') settings.narration = saved.narration;
   }
 } catch { /* The game works when preference storage is unavailable. */ }
-const state = { rounds: createRounds(), round: 0, started: false, heard: false, playing: false, locked: false, completed: false, run: 0 };
+const state = { rounds: createRounds(), round: 0, started: false, heard: false, playing: false, locked: false, retrying: false, completed: false, run: 0 };
+const answerFeedback = createFeedback($('.animal-stage'));
+const CORRECT_REACTION_MS = 1900;
+const RETRY_REACTION_MS = 1400;
 let advanceTimer;
 let feedbackTimer;
 let audioRequest = 0;
@@ -126,15 +130,15 @@ function render() {
   $('#round-label').textContent = state.completed ? 'همهٔ دوست‌ها رو پیدا کردی!' : state.started ? `دوست ${fa(state.round + 1)} از ${fa(ROUND_COUNT)}` : 'آماده‌ای بازی کنیم؟';
   $('#progress').setAttribute('aria-label', `${fa(found)} گل از ${fa(ROUND_COUNT)} گل`);
   document.querySelectorAll('[data-flower]').forEach((element, index) => element.classList.toggle('earned', index < found));
-  $('#listen-button').disabled = state.locked;
+  $('#listen-button').disabled = state.locked || state.retrying;
   $('#listen-button').classList.toggle('is-playing', state.playing);
   $('#listen-button').setAttribute('aria-label', state.completed ? 'شروع دوبارهٔ بازی' : state.playing ? 'دوباره پخش کردن صدای حیوان' : state.started ? 'دوباره شنیدن صدای حیوان' : 'شروع بازی و شنیدن صدای حیوان');
   $('#listen-title').textContent = state.completed ? 'باز هم بازی کنیم' : state.playing ? 'خوب گوش کن...' : state.started ? 'دوباره بشنو' : 'بزن تا بشنوی';
-  document.querySelectorAll('[data-animal]').forEach((button) => { button.disabled = state.locked || state.completed; });
+  document.querySelectorAll('[data-animal]').forEach((button) => { button.disabled = state.locked || state.retrying || state.completed; });
 }
 
 async function listen() {
-  if (activeGameId !== ANIMAL_SOUNDS_ID || state.locked || isPortrait() || hasModal() || document.hidden) return;
+  if (activeGameId !== ANIMAL_SOUNDS_ID || state.locked || state.retrying || isPortrait() || hasModal() || document.hidden) return;
   if (state.completed) reset();
   if (settings.muted) { settings.muted = false; updateSoundControl(); saveSettings(); }
   state.started = true;
@@ -152,15 +156,11 @@ async function listen() {
   render();
 }
 
-function confetti() {
-  $('#confetti').replaceChildren();
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  for (let i = 0; i < 20; i++) {
-    const piece = document.createElement('span');
-    piece.className = 'confetti-piece';
-    piece.style.cssText = `--x:${10 + Math.random() * 80}%;--delay:${Math.random() * 0.2}s;--rotate:${Math.random() * 360}deg;--drift:${(Math.random() - 0.5) * 120}px;background:${['#efbd56', '#b8a0d4', '#9cba87', '#edac94'][i % 4]}`;
-    $('#confetti').append(piece);
-  }
+function clearReaction() {
+  clearTimeout(feedbackTimer);
+  state.retrying = false;
+  answerFeedback.clear();
+  for (const button of document.querySelectorAll('[data-animal]')) button.classList.remove('try-again', 'is-correct');
 }
 
 function stopAudition() {
@@ -174,6 +174,7 @@ function stopAudition() {
 
 function pauseAudio() {
   audioRequest++;
+  clearReaction();
   stopAudition();
   state.playing = false;
   state.heard = false;
@@ -182,7 +183,7 @@ function pauseAudio() {
 }
 
 function choose(id, button) {
-  if (activeGameId !== ANIMAL_SOUNDS_ID || state.locked || state.completed || isPortrait() || hasModal()) return;
+  if (activeGameId !== ANIMAL_SOUNDS_ID || state.locked || state.retrying || state.completed || isPortrait() || hasModal()) return;
   if (!state.started || (!state.heard && !state.playing)) {
     message('اول دکمهٔ صدا رو بزن!');
     $('#listen-button').classList.remove('nudge');
@@ -190,30 +191,47 @@ function choose(id, button) {
     return;
   }
   if (!checkAnswer(state.rounds, state.round, id)) {
-    button.classList.remove('try-again');
-    requestAnimationFrame(() => button.classList.add('try-again'));
-    message('اشکالی نداره، دوباره گوش کن!', 'gentle');
-    clearTimeout(feedbackTimer);
-    feedbackTimer = setTimeout(() => button.classList.remove('try-again'), 600);
+    clearReaction();
+    audioRequest++;
+    stopSound();
+    state.playing = false;
+    state.heard = true;
+    state.retrying = true;
+    button.classList.add('try-again');
+    message('اوپس! این نبود؛ دوباره گوش کنیم!', 'gentle');
+    answerFeedback.show('wrong', animalById(id).name);
+    if (!settings.muted) {
+      tryAgainTone(settings.volume);
+      if (settings.narration) speakPersian('این نبود!', settings.volume);
+    }
+    render();
+    const run = state.run;
+    feedbackTimer = setTimeout(() => {
+      if (activeGameId !== ANIMAL_SOUNDS_ID || run !== state.run) return;
+      clearReaction();
+      render();
+      message('دوباره گوش کن، پیداش می‌کنی!');
+      if (!document.hidden && !isPortrait() && !settings.muted && !hasModal()) void listen();
+    }, RETRY_REACTION_MS);
     return;
   }
   state.locked = true;
   state.playing = false;
   audioRequest++;
   stopSound();
-  clearTimeout(feedbackTimer);
-  button.classList.remove('try-again');
+  clearReaction();
   button.classList.add('is-correct');
   message(`آفرین! صدای ${animalById(id).name} بود!`, 'success');
+  answerFeedback.show('correct', animalById(id).name);
   if (!settings.muted) {
     chime(settings.volume);
-    if (settings.narration) speakPersian(`آفرین! ${animalById(id).name} بود!`, settings.volume);
+    if (settings.narration) speakPersian('آفرین! پیداش کردی!', settings.volume);
   }
-  confetti();
   render();
   const run = state.run;
   advanceTimer = setTimeout(() => {
     if (activeGameId !== ANIMAL_SOUNDS_ID || run !== state.run) return;
+    clearReaction();
     state.round++;
     state.locked = false;
     state.heard = false;
@@ -229,15 +247,15 @@ function choose(id, button) {
       render();
       if (!document.hidden && !isPortrait() && !settings.muted && !hasModal()) void listen();
     }
-  }, 1400);
+  }, CORRECT_REACTION_MS);
 }
 
 function reset() {
   clearTimeout(advanceTimer);
-  clearTimeout(feedbackTimer);
+  clearReaction();
   audioRequest++;
   stopSound();
-  Object.assign(state, { rounds: createRounds(), round: 0, started: false, heard: false, playing: false, locked: false, completed: false, run: state.run + 1 });
+  Object.assign(state, { rounds: createRounds(), round: 0, started: false, heard: false, playing: false, locked: false, retrying: false, completed: false, run: state.run + 1 });
   $('#confetti').replaceChildren();
   drawAnimals();
   message('بزن تا بشنوی، بعد پیداش کن!');

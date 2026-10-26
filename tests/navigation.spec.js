@@ -64,7 +64,7 @@ test('returning home cancels pending next-round audio and reentering starts a fr
   await page.locator('#back-to-games').click();
   await expect(page.locator('#home-screen')).toBeVisible();
   await expect(page.locator('dialog[open]')).toHaveCount(0);
-  await page.waitForTimeout(1750); // Covers the cancelled 1400ms automatic next-round timer.
+  await page.waitForTimeout(2250); // Covers the cancelled 1900ms correct-answer timer.
   expect(await page.evaluate(() => window.__audioStarts)).toBe(1);
 
   await page.locator('#open-animal-sounds').click();

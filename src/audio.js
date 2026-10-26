@@ -7,6 +7,17 @@ let activeGain;
 let cancelCurrent;
 let generation = 0;
 const buffers = new Map();
+const effectNodes = new Set();
+
+function stopEffects() {
+  for (const effect of effectNodes) {
+    effect.oscillator.onended = null;
+    try { effect.oscillator.stop(); } catch { /* Already ended. */ }
+    effect.oscillator.disconnect();
+    effect.gain.disconnect();
+  }
+  effectNodes.clear();
+}
 
 function getContext() {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -38,6 +49,7 @@ async function loadRecording(id) {
 
 export function stopSound() {
   generation++;
+  stopEffects();
   if (activeSource) {
     activeSource.onended = null;
     try { activeSource.stop(); } catch { /* A stopped buffer is already silent. */ }
@@ -94,26 +106,48 @@ export async function playAnimal(id, volume = 0.65) {
   }
 }
 
-export function chime(volume = 0.65) {
+function playNotes(notes, volume) {
   try {
     const ctx = getContext();
     void ctx.resume();
-    [523.25, 659.25, 783.99].forEach((frequency, index) => {
+    stopEffects();
+    notes.forEach(({ frequency, endFrequency = frequency, at, duration, level }) => {
       const oscillator = ctx.createOscillator();
       const gain = ctx.createGain();
-      const start = ctx.currentTime + index * 0.11;
-      oscillator.type = 'sine';
-      oscillator.frequency.value = frequency;
+      const start = ctx.currentTime + at;
+      const effect = { oscillator, gain };
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(frequency, start);
+      oscillator.frequency.exponentialRampToValueAtTime(endFrequency, start + duration);
       gain.gain.setValueAtTime(0, start);
-      gain.gain.linearRampToValueAtTime(volume * 0.09, start + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, start + 0.35);
+      gain.gain.linearRampToValueAtTime(volume * level, start + 0.018);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
       oscillator.connect(gain);
       gain.connect(ctx.destination);
-      oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
+      effectNodes.add(effect);
+      oscillator.onended = () => {
+        oscillator.disconnect();
+        gain.disconnect();
+        effectNodes.delete(effect);
+      };
       oscillator.start(start);
-      oscillator.stop(start + 0.4);
+      oscillator.stop(start + duration + 0.02);
     });
   } catch { /* Visual praise is always available. */ }
+}
+
+// Musical answer feedback is deliberately distinct from the recorded animal call.
+export function chime(volume = 0.65) {
+  playNotes([523.25, 659.25, 783.99, 1046.5].map((frequency, index) => ({
+    frequency, at: index * 0.105, duration: 0.27, level: 0.12,
+  })), volume);
+}
+
+export function tryAgainTone(volume = 0.65) {
+  playNotes([
+    { frequency: 392, endFrequency: 349.23, at: 0, duration: 0.15, level: 0.1 },
+    { frequency: 329.63, endFrequency: 293.66, at: 0.17, duration: 0.2, level: 0.09 },
+  ], volume);
 }
 
 export function speakPersian(text, volume) {

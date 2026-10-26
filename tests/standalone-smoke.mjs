@@ -93,24 +93,30 @@ try {
 
   const rounds = createRounds(() => 0.25);
   await page.locator('#listen-button').click();
+  let expectedPlaybackCount = 1;
   for (const [index, round] of rounds.entries()) {
     await expect.poll(() => page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal).sort())).toEqual([...round.choices].sort());
-    await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(index + 1);
+    await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(expectedPlaybackCount);
     const played = await page.evaluate(() => window.__audioStarts.at(-1));
     assert.ok(played.duration > 0.5 && played.frames > 1000, 'A real decoded recording must start');
     if (index === 0) {
       await page.locator(`[data-animal="${round.choices.find((id) => id !== round.target)}"]`).click();
       await expect(page.locator('#message-text')).toContainText(/اشکالی|دوباره/);
+      await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'wrong');
       await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+      await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(++expectedPlaybackCount);
+      await expect.poll(() => page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal).sort())).toEqual([...round.choices].sort());
     }
     await page.locator(`[data-animal="${round.target}"]`).click();
     await expect(page.locator('.progress-flower.earned')).toHaveCount(index + 1);
+    await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'correct');
+    if (index < rounds.length - 1) expectedPlaybackCount++;
   }
   await expect(page.locator('#celebration-dialog')).toBeVisible();
   await page.locator('#play-again').click();
   await expect(page.locator('#celebration-dialog')).not.toBeVisible();
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
-  await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(6);
+  await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(++expectedPlaybackCount);
 
   await page.locator('#settings-button').click();
   await page.locator('#restart-button').click();
@@ -127,7 +133,7 @@ try {
   for (const [index, id] of ['lion', 'crow'].entries()) {
     await page.locator(`[data-audition="${id}"]`).click();
     await expect(page.locator(`[data-audition="${id}"]`)).toHaveAttribute('aria-pressed', 'true');
-    await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(7 + index);
+    await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(++expectedPlaybackCount);
     assert.equal(await page.evaluate((animalId) => window.__audioFetches.includes(globalThis.__LITTLE_FARM_ASSETS__[`/audio/${animalId}.mp3`]), id), true);
     await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
   }
@@ -139,7 +145,7 @@ try {
   await page.locator('#open-animal-sounds').click();
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
   await expect(page.locator('#round-label')).toContainText('آماده‌ای');
-  assert.equal(await page.evaluate(() => window.__audioStarts.length), 8, 'Returning to a game must wait for a fresh tap');
+  assert.equal(await page.evaluate(() => window.__audioStarts.length), expectedPlaybackCount, 'Returning to a game must wait for a fresh tap');
   assert.deepEqual(errors, [], 'No browser exceptions');
   assert.deepEqual(failures, [], 'No failed asset requests');
   assert.deepEqual(networkRequests, [], 'No network dependencies');

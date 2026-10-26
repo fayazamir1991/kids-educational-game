@@ -73,26 +73,32 @@ test('real recordings, a gentle retry, random trios, automatic next sound, and r
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.locator('#listen-button').click();
+  let expectedStarts = 1;
   for (const [index, round] of rounds.entries()) {
     await expectChoices(page, round.choices);
-    await expectStarted(page, index + 1);
+    await expectStarted(page, expectedStarts);
     if (index === 0) {
       const wrong = round.choices.find((id) => id !== round.target);
       await page.locator(`[data-animal="${wrong}"]`).click();
       await expect(page.locator('#message-text')).toContainText(/اشکالی|دوباره/);
+      await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'wrong');
       await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+      await expectStarted(page, ++expectedStarts);
+      await expectChoices(page, round.choices);
     }
     await page.locator(`[data-animal="${round.target}"]`).click();
     await expect(page.locator('#message-text')).toContainText('آفرین');
     await expect(page.locator('.progress-flower.earned')).toHaveCount(index + 1);
+    await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'correct');
     await expect(page.locator('#listen-button')).toBeDisabled();
+    if (index < rounds.length - 1) expectedStarts++;
   }
   await expect(page.locator('#celebration-dialog')).toBeVisible();
   await page.locator('#play-again').click();
   await expect(page.locator('#celebration-dialog')).not.toBeVisible();
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
   await expectChoices(page, rounds[0].choices);
-  await expectStarted(page, 6);
+  await expectStarted(page, ++expectedStarts);
   expect(await page.evaluate(() => window.__audioDecoded.length)).toBeGreaterThanOrEqual(5);
   expect(await page.evaluate(() => window.__audioFetches.every((url) => {
     const parsed = new URL(url, location.href);
