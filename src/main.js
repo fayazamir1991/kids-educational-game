@@ -6,6 +6,8 @@ import { ANIMALS, PLAYABLE_ANIMALS, AUDIO_REVIEW, ROUND_COUNT, animalById, creat
 import { playAnimal, stopSound, chime, speakPersian } from './audio.js';
 import { asset } from './assets.js';
 import recordings from './recordings.json';
+import { renderHome } from './home.js';
+import { GAMES } from './catalog.js';
 
 const paths = {
   sound: '<path d="m11 4-5 4H3v8h3l5 4z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
@@ -16,6 +18,7 @@ const paths = {
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   check: '<path d="m5 12 4 4L19 6"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/>',
+  home: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
 };
 const icon = (name) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
 const flower = () => '<svg class="flower" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 17C9-3 0 21 16 24-4 34 20 48 24 32c7 20 25 0 9-8 21-7 0-25-9-7Z" fill="currentColor"/><circle cx="24" cy="24" r="6" fill="#e9b94e"/></svg>';
@@ -25,9 +28,11 @@ const $ = (selector) => document.querySelector(selector);
 const fa = (value) => value.toLocaleString('fa-IR');
 
 document.querySelector('#app').innerHTML = `
+  ${renderHome()}
+  <section id="game-screen" class="game-screen" aria-label="بازی انتخاب‌شده" hidden>
   <main class="game-canvas" aria-label="بازی کی صدا کرد؟">
     <header class="game-toolbar">
-      <h1>کی صدا کرد؟ <span aria-hidden="true">✧</span></h1>
+      <div class="game-heading"><button class="icon-button" id="back-to-games" data-go-home aria-label="بازگشت به فهرست بازی‌ها">${icon('home')}</button><h1>کی صدا کرد؟ <span aria-hidden="true">✧</span></h1></div>
       <div id="progress" class="flower-progress" aria-label="صفر گل از پنج گل">${Array.from({ length: ROUND_COUNT }, (_, index) => `<span class="progress-flower" data-flower="${index}">${flower()}</span>`).join('')}</div>
       <div class="toolbar-controls">
         <button class="icon-button" id="sound-toggle" aria-label="خاموش کردن صدا" aria-pressed="false">${icon('sound')}</button>
@@ -47,8 +52,10 @@ document.querySelector('#app').innerHTML = `
   </main>
   <aside id="orientation-notice" class="orientation-notice" aria-label="گوشی را افقی نگه دارید">
     <svg class="rotate-phone" viewBox="0 0 130 130" fill="none" aria-hidden="true"><rect x="43" y="24" width="44" height="80" rx="9" stroke="currentColor" stroke-width="5"/><path d="M58 94h14M17 58a50 50 0 0 1 86-28m-1-14 4 17-18-1M113 72a50 50 0 0 1-86 28m1 14-4-17 18 1" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <h2>گوشی رو بچرخون!</h2><p>دوست‌هات توی صفحهٔ افقی منتظرتن</p>
+    <h2 id="orientation-title" tabindex="-1">گوشی رو بچرخون!</h2><p>دوست‌هات توی صفحهٔ افقی منتظرتن</p>
+    <button class="secondary-button orientation-back" id="orientation-back" data-go-home>${icon('home')}برگشت به بازی‌ها</button>
   </aside>
+  </section>
   <dialog id="settings-dialog" class="modal" aria-labelledby="settings-title">
     <button class="icon-button modal-close" data-close="settings-dialog" aria-label="بستن تنظیمات">${icon('close')}</button>
     <h2 id="settings-title">برای بزرگ‌ترها</h2>
@@ -88,6 +95,10 @@ let advanceTimer;
 let feedbackTimer;
 let audioRequest = 0;
 let auditionRequest = 0;
+let activeGameId = null;
+let currentScreen = null;
+let returningHome = false;
+const ANIMAL_SOUNDS_ID = 'animal-sounds';
 const isPortrait = () => innerWidth < 700 && innerHeight > innerWidth;
 const hasModal = () => !!document.querySelector('dialog[open]');
 const saveSettings = () => { try { localStorage.setItem('little-farm-settings', JSON.stringify(settings)); } catch { /* optional */ } };
@@ -123,7 +134,7 @@ function render() {
 }
 
 async function listen() {
-  if (state.locked || isPortrait() || hasModal() || document.hidden) return;
+  if (activeGameId !== ANIMAL_SOUNDS_ID || state.locked || isPortrait() || hasModal() || document.hidden) return;
   if (state.completed) reset();
   if (settings.muted) { settings.muted = false; updateSoundControl(); saveSettings(); }
   state.started = true;
@@ -171,7 +182,7 @@ function pauseAudio() {
 }
 
 function choose(id, button) {
-  if (state.locked || state.completed || isPortrait() || hasModal()) return;
+  if (activeGameId !== ANIMAL_SOUNDS_ID || state.locked || state.completed || isPortrait() || hasModal()) return;
   if (!state.started || (!state.heard && !state.playing)) {
     message('اول دکمهٔ صدا رو بزن!');
     $('#listen-button').classList.remove('nudge');
@@ -200,7 +211,9 @@ function choose(id, button) {
   }
   confetti();
   render();
+  const run = state.run;
   advanceTimer = setTimeout(() => {
+    if (activeGameId !== ANIMAL_SOUNDS_ID || run !== state.run) return;
     state.round++;
     state.locked = false;
     state.heard = false;
@@ -230,6 +243,78 @@ function reset() {
   message('بزن تا بشنوی، بعد پیداش کن!');
   render();
 }
+
+function leaveGame() {
+  clearTimeout(advanceTimer);
+  clearTimeout(feedbackTimer);
+  pauseAudio();
+  state.run++;
+  for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+  $('#confetti').replaceChildren();
+  // The collection can be browsed in either orientation, even after fullscreen.
+  try { screen.orientation?.unlock?.(); } catch { /* Optional browser API. */ }
+}
+
+function routeFromHash() {
+  const match = location.hash.match(/^#\/games\/([a-z0-9-]+)$/);
+  const game = match && GAMES.find((item) => item.id === match[1]);
+  return game?.id === ANIMAL_SOUNDS_ID ? game.id : null;
+}
+
+function applyRoute() {
+  const gameId = routeFromHash();
+  const nextScreen = gameId ? 'game' : 'home';
+  returningHome = false;
+  if (!gameId && location.hash && location.hash !== '#/') {
+    try { history.replaceState(null, '', '#/'); } catch { /* Render the catalog even when history is unavailable. */ }
+  }
+  if (nextScreen === currentScreen && gameId === activeGameId) return;
+  const firstVisit = currentScreen === null;
+  if (activeGameId) leaveGame();
+  activeGameId = gameId;
+  currentScreen = nextScreen;
+  $('#home-screen').hidden = nextScreen !== 'home';
+  $('#game-screen').hidden = nextScreen !== 'game';
+  document.documentElement.dataset.screen = nextScreen;
+  if (gameId) {
+    document.title = 'کی صدا کرد؟ · باغ بازی‌های کوچولو';
+    reset();
+    (isPortrait() ? $('#orientation-title') : $('#listen-button')).focus({ preventScroll: true });
+  } else {
+    document.title = 'باغ بازی‌های کوچولو · بازی‌های آموزشی کودکان';
+    if (!firstVisit) $('#home-title').focus({ preventScroll: true });
+  }
+}
+
+function openGame(id) {
+  if (id !== ANIMAL_SOUNDS_ID || !GAMES.some((game) => game.id === id)) return;
+  try {
+    history.pushState({ littleGames: true, fromCatalog: true }, '', `#/games/${id}`);
+    applyRoute();
+  } catch {
+    // Normal file:// browsers allow fragment navigation too.
+    location.hash = `/games/${id}`;
+  }
+}
+
+function goHome() {
+  if (returningHome || currentScreen !== 'game') return;
+  returningHome = true;
+  if (history.state?.littleGames && history.state.fromCatalog) {
+    history.back();
+  } else {
+    try { history.replaceState(null, '', '#/'); applyRoute(); }
+    catch { location.hash = '/'; }
+  }
+}
+
+document.addEventListener('click', (event) => {
+  const gameButton = event.target.closest('[data-open-game]');
+  if (gameButton) openGame(gameButton.dataset.openGame);
+  if (event.target.closest('[data-go-home]')) goHome();
+});
+window.addEventListener('popstate', applyRoute);
+window.addEventListener('hashchange', applyRoute);
 
 $('#animals').addEventListener('click', (event) => {
   const button = event.target.closest('[data-animal]');
@@ -295,10 +380,10 @@ for (const event of ['fullscreenchange', 'webkitfullscreenchange']) document.add
 let wasPortrait = isPortrait();
 window.addEventListener('resize', () => {
   const portrait = isPortrait();
-  if (portrait && !wasPortrait) pauseAudio();
+  if (activeGameId && portrait && !wasPortrait) pauseAudio();
   wasPortrait = portrait;
 });
-document.addEventListener('visibilitychange', () => { if (document.hidden) pauseAudio(); });
+document.addEventListener('visibilitychange', () => { if (activeGameId && document.hidden) pauseAudio(); });
 updateSoundControl();
-drawAnimals();
 render();
+applyRoute();

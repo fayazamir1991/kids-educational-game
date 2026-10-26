@@ -52,6 +52,9 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(instrumentAudio);
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('#home-screen')).toBeVisible();
+  await page.locator('#open-animal-sounds').click();
+  await expect(page.locator('#listen-button')).toBeVisible();
 });
 
 test('the landscape game starts with exactly three choices and no sound before a tap', async ({ page }) => {

@@ -55,8 +55,13 @@ try {
     await page.evaluate(instrumentAudio);
     await page.setContent(await readFile(artifact, 'utf8'));
   }
-  const initialUrl = page.url();
   await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('#home-screen')).toBeVisible();
+  await expect(page.locator('#orientation-notice')).not.toBeVisible();
+  assert.equal(await page.evaluate(() => window.__audioStarts.length), 0, 'Opening the collection must not play audio');
+  await page.screenshot({ path: `${outputDirectory}/little-farm-home.png`, fullPage: true });
+  await page.locator('#open-animal-sounds').click();
+  const initialUrl = page.url();
   await expect(page.locator('#listen-button')).toBeVisible();
   await expect(page.locator('[data-animal]')).toHaveCount(3);
   await expect.poll(() => page.locator('.animal img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:')))).toBe(true);
@@ -128,6 +133,13 @@ try {
   }
   await page.locator('[data-close="credits-dialog"]').click();
   await expect(page.locator('#listen-button')).not.toHaveClass(/is-playing/);
+  await page.locator('#back-to-games').click();
+  await expect(page.locator('#home-screen')).toBeVisible();
+  await expect(page.locator('dialog[open]')).toHaveCount(0);
+  await page.locator('#open-animal-sounds').click();
+  await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
+  await expect(page.locator('#round-label')).toContainText('آماده‌ای');
+  assert.equal(await page.evaluate(() => window.__audioStarts.length), 8, 'Returning to a game must wait for a fresh tap');
   assert.deepEqual(errors, [], 'No browser exceptions');
   assert.deepEqual(failures, [], 'No failed asset requests');
   assert.deepEqual(networkRequests, [], 'No network dependencies');
@@ -143,6 +155,6 @@ try {
     roundsCompleted: rounds.length,
     realAudioPlays: await page.evaluate(() => window.__audioStarts.length),
     errors, failures, networkRequests, extraFiles,
-    screenshots: [`${outputDirectory}/little-farm-preview.png`, `${outputDirectory}/little-farm-mobile.png`],
+    screenshots: [`${outputDirectory}/little-farm-home.png`, `${outputDirectory}/little-farm-preview.png`, `${outputDirectory}/little-farm-mobile.png`],
   }, null, 2));
 } finally { await browser.close(); }
