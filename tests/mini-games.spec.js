@@ -4,6 +4,25 @@ const games = ['colors', 'shapes', 'counting', 'puzzle', 'sizes'];
 const earned = (page) => page.locator('#mini-progress .earned');
 const errors = new WeakMap();
 
+async function expectFullFrame(page, kind) {
+  const layer = page.locator('#mini-answer-feedback');
+  const bounds = await layer.boundingBox();
+  expect(bounds.x).toBeCloseTo(0, 0);
+  expect(bounds.y).toBeCloseTo(0, 0);
+  expect(bounds.width).toBeCloseTo(page.viewportSize().width, 0);
+  expect(bounds.height).toBeCloseTo(page.viewportSize().height, 0);
+  await expect(layer.locator('.feedback-emblem')).toBeVisible();
+  await expect.poll(async () => (await layer.locator('.feedback-emblem').boundingBox())?.width || 0, { intervals: [25, 50, 100] }).toBeGreaterThanOrEqual(80);
+  if (kind === 'wrong') {
+    await expect(layer).toHaveAttribute('data-effect', 'retry');
+    const color = await page.locator('#mini-content .try-again').evaluate((element) => getComputedStyle(element).outlineColor.match(/[\d.]+/g).map(Number));
+    expect(color[0]).toBeGreaterThan(color[1] + 60);
+  } else {
+    await expect(layer).toHaveAttribute('data-effect', /^(confetti|balloons|stars)$/);
+    expect(await layer.locator('.feedback-particle').count()).toBeGreaterThanOrEqual(10);
+  }
+}
+
 async function cue(page, game) {
   if (game === 'colors') return page.locator('.cs-fruit').getAttribute('data-color');
   if (game === 'shapes') return page.locator('.sg-piece').getAttribute('data-shape');
@@ -61,6 +80,7 @@ for (const game of games) {
     await answer(page, game, false);
     await expect(page.locator('#mini-answer-feedback')).toHaveAttribute('data-kind', 'wrong');
     await expect(page.locator('#mini-answer-feedback .feedback-cloud')).toBeVisible();
+    await expectFullFrame(page, 'wrong');
     await expect(earned(page)).toHaveCount(0);
     await expect(page.locator('#mini-help')).toBeDisabled();
     await expect(page.locator('#mini-answer-feedback')).not.toBeVisible();
@@ -76,6 +96,7 @@ for (const game of games) {
       await expect(earned(page)).toHaveCount(index + 1);
       await expect(page.locator('#mini-answer-feedback')).toHaveAttribute('data-kind', 'correct');
       await expect(page.locator('#mini-answer-feedback .feedback-star')).toBeVisible();
+      if (index === 0) await expectFullFrame(page, 'correct');
       await page.locator('#mini-content').evaluate((mount) => {
         const buttons = [...mount.querySelectorAll('button')];
         for (let tap = 0; tap < 4; tap++) for (const button of buttons) button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -111,6 +132,7 @@ test('every new home entry and deep link routes independently; leaving feedback 
     await expect(page.locator('#home-screen')).toBeVisible();
     await expect(page.locator('dialog[open]')).toHaveCount(0);
     await expect(page.locator('#mini-answer-feedback')).not.toBeVisible();
+    await expect(page.locator('#mini-answer-feedback .feedback-particle')).toHaveCount(0);
     await page.waitForTimeout(2100);
     await page.goto(`/#/games/${game}`);
     await expect(page.locator('#mini-game-screen')).toBeVisible();
@@ -221,6 +243,8 @@ test('all new games fit short landscape phones with accessible targets and fully
         expect(bounds.y + bounds.height, `${game} bottom edge`).toBeLessThanOrEqual(controlsTop + 2);
       }
       if (viewport.width === 844) await page.screenshot({ path: `/tmp/kids-${game}-landscape.png`, fullPage: true });
+      await answer(page, game, false);
+      await expectFullFrame(page, 'wrong');
     }
   }
 });

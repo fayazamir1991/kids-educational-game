@@ -35,6 +35,24 @@ function instrumentAudio() {
   };
 }
 
+async function expectFullScreenFeedback(page, selector, kind) {
+  const layer = page.locator(selector);
+  const bounds = await layer.boundingBox();
+  assert.ok(Math.abs(bounds.x) < 1 && Math.abs(bounds.y) < 1 && Math.abs(bounds.width - 844) < 1 && Math.abs(bounds.height - 390) < 1, 'Answer feedback must fill the offline mobile screen');
+  await expect(layer.locator('.feedback-border')).toBeVisible();
+  await expect.poll(async () => (await layer.locator('.feedback-emblem').boundingBox())?.width || 0, { intervals: [25, 50, 100] }).toBeGreaterThanOrEqual(80);
+  const emblem = await layer.locator('.feedback-emblem').boundingBox();
+  assert.ok(emblem.width >= 80 && emblem.height >= 80, 'A large picture must convey the result without reading');
+  if (kind === 'wrong') {
+    await expect(layer).toHaveAttribute('data-effect', 'retry');
+    const color = await layer.locator('.feedback-border').evaluate((element) => getComputedStyle(element).borderTopColor.match(/[\d.]+/g).map(Number));
+    assert.ok(color[0] > color[1] + 60 && color[0] > color[2] + 60, 'Wrong answers must show a red screen perimeter');
+  } else {
+    await expect(layer).toHaveAttribute('data-effect', /^(confetti|balloons|stars)$/);
+    assert.ok(await layer.locator('.feedback-particle').count() >= 10, 'Correct answers must show a full-screen celebration');
+  }
+}
+
 try {
   const context = await browser.newContext({ viewport: { width: 844, height: 390 }, offline: true });
   if (directFileNavigation) await context.addInitScript(instrumentAudio);
@@ -103,6 +121,7 @@ try {
       await page.locator(`[data-animal="${round.choices.find((id) => id !== round.target)}"]`).click();
       await expect(page.locator('#message-text')).toContainText(/اشکالی|دوباره/);
       await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'wrong');
+      await expectFullScreenFeedback(page, '#answer-feedback', 'wrong');
       await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
       await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(++expectedPlaybackCount);
       await expect.poll(() => page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal).sort())).toEqual([...round.choices].sort());
@@ -110,6 +129,7 @@ try {
     await page.locator(`[data-animal="${round.target}"]`).click();
     await expect(page.locator('.progress-flower.earned')).toHaveCount(index + 1);
     await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'correct');
+    if (index === 0) await expectFullScreenFeedback(page, '#answer-feedback', 'correct');
     if (index < rounds.length - 1) expectedPlaybackCount++;
   }
   await expect(page.locator('#celebration-dialog')).toBeVisible();
@@ -175,6 +195,7 @@ try {
       await page.locator(`[data-size="${size}"]`).click();
     }
     await expect(page.locator('#mini-answer-feedback')).toHaveAttribute('data-kind', 'correct');
+    await expectFullScreenFeedback(page, '#mini-answer-feedback', 'correct');
     await expect(page.locator('#mini-progress .earned')).toHaveCount(1);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight + 1), true, `${id} must fit mobile landscape`);
     await page.screenshot({ path: `${outputDirectory}/kids-${id}.png`, fullPage: true });
@@ -182,6 +203,7 @@ try {
     await page.locator('#mini-back').click();
     await expect(page.locator('#home-screen')).toBeVisible();
     await expect(page.locator('#mini-answer-feedback')).not.toBeVisible();
+    await expect(page.locator('#mini-answer-feedback .feedback-particle')).toHaveCount(0);
   }
   assert.equal(await page.evaluate(() => window.__audioStarts.length), expectedPlaybackCount, 'Visual games must never play an animal recording');
   assert.deepEqual(errors, [], 'No browser exceptions');
