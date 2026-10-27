@@ -21,11 +21,11 @@ const check = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="
 const retry = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m7 7 10 10M7 17 17 7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
 
 /** Visual response only. The game owns timing, accessible announcements and sound. */
-export function createFeedback(stage) {
+export function createFeedback(stage, { id = 'answer-feedback' } = {}) {
   if (!stage) throw new Error('Answer feedback needs an animal stage.');
   const canvas = stage.closest('.game-canvas');
   const layer = document.createElement('div');
-  layer.id = 'answer-feedback';
+  layer.id = id;
   layer.className = 'answer-feedback';
   layer.hidden = true;
   layer.setAttribute('aria-hidden', 'true');
@@ -50,7 +50,7 @@ export function createFeedback(stage) {
       <span class="feedback-result">${correct ? check : retry}</span>
     </div><div class="feedback-sparkles"></div>`;
     layer.querySelector('strong').textContent = correct ? 'آفریییین!' : 'اوپس! این نبود';
-    layer.querySelector('small').textContent = correct ? `${animalName ? `صدای ${animalName} بود! ` : ''}چه خوب پیداش کردی!` : 'دوباره گوش کنیم؟';
+    layer.querySelector('small').textContent = correct ? `${animalName ? `صدای ${animalName} بود! ` : ''}چه خوب پیداش کردی!` : animalName ? 'دوباره گوش کنیم؟' : 'دوباره نگاه کنیم؟';
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const particles = layer.querySelector('.feedback-sparkles');
     if (correct && !reducedMotion) {

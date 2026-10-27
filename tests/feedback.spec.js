@@ -58,14 +58,14 @@ async function startAndAnswerWrong(page) {
   await expect.poll(() => page.evaluate(() => window.__recordingStarts)).toBe(1);
   await page.locator(`[data-animal="${wrongId}"]`).click();
   await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'wrong');
-  await expect(page.locator('.game-canvas')).toHaveAttribute('data-feedback', 'wrong');
+  await expect(page.locator('#game-screen .game-canvas')).toHaveAttribute('data-feedback', 'wrong');
   await expect(page.locator('#answer-feedback')).toBeVisible();
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
 }
 
 async function expectReactionCleared(page) {
   await expect(page.locator('#answer-feedback')).not.toBeVisible();
-  await expect(page.locator('.game-canvas')).not.toHaveAttribute('data-feedback', /correct|wrong/);
+  await expect(page.locator('#game-screen .game-canvas')).not.toHaveAttribute('data-feedback', /correct|wrong/);
   await expect.poll(() => page.evaluate(() => window.__activeEffects.size)).toBe(0);
 }
 
@@ -93,7 +93,7 @@ test('wrong and correct answers have distinct visible and musical reactions with
 
   await page.locator(`[data-animal="${first.target}"]`).click();
   await expect(page.locator('#answer-feedback')).toHaveAttribute('data-kind', 'correct');
-  await expect(page.locator('.game-canvas')).toHaveAttribute('data-feedback', 'correct');
+  await expect(page.locator('#game-screen .game-canvas')).toHaveAttribute('data-feedback', 'correct');
   await expect(page.locator('.feedback-star')).toBeVisible();
   await expect(page.locator('.feedback-copy strong')).toContainText('آفر');
   await expect(page.locator('.progress-flower.earned')).toHaveCount(1);
@@ -176,5 +176,5 @@ test('reduced motion retains a clear static answer badge without animated partic
   await expect(page.locator('.progress-flower.earned')).toHaveCount(1);
   await expect(page.locator('.feedback-spark')).toHaveCount(0);
   expect(await page.locator('.feedback-banner').evaluate((element) => getComputedStyle(element).opacity)).toBe('1');
-  expect(await page.locator('.game-canvas').evaluate((element) => element.getAnimations({ subtree: true }).filter((animation) => animation.playState === 'running').length)).toBe(0);
+  expect(await page.locator('#game-screen .game-canvas').evaluate((element) => element.getAnimations({ subtree: true }).filter((animation) => animation.playState === 'running').length)).toBe(0);
 });

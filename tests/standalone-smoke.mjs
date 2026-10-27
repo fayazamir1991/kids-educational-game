@@ -65,7 +65,7 @@ try {
   await expect(page.locator('#listen-button')).toBeVisible();
   await expect(page.locator('[data-animal]')).toHaveCount(3);
   await expect.poll(() => page.locator('.animal img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:')))).toBe(true);
-  assert.match(await page.locator('.game-canvas').evaluate((element) => getComputedStyle(element).backgroundImage), /data:image\//, 'The landscape background must be embedded');
+  assert.match(await page.locator('#game-screen .game-canvas').evaluate((element) => getComputedStyle(element).backgroundImage), /data:image\//, 'The landscape background must be embedded');
   assert.equal(await page.evaluate(() => [...document.fonts].some((font) => font.family.includes('Vazirmatn') && font.status === 'loaded')), true, 'Persian font must load offline');
 
   const recordings = await page.evaluate(async (ids) => {
@@ -146,6 +146,44 @@ try {
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
   await expect(page.locator('#round-label')).toContainText('آماده‌ای');
   assert.equal(await page.evaluate(() => window.__audioStarts.length), expectedPlaybackCount, 'Returning to a game must wait for a fresh tap');
+  await page.locator('#back-to-games').click();
+  await expect(page.locator('[data-open-game]')).toHaveCount(6);
+  const miniGamesCompleted = [];
+  for (const id of ['colors', 'shapes', 'counting', 'puzzle', 'sizes']) {
+    await page.locator(`#open-${id}`).click();
+    await expect(page.locator('#mini-game-screen')).toBeVisible();
+    await expect(page.locator('#mini-progress .earned')).toHaveCount(0);
+    if (id === 'colors') {
+      const color = await page.locator('.cs-fruit').getAttribute('data-color');
+      await page.locator(`[data-drop-color="${color}"]`).click();
+    } else if (id === 'shapes') {
+      const shape = await page.locator('.sg-piece').getAttribute('data-shape');
+      await page.locator(`[data-drop-shape="${shape}"]`).click();
+    } else if (id === 'counting') {
+      const count = await page.locator('.count-goal-carrots > svg').count();
+      for (let index = 0; index < count; index++) await page.locator(`[data-carrot="${index}"]`).click();
+      await page.locator('[data-action="feed"]').click();
+    } else if (id === 'puzzle') {
+      assert.match(await page.locator('.puzzle-guide').getAttribute('src'), /^data:image\//, 'The puzzle animal must be embedded');
+      assert.equal(await page.locator('.puzzle-fragment-image').evaluateAll((images) => images.every((image) => image.getAttribute('href').startsWith('data:image/'))), true, 'All puzzle fragments must use embedded art');
+      await page.locator('[data-piece="0"]').click();
+      await page.locator('[data-slot="0"]').click();
+      await expect(page.locator('.puzzle-slot[data-placed="true"]')).toHaveCount(1);
+    } else {
+      const size = await page.locator('.sizes-reference.is-requested').getAttribute('data-reference-size');
+      await expect.poll(() => page.locator('.sizes-game img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:image/')))).toBe(true);
+      await page.locator(`[data-size="${size}"]`).click();
+    }
+    await expect(page.locator('#mini-answer-feedback')).toHaveAttribute('data-kind', 'correct');
+    await expect(page.locator('#mini-progress .earned')).toHaveCount(1);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight + 1), true, `${id} must fit mobile landscape`);
+    await page.screenshot({ path: `${outputDirectory}/kids-${id}.png`, fullPage: true });
+    miniGamesCompleted.push(id);
+    await page.locator('#mini-back').click();
+    await expect(page.locator('#home-screen')).toBeVisible();
+    await expect(page.locator('#mini-answer-feedback')).not.toBeVisible();
+  }
+  assert.equal(await page.evaluate(() => window.__audioStarts.length), expectedPlaybackCount, 'Visual games must never play an animal recording');
   assert.deepEqual(errors, [], 'No browser exceptions');
   assert.deepEqual(failures, [], 'No failed asset requests');
   assert.deepEqual(networkRequests, [], 'No network dependencies');
@@ -159,6 +197,7 @@ try {
     playableAnimals: PLAYABLE_ANIMALS.length,
     withheldAnimals: ANIMALS.length - PLAYABLE_ANIMALS.length,
     roundsCompleted: rounds.length,
+    miniGamesWithCorrectAnswers: miniGamesCompleted,
     realAudioPlays: await page.evaluate(() => window.__audioStarts.length),
     errors, failures, networkRequests, extraFiles,
     screenshots: [`${outputDirectory}/little-farm-home.png`, `${outputDirectory}/little-farm-preview.png`, `${outputDirectory}/little-farm-mobile.png`],

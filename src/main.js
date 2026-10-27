@@ -9,6 +9,7 @@ import recordings from './recordings.json';
 import { renderHome } from './home.js';
 import { GAMES } from './catalog.js';
 import { createFeedback } from './feedback.js';
+import { createMiniHost, supportsMiniGame } from './mini-host.js';
 
 const paths = {
   sound: '<path d="m11 4-5 4H3v8h3l5 4z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
@@ -57,6 +58,7 @@ document.querySelector('#app').innerHTML = `
     <button class="secondary-button orientation-back" id="orientation-back" data-go-home>${icon('home')}برگشت به بازی‌ها</button>
   </aside>
   </section>
+  <section id="mini-game-screen" class="game-screen" aria-label="بازی انتخاب‌شده" hidden></section>
   <dialog id="settings-dialog" class="modal" aria-labelledby="settings-title">
     <button class="icon-button modal-close" data-close="settings-dialog" aria-label="بستن تنظیمات">${icon('close')}</button>
     <h2 id="settings-title">برای بزرگ‌ترها</h2>
@@ -106,6 +108,15 @@ const ANIMAL_SOUNDS_ID = 'animal-sounds';
 const isPortrait = () => innerWidth < 700 && innerHeight > innerWidth;
 const hasModal = () => !!document.querySelector('dialog[open]');
 const saveSettings = () => { try { localStorage.setItem('little-farm-settings', JSON.stringify(settings)); } catch { /* optional */ } };
+const miniHost = createMiniHost({
+  root: $('#mini-game-screen'),
+  getSettings: () => settings,
+  onHome: goHome,
+  onSettings: openSettings,
+  onSoundToggle: toggleGlobalSound,
+  onFullscreen: toggleFullscreen,
+  isActive: (id) => activeGameId === id,
+});
 
 function message(text, kind = '') {
   $('#message-text').textContent = text;
@@ -123,6 +134,32 @@ function updateSoundControl() {
   $('#sound-toggle').innerHTML = icon(settings.muted ? 'muted' : 'sound');
   $('#sound-toggle').setAttribute('aria-pressed', String(settings.muted));
   $('#sound-toggle').setAttribute('aria-label', settings.muted ? 'روشن کردن صدا' : 'خاموش کردن صدا');
+  miniHost.updateSoundControl();
+}
+
+function pauseCurrentGame() {
+  if (activeGameId === ANIMAL_SOUNDS_ID) pauseAudio();
+  else if (activeGameId) miniHost.pause();
+}
+
+function focusCurrentGame() {
+  if (activeGameId === ANIMAL_SOUNDS_ID) (isPortrait() ? $('#orientation-title') : $('#listen-button')).focus({ preventScroll: true });
+  else if (activeGameId) miniHost.getFocusTarget()?.focus({ preventScroll: true });
+  else $('#home-title').focus({ preventScroll: true });
+}
+
+function openSettings() {
+  pauseCurrentGame();
+  const animalGame = activeGameId === ANIMAL_SOUNDS_ID;
+  for (const selector of ['.parent-note', '.review-details', '#credits-button']) $(selector).hidden = !animalGame;
+  $('#settings-dialog').showModal();
+}
+
+function toggleGlobalSound() {
+  settings.muted = !settings.muted;
+  if (settings.muted) pauseCurrentGame();
+  updateSoundControl();
+  saveSettings();
 }
 
 function render() {
@@ -276,7 +313,7 @@ function leaveGame() {
 function routeFromHash() {
   const match = location.hash.match(/^#\/games\/([a-z0-9-]+)$/);
   const game = match && GAMES.find((item) => item.id === match[1]);
-  return game?.id === ANIMAL_SOUNDS_ID ? game.id : null;
+  return game && (game.id === ANIMAL_SOUNDS_ID || supportsMiniGame(game.id)) ? game.id : null;
 }
 
 function applyRoute() {
@@ -288,16 +325,23 @@ function applyRoute() {
   }
   if (nextScreen === currentScreen && gameId === activeGameId) return;
   const firstVisit = currentScreen === null;
-  if (activeGameId) leaveGame();
+  if (activeGameId === ANIMAL_SOUNDS_ID) leaveGame();
+  else if (activeGameId) {
+    miniHost.close();
+    for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+    try { screen.orientation?.unlock?.(); } catch { /* Optional browser API. */ }
+  }
   activeGameId = gameId;
   currentScreen = nextScreen;
   $('#home-screen').hidden = nextScreen !== 'home';
-  $('#game-screen').hidden = nextScreen !== 'game';
+  $('#game-screen').hidden = gameId !== ANIMAL_SOUNDS_ID;
+  $('#mini-game-screen').hidden = !gameId || gameId === ANIMAL_SOUNDS_ID;
   document.documentElement.dataset.screen = nextScreen;
   if (gameId) {
-    document.title = 'کی صدا کرد؟ · باغ بازی‌های کوچولو';
-    reset();
-    (isPortrait() ? $('#orientation-title') : $('#listen-button')).focus({ preventScroll: true });
+    document.title = `${GAMES.find((game) => game.id === gameId).title} · باغ بازی‌های کوچولو`;
+    if (gameId === ANIMAL_SOUNDS_ID) reset();
+    else miniHost.open(GAMES.find((game) => game.id === gameId));
+    focusCurrentGame();
   } else {
     document.title = 'باغ بازی‌های کوچولو · بازی‌های آموزشی کودکان';
     if (!firstVisit) $('#home-title').focus({ preventScroll: true });
@@ -305,7 +349,7 @@ function applyRoute() {
 }
 
 function openGame(id) {
-  if (id !== ANIMAL_SOUNDS_ID || !GAMES.some((game) => game.id === id)) return;
+  if (!(id === ANIMAL_SOUNDS_ID || supportsMiniGame(id)) || !GAMES.some((game) => game.id === id)) return;
   try {
     history.pushState({ littleGames: true, fromCatalog: true }, '', `#/games/${id}`);
     applyRoute();
@@ -339,12 +383,11 @@ $('#animals').addEventListener('click', (event) => {
   if (button) choose(button.dataset.animal, button);
 });
 $('#listen-button').addEventListener('click', listen);
-$('#sound-toggle').addEventListener('click', () => {
-  settings.muted = !settings.muted;
-  if (settings.muted) { pauseAudio(); state.heard = false; }
-  updateSoundControl(); saveSettings();
+$('#sound-toggle').addEventListener('click', toggleGlobalSound);
+$('#settings-button').addEventListener('click', openSettings);
+$('#settings-dialog').addEventListener('close', () => {
+  if (activeGameId && activeGameId !== ANIMAL_SOUNDS_ID) miniHost.resume();
 });
-$('#settings-button').addEventListener('click', () => { pauseAudio(); $('#settings-dialog').showModal(); });
 $('#volume').value = Math.round(settings.volume * 100);
 $('#volume-value').textContent = `${fa(Math.round(settings.volume * 100))}٪`;
 $('#volume').addEventListener('input', (event) => {
@@ -354,7 +397,12 @@ $('#volume').addEventListener('input', (event) => {
 });
 $('#narration').checked = settings.narration;
 $('#narration').addEventListener('change', (event) => { settings.narration = event.target.checked; saveSettings(); });
-$('#restart-button').addEventListener('click', () => { $('#settings-dialog').close(); reset(); $('#listen-button').focus({ preventScroll: true }); });
+$('#restart-button').addEventListener('click', () => {
+  $('#settings-dialog').close();
+  if (activeGameId === ANIMAL_SOUNDS_ID) reset();
+  else miniHost.restart();
+  focusCurrentGame();
+});
 $('#credits-button').addEventListener('click', () => { $('#settings-dialog').close(); $('#credits-dialog').showModal(); });
 $('#credits-dialog').addEventListener('click', async (event) => {
   const button = event.target.closest('[data-audition]');
@@ -372,18 +420,18 @@ $('#credits-dialog').addEventListener('click', async (event) => {
   stopAudition();
   $('#audition-status').textContent = success ? 'پخش نمونه تمام شد' : 'پخش نشد؛ دوباره امتحان کنید';
 });
-$('#credits-dialog').addEventListener('close', stopAudition);
+$('#credits-dialog').addEventListener('close', () => { if (activeGameId === ANIMAL_SOUNDS_ID || !activeGameId) stopAudition(); });
 $('#play-again').addEventListener('click', () => { $('#celebration-dialog').close(); reset(); void listen(); });
 for (const button of document.querySelectorAll('[data-close]')) button.addEventListener('click', () => {
   $(`#${button.dataset.close}`).close();
-  $('#listen-button').focus({ preventScroll: true });
+  focusCurrentGame();
 });
 for (const dialog of document.querySelectorAll('dialog')) dialog.addEventListener('click', (event) => {
   if (event.target !== dialog) return;
   const bounds = dialog.getBoundingClientRect();
   if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
 });
-$('#fullscreen-button').addEventListener('click', async () => {
+async function toggleFullscreen() {
   try {
     if (document.fullscreenElement) await document.exitFullscreen();
     else {
@@ -392,16 +440,21 @@ $('#fullscreen-button').addEventListener('click', async () => {
       if (document.fullscreenElement) await screen.orientation?.lock?.('landscape').catch(() => {});
     }
   } catch { /* iOS browsers may not expose document fullscreen. */ }
-});
+}
+$('#fullscreen-button').addEventListener('click', toggleFullscreen);
 function updateFullscreenLabel() { $('#fullscreen-button').setAttribute('aria-label', document.fullscreenElement ? 'خروج از تمام‌صفحه' : 'تمام‌صفحه'); }
 for (const event of ['fullscreenchange', 'webkitfullscreenchange']) document.addEventListener(event, updateFullscreenLabel);
 let wasPortrait = isPortrait();
 window.addEventListener('resize', () => {
   const portrait = isPortrait();
-  if (activeGameId && portrait && !wasPortrait) pauseAudio();
+  if (activeGameId && portrait && !wasPortrait) pauseCurrentGame();
+  if (activeGameId && !portrait && wasPortrait && activeGameId !== ANIMAL_SOUNDS_ID) miniHost.resume();
   wasPortrait = portrait;
 });
-document.addEventListener('visibilitychange', () => { if (activeGameId && document.hidden) pauseAudio(); });
+document.addEventListener('visibilitychange', () => {
+  if (activeGameId && document.hidden) pauseCurrentGame();
+  else if (activeGameId && activeGameId !== ANIMAL_SOUNDS_ID) miniHost.resume();
+});
 updateSoundControl();
 render();
 applyRoute();

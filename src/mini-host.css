@@ -1,0 +1,23 @@
+.mini-canvas{background:linear-gradient(180deg,#eff4e6,#f8f1d9);color:#62546e}
+.mini-canvas:before{background:radial-gradient(ellipse at 5% 80%,#dcE9cd90,transparent 40%),radial-gradient(ellipse at 95% 25%,#eee2f1a0,transparent 35%)}
+.mini-canvas[data-mini-game=colors]{background:linear-gradient(165deg,#e3f0ec,#faf3d8)}
+.mini-canvas[data-mini-game=shapes]{background:linear-gradient(150deg,#f5e5d7,#f5efdF)}
+.mini-canvas[data-mini-game=counting]{background:linear-gradient(165deg,#e4eed4,#f7f2df)}
+.mini-canvas[data-mini-game=puzzle]{background:linear-gradient(160deg,#ece3f5,#f7efdf)}
+.mini-canvas[data-mini-game=sizes]{background:linear-gradient(145deg,#f5e8db,#e8eedc)}
+.mini-stage{min-height:0;align-items:stretch}
+.mini-content{width:100%;height:100%;min-height:0;position:relative;padding:48px 10px 0;max-width:1200px;margin:auto}
+.mini-canvas .game-heading{min-width:0}
+.mini-canvas h1{font-size:19px;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.mini-option{font:inherit;border:0;background:none;touch-action:manipulation;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.mini-option:disabled{cursor:default}
+.mini-content button:focus-visible{outline:3px solid #8d73b5;outline-offset:4px}
+.mini-content .is-correct{filter:drop-shadow(0 0 7px #acc78480)}
+.mini-content .try-again{animation:mini-oops .5s ease-in-out}
+.mini-content.mini-hinting{animation:mini-hint .8s ease-in-out}
+.mini-help{min-width:245px;font-size:15px}
+@keyframes mini-oops{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+@keyframes mini-hint{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px #ba9dd5a0)}}
+@media(max-height:500px) and (orientation:landscape){.mini-content{padding:39px 5px 0}.mini-canvas h1{font-size:15px;max-width:180px}.mini-canvas .game-heading{gap:7px}.mini-canvas .toolbar-controls{gap:5px}.mini-help{min-width:225px;font-size:13px}}
+@media(max-height:350px) and (orientation:landscape){.mini-content{padding-top:32px}.mini-canvas h1{font-size:13px;max-width:160px}.mini-help{min-width:215px}}
+@media(prefers-reduced-motion:reduce){.mini-content,.mini-content *{animation:none!important;transition:none!important}}

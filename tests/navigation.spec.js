@@ -30,7 +30,10 @@ test('portrait opens the game collection and can enter, rotate, and return from 
   await expect(page.locator('#home-screen')).toBeVisible();
   await expect(page.locator('#game-screen')).not.toBeVisible();
   await expect(page.locator('#orientation-notice')).not.toBeVisible();
-  await expect(page.locator('#open-animal-sounds')).toBeInViewport();
+  await expect(page.locator('#home-screen [data-open-game]')).toHaveCount(6);
+  expect(await page.locator('#home-screen [data-open-game]').evaluateAll((buttons) => buttons.map((button) => button.dataset.openGame).sort())).toEqual(['animal-sounds', 'colors', 'counting', 'puzzle', 'shapes', 'sizes']);
+  await expect(page.locator('#home-screen [data-open-game]').first()).toBeInViewport();
+  await expect(page.locator('#open-animal-sounds')).toBeEnabled();
   expect(await page.evaluate(() => window.__audioStarts)).toBe(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: '/tmp/kids-hub-mobile.png', fullPage: true });
