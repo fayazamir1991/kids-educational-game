@@ -121,7 +121,7 @@ for (const game of games) {
 }
 
 test('every new home entry and deep link routes independently; leaving feedback cancels its transition', async ({ page }) => {
-  await expect(page.locator('[data-open-game]')).toHaveCount(6);
+  await expect(page.locator('[data-open-game]')).toHaveCount(8);
   for (const game of games) {
     await page.locator(`#open-${game}`).click();
     await expect(page).toHaveURL(new RegExp(`#/games/${game}$`));

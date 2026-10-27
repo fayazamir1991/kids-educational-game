@@ -9,6 +9,14 @@ export const GAMES = [
     accent: '#957AB3', accentDark: '#7B6199', coverBackground: '#DFEDF0',
   },
   {
+    id: 'picture', title: 'کارآگاه تصویر',
+    description: 'دوستت توی تصویر چه کار می‌کنه؟ پیداش کن!',
+    category: 'زبان و توجه', age: '۳+ سال',
+    skills: ['فهم پرسش', 'شناخت کارها'],
+    familyPrompt: 'حالا با هم یکی از حرکت‌های دوست‌ها رو بیرون از صفحه انجام بدیم!',
+    accent: '#83A8B2', accentDark: '#638A95', coverBackground: '#E2EEF0',
+  },
+  {
     id: 'colors', title: 'سبدهای رنگی',
     description: 'هر میوه رو توی سبد هم‌رنگش بذار.',
     category: 'شناخت رنگ‌ها', age: '۳+ سال',
@@ -17,10 +25,19 @@ export const GAMES = [
   },
   {
     id: 'shapes', title: 'خانهٔ شکل‌ها',
-    description: 'برای هر شکل، خونهٔ خودش رو پیدا کن.',
+    description: 'شکل‌ها رو از هر طرف بشناس و جا بده.',
     category: 'بازی شکل‌ها', age: '۳+ سال',
-    skills: ['شکل‌ها', 'هماهنگی دست و چشم'],
+    skills: ['شناخت شکل', 'جهت‌های متفاوت'],
+    familyPrompt: 'حالا دوروبرمون چیزهای گرد، چهارگوش و سه‌گوش پیدا کنیم!',
     accent: '#82A89B', accentDark: '#638B7E', coverBackground: '#E4EEE3',
+  },
+  {
+    id: 'lunch', title: 'ناهار سه دوست',
+    description: 'به هر دوست، یک میوه بده تا همه ناهار بخورن.',
+    category: 'یکی برای هر دوست', age: '۳+ سال',
+    skills: ['تناظر یک‌به‌یک', 'مقدارهای کم'],
+    familyPrompt: 'حالا برای سه عروسک واقعی، هرکدوم یک خوراکی اسباب‌بازی بذاریم!',
+    accent: '#BE967B', accentDark: '#A37B60', coverBackground: '#F4E8D8',
   },
   {
     id: 'counting', title: 'به خرگوش غذا بده',

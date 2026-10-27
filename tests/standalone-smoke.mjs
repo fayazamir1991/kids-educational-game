@@ -167,9 +167,9 @@ try {
   await expect(page.locator('#round-label')).toContainText('آماده‌ای');
   assert.equal(await page.evaluate(() => window.__audioStarts.length), expectedPlaybackCount, 'Returning to a game must wait for a fresh tap');
   await page.locator('#back-to-games').click();
-  await expect(page.locator('[data-open-game]')).toHaveCount(6);
+  await expect(page.locator('[data-open-game]')).toHaveCount(8);
   const miniGamesCompleted = [];
-  for (const id of ['colors', 'shapes', 'counting', 'puzzle', 'sizes']) {
+  for (const id of ['colors', 'shapes', 'counting', 'puzzle', 'sizes', 'picture', 'lunch']) {
     await page.locator(`#open-${id}`).click();
     await expect(page.locator('#mini-game-screen')).toBeVisible();
     await expect(page.locator('#mini-progress .earned')).toHaveCount(0);
@@ -189,10 +189,20 @@ try {
       await page.locator('[data-piece="0"]').click();
       await page.locator('[data-slot="0"]').click();
       await expect(page.locator('.puzzle-slot[data-placed="true"]')).toHaveCount(1);
-    } else {
+    } else if (id === 'sizes') {
       const size = await page.locator('.sizes-reference.is-requested').getAttribute('data-reference-size');
       await expect.poll(() => page.locator('.sizes-game img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:image/')))).toBe(true);
       await page.locator(`[data-size="${size}"]`).click();
+    } else if (id === 'picture') {
+      const action = await page.locator('.picture-cue').getAttribute('data-action');
+      await expect(page.locator(`.picture-cue [data-action-prop="${action}"]`)).toBeVisible();
+      await page.locator(`[data-picture-action="${action}"]`).click();
+    } else {
+      await expect.poll(() => page.locator('.lunch-game img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:image/')))).toBe(true);
+      await page.locator('[data-lunch-fruit][data-delivered="false"]').first().click();
+      await page.locator('[data-lunch-friend][data-fed="false"]').first().click();
+      await expect(page.locator('[data-lunch-friend][data-fed="true"]')).toHaveCount(1);
+      await expect(page.locator('[data-lunch-fruit][data-delivered="true"]')).toHaveCount(1);
     }
     await expect(page.locator('#mini-answer-feedback')).toHaveAttribute('data-kind', 'correct');
     await expectFullScreenFeedback(page, '#mini-answer-feedback', 'correct');

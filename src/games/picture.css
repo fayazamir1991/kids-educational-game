@@ -1,0 +1,36 @@
+.picture-game{width:100%;height:100%;min-height:0;display:grid;grid-template-columns:clamp(83px,13vw,140px) minmax(0,1fr);gap:clamp(12px,2.2vw,28px);align-items:center;direction:ltr;padding:0 5px 6px;color:#9b88af}
+.picture-question{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;height:86%;max-height:245px;background:#fffbeb;border:2px solid #e9ddbd;border-radius:30px;box-shadow:0 5px 0 #c7b58322;padding:14px 3px 5px}
+.picture-search{position:absolute;top:-13px;width:34px;height:34px;padding:5px;border-radius:50%;background:#b6a2ca;color:#fff9ed;border:3px solid #fff8e7;box-shadow:0 2px 0 #c7b5831a}
+.picture-search svg{display:block;width:100%;height:100%}
+.picture-cue{width:100%;max-width:119px;aspect-ratio:1;flex:0 1 auto;min-height:0}
+.picture-cue>svg{display:block;width:100%;height:100%}
+.picture-question-mark{font-size:26px;line-height:1;color:#b7a0c8;font-weight:800}
+.picture-scene{height:100%;min-height:0;position:relative;border:3px solid #fff9e5;border-radius:31px;overflow:hidden;background:#e6f0e5;box-shadow:0 5px 0 #b2bd901f;isolation:isolate}
+.picture-garden{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.picture-actors{display:flex;align-items:flex-end;justify-content:center;gap:clamp(2px,.5vw,10px);height:100%;width:100%;padding:7px 10px 9px;direction:ltr}
+.picture-actor{display:flex;align-items:flex-end;justify-content:center;position:relative;flex:1 1 0;min-width:0;height:100%;max-width:300px;padding:0;border-radius:25px;isolation:isolate}
+.picture-actor .picture-actor-art{position:relative;display:block;width:100%;height:100%;max-height:300px;margin:0;min-height:0;flex:none;z-index:1;filter:drop-shadow(0 4px 2px #61734a14);transform-origin:50% 85%}
+.picture-actor-art>svg{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+.picture-ground{position:absolute;bottom:1%;left:7%;width:86%;height:12%;border:2px solid #fffbdb88;border-radius:50%;background:#fffae52b;opacity:0;transition:opacity .2s}
+.picture-actor:not(:disabled):hover .picture-ground,.picture-actor:focus-visible .picture-ground{opacity:1}
+.picture-actor:focus-visible{outline:3px solid #a58ac2;outline-offset:1px}
+.picture-run-body{animation:picture-running .65s ease-in-out infinite;transform-origin:center}
+.picture-bite{animation:picture-nibble 1.7s ease-in-out infinite;transform-origin:138px 106px}
+.picture-sleep-breath{animation:picture-breathe 2.7s ease-in-out infinite;transform-origin:105px 145px}
+.picture-water-drop{animation:picture-water 1s ease-in-out infinite}
+.picture-brush{animation:picture-paint 1.9s ease-in-out infinite;transform-origin:107px 118px}
+.picture-cue-running{animation:picture-running .65s ease-in-out infinite}
+.picture-cue-eating{animation:picture-nibble 1.7s ease-in-out infinite;transform-origin:59px 52px}
+.picture-cue-watering{animation:picture-water 1s ease-in-out infinite}
+.picture-cue-painting{animation:picture-paint 1.9s ease-in-out infinite;transform-origin:17px 62px}
+.picture-game.is-hinting .picture-question{animation:picture-cue-hint .6s ease-in-out 2}
+.picture-game.is-hinting[data-target-action=run] [data-picture-action=run] .picture-ground,.picture-game.is-hinting[data-target-action=eat] [data-picture-action=eat] .picture-ground,.picture-game.is-hinting[data-target-action=sleep] [data-picture-action=sleep] .picture-ground,.picture-game.is-hinting[data-target-action=water] [data-picture-action=water] .picture-ground,.picture-game.is-hinting[data-target-action=paint] [data-picture-action=paint] .picture-ground{opacity:1;background:#fff2af99;box-shadow:0 0 0 4px #fff9df80,0 0 24px #ffedba}
+@keyframes picture-running{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
+@keyframes picture-nibble{0%,100%{transform:translate(0,0) rotate(0)}45%,65%{transform:translate(-3px,-4px) rotate(-9deg)}}
+@keyframes picture-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025,1.04)}}
+@keyframes picture-water{0%,100%{opacity:.45;transform:translateY(-2px)}55%{opacity:1;transform:translateY(5px)}}
+@keyframes picture-paint{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(5deg)}}
+@keyframes picture-cue-hint{50%{box-shadow:0 0 0 5px #dcc5ec88,0 0 22px #d6bae47a}}
+@media(max-height:500px) and (orientation:landscape){.picture-game{padding:0 1px 5px;gap:12px;grid-template-columns:87px minmax(0,1fr)}.picture-question{height:88%;border-radius:24px;padding-top:9px}.picture-cue{max-width:92px}.picture-question-mark{font-size:23px}.picture-scene{border-radius:25px}.picture-actors{padding:9px 4px 7px;gap:0}.picture-actor{border-radius:22px}.picture-search{width:31px;height:31px;top:-11px}}
+@media(max-height:350px) and (orientation:landscape){.picture-game{grid-template-columns:72px minmax(0,1fr);gap:9px}.picture-question{border-radius:21px;padding:8px 2px 2px}.picture-question-mark{font-size:19px}.picture-search{width:27px;height:27px;top:-10px}.picture-scene{border-radius:21px}}
+@media(prefers-reduced-motion:reduce){.picture-game *{animation:none!important;transition:none!important}.picture-game.is-hinting .picture-question{box-shadow:0 0 0 4px #dcc5ec88}.picture-water-drop,.picture-cue-watering{opacity:1}}

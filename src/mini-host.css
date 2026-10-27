@@ -5,10 +5,13 @@
 .mini-canvas[data-mini-game=counting]{background:linear-gradient(165deg,#e4eed4,#f7f2df)}
 .mini-canvas[data-mini-game=puzzle]{background:linear-gradient(160deg,#ece3f5,#f7efdf)}
 .mini-canvas[data-mini-game=sizes]{background:linear-gradient(145deg,#f5e8db,#e8eedc)}
+.mini-canvas[data-mini-game=picture]{background:linear-gradient(160deg,#e3eff3,#edf1d9)}
+.mini-canvas[data-mini-game=lunch]{background:linear-gradient(155deg,#f7ead8,#edf0d8)}
 .mini-stage{min-height:0;align-items:stretch}
 .mini-content{width:100%;height:100%;min-height:0;position:relative;padding:48px 10px 0;max-width:1200px;margin:auto}
 .mini-canvas .game-heading{min-width:0}
 .mini-canvas h1{font-size:19px;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.mini-canvas h1:focus{outline:none}
 .mini-option{font:inherit;border:0;background:none;touch-action:manipulation;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 .mini-option:disabled{cursor:default}
 .mini-content button:focus-visible{outline:3px solid #8d73b5;outline-offset:4px}

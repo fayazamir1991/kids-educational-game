@@ -1,9 +1,15 @@
 import './colors-shapes.css';
 
 const SHAPES = [
-  { id: 'circle', name: 'دایره', fill: '#efac91', light: '#ffe1c8', dark: '#d38a74' },
-  { id: 'square', name: 'مربع', fill: '#8cb5d5', light: '#d3eafa', dark: '#6c99bd' },
-  { id: 'triangle', name: 'مثلث', fill: '#efd171', light: '#fff1b3', dark: '#d4ae4f' },
+  { id: 'circle', name: 'دایره' },
+  { id: 'square', name: 'مربع' },
+  { id: 'triangle', name: 'مثلث' },
+];
+// Every shape uses the same material in a round. Color cannot reveal the answer.
+const MATERIALS = [
+  { id: 'sand', fill: '#dec59e', light: '#fff0cf', dark: '#b69a72', hole: '#a38c70' },
+  { id: 'sage', fill: '#c6d1b3', light: '#edf0dc', dark: '#9aa886', hole: '#889577' },
+  { id: 'clay', fill: '#d8c3ba', light: '#f6e6dc', dark: '#b29a90', hole: '#a18b80' },
 ];
 let artworkId = 0;
 
@@ -25,17 +31,17 @@ function sequence(random) {
   return values;
 }
 
-function shapeSVG(shape, empty = false) {
+function shapeSVG(shape, material, empty = false, rotation = 0) {
   const id = `shape-piece-${++artworkId}`;
   const geometry = shape.id === 'circle'
     ? '<circle cx="65" cy="62" r="45"'
     : shape.id === 'square'
       ? '<rect x="21" y="18" width="88" height="88" rx="10"'
       : '<path d="m65 13 49 87c3 5 0 10-6 10H22c-6 0-9-5-6-10Z"';
-  const fill = empty ? '#b49a7c' : `url(#${id})`;
-  const stroke = empty ? '#a58a68' : shape.dark;
+  const fill = empty ? material.hole : `url(#${id})`;
+  const stroke = material.dark;
   const shine = shape.id === 'circle' ? '<path d="M35 44c4-10 13-17 22-18"/>' : shape.id === 'square' ? '<path d="M34 45V33h30"/>' : '<path d="m42 72 21-37"/>';
-  return `<svg viewBox="0 0 130 130" fill="none" aria-hidden="true"><defs><linearGradient id="${id}" x1="20" y1="12" x2="100" y2="115" gradientUnits="userSpaceOnUse"><stop stop-color="${shape.light}"/><stop offset=".65" stop-color="${shape.fill}"/><stop offset="1" stop-color="${shape.dark}"/></linearGradient></defs>${geometry} fill="${fill}" stroke="${stroke}" stroke-width="3"/>${empty ? '' : `<g stroke="#fff7df" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".58">${shine}</g>`}</svg>`;
+  return `<svg viewBox="0 0 130 130" fill="none" data-material="${material.id}" data-rotation="${rotation}" aria-hidden="true"><defs><linearGradient id="${id}" x1="20" y1="12" x2="100" y2="115" gradientUnits="userSpaceOnUse"><stop stop-color="${material.light}"/><stop offset=".65" stop-color="${material.fill}"/><stop offset="1" stop-color="${material.dark}"/></linearGradient></defs><g class="sg-geometry" transform="rotate(${rotation} 65 65)">${geometry} fill="${fill}" stroke="${stroke}" stroke-width="3"/>${empty ? '' : `<g stroke="#fff7df" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".58">${shine}</g>`}</g></svg>`;
 }
 
 function toyHouse() {
@@ -46,6 +52,8 @@ function toyHouse() {
 /** Fit a chunky visible block into a matching hole in the toy house. */
 export function createShapesGame({ mount, submit, setPrompt, random = Math.random }) {
   let target;
+  let material = MATERIALS[0];
+  let rotation = 0;
   let rounds = sequence(random);
   let disabled = true;
   let drag = null;
@@ -65,7 +73,8 @@ export function createShapesGame({ mount, submit, setPrompt, random = Math.rando
     const correct = button.dataset.dropShape === target.id;
     if (submit(correct, button, `آفرین! ${target.name} رو سر جاش گذاشتی!`) && correct) {
       board.classList.add('has-delivered');
-      button.querySelector('.sg-slot-art').innerHTML = shapeSVG(target);
+      // A rotated piece still belongs in the same-shaped opening.
+      button.querySelector('.sg-slot-art').innerHTML = shapeSVG(target, material);
       button.classList.add('is-filled');
     }
   }
@@ -140,8 +149,13 @@ export function createShapesGame({ mount, submit, setPrompt, random = Math.rando
       clearDrag();
       if (index === 0) rounds = sequence(random);
       target = rounds[index % rounds.length];
+      material = MATERIALS[Math.floor(random() * MATERIALS.length)];
+      const angles = target.id === 'triangle' ? [90, 180] : target.id === 'square' ? [45, 90] : [0];
+      rotation = angles[Math.floor(random() * angles.length)];
       board.className = 'shape-game';
-      board.innerHTML = `<div class="sg-house">${toyHouse()}<div class="sg-slots">${shuffled(SHAPES, random).map((shape) => `<button class="mini-option sg-slot" data-value="${shape.id}" data-drop-shape="${shape.id}" aria-label="جای ${shape.name}"><span class="animal-art sg-slot-art">${shapeSVG(shape, true)}</span><span class="sg-slot-label">${shape.name}</span></button>`).join('')}</div></div><span class="sg-match-arrow" aria-hidden="true"><svg viewBox="0 0 46 35" fill="none"><path d="M42 18H11m9-9-9 9 9 9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 7"/></svg></span><div class="sg-piece-zone"><button class="sg-piece" data-shape="${target.id}" aria-label="قطعهٔ ${target.name}، بردار و در جای هم‌شکل بگذار" aria-pressed="false"><span class="sg-piece-art">${shapeSVG(target)}</span></button><span class="sg-piece-label">شکل من کجاست؟</span></div>`;
+      board.dataset.targetShape = target.id;
+      board.dataset.material = material.id;
+      board.innerHTML = `<div class="sg-house">${toyHouse()}<div class="sg-slots">${shuffled(SHAPES, random).map((shape) => `<button class="mini-option sg-slot" data-value="${shape.id}" data-drop-shape="${shape.id}" data-rotation="0" aria-label="جای ${shape.name}"><span class="animal-art sg-slot-art">${shapeSVG(shape, material, true)}</span><span class="sg-slot-label">${shape.name}</span></button>`).join('')}</div></div><span class="sg-match-arrow" aria-hidden="true"><svg viewBox="0 0 46 35" fill="none"><path d="M42 18H11m9-9-9 9 9 9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 7"/></svg></span><div class="sg-piece-zone"><button class="sg-piece" data-shape="${target.id}" data-rotation="${rotation}" aria-label="قطعهٔ ${target.name}، بردار و در جای هم‌شکل بگذار" aria-pressed="false"><span class="sg-piece-art">${shapeSVG(target, material, false, rotation)}</span></button><span class="sg-piece-label">شکل من کجاست؟</span></div>`;
       setPrompt('شکل رو توی جای خودش بذار!');
       setDisabled(false);
     },

@@ -5,6 +5,8 @@ import { createShapesGame } from './games/shapes.js';
 import { createCountingGame } from './games/counting.js';
 import { createPuzzleGame } from './games/puzzle.js';
 import { createSizesGame } from './games/sizes.js';
+import { createPictureGame } from './games/picture.js';
+import { createLunchGame } from './games/lunch.js';
 import './mini-host.css';
 
 const factories = {
@@ -13,6 +15,8 @@ const factories = {
   counting: createCountingGame,
   puzzle: createPuzzleGame,
   sizes: createSizesGame,
+  picture: createPictureGame,
+  lunch: createLunchGame,
 };
 export const supportsMiniGame = (id) => Object.hasOwn(factories, id);
 const paths = {
@@ -32,7 +36,7 @@ export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundT
   root.innerHTML = `
     <main class="game-canvas mini-canvas" aria-labelledby="mini-title">
       <header class="game-toolbar">
-        <div class="game-heading"><button class="icon-button" id="mini-back" aria-label="بازگشت به فهرست بازی‌ها">${icon('home')}</button><h1 id="mini-title"></h1></div>
+        <div class="game-heading"><button class="icon-button" id="mini-back" aria-label="بازگشت به فهرست بازی‌ها">${icon('home')}</button><h1 id="mini-title" tabindex="-1"></h1></div>
         <div class="flower-progress" id="mini-progress"></div><span class="sr-only" id="mini-round-label"></span>
         <div class="toolbar-controls">
           <button class="icon-button" id="mini-sound" aria-label="خاموش کردن صدا" aria-pressed="false">${icon('sound')}</button>
@@ -53,7 +57,7 @@ export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundT
       <button class="secondary-button orientation-back" id="mini-orientation-back">${icon('home')}برگشت به بازی‌ها</button>
     </aside>
     <dialog class="modal celebration-modal" id="mini-finish" aria-labelledby="mini-finish-title">
-      <div class="bouquet" aria-hidden="true">${flower}${flower}${flower}</div><h2 id="mini-finish-title">چه خوب بازی کردی!</h2><p>همهٔ گل‌هات رو گرفتی! دوباره بازی کنیم؟</p>
+      <div class="bouquet" aria-hidden="true">${flower}${flower}${flower}</div><h2 id="mini-finish-title">چه خوب بازی کردی!</h2><p id="mini-finish-copy">همهٔ گل‌هات رو گرفتی! دوباره بازی کنیم؟</p>
       <button class="primary-button" id="mini-play-again">${icon('replay')}باز هم بازی کنیم</button>
       <button class="text-button" id="mini-finish-home">برگشت به بازی‌ها</button>
     </dialog>`;
@@ -187,6 +191,7 @@ export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundT
     root.dataset.game = game.id;
     $('.mini-canvas').dataset.miniGame = game.id;
     $('#mini-title').textContent = game.title;
+    $('#mini-finish-copy').textContent = game.familyPrompt || 'همهٔ گل‌هات رو گرفتی! دوباره بازی کنیم؟';
     controller = factories[game.id]({ mount: content, submit, setPrompt, random: Math.random });
     $('#mini-progress').innerHTML = Array.from({ length: controller.roundCount }, (_, index) => `<span class="progress-flower" data-mini-flower="${index}">${flower}</span>`).join('');
     updateSoundControl();
@@ -245,6 +250,6 @@ export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundT
 
   return {
     open, close, pause, resume, restart, updateSoundControl,
-    getFocusTarget: () => portrait() ? $('#mini-orientation-title') : content.querySelector('button:not(:disabled)') || $('#mini-help'),
+    getFocusTarget: () => portrait() ? $('#mini-orientation-title') : $('#mini-title'),
   };
 }
