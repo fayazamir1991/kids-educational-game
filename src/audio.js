@@ -1,5 +1,7 @@
 import { asset } from './assets.js';
 import audioReview from './audio-review.json' with { type: 'json' };
+import { playNarration, stopNarration, hasNarration } from './narration.js';
+import { requestNativeAudioFocus } from './native.js';
 
 let context;
 let activeSource;
@@ -49,6 +51,7 @@ async function loadRecording(id) {
 
 export function stopSound() {
   generation++;
+  stopNarration();
   stopEffects();
   if (activeSource) {
     activeSource.onended = null;
@@ -63,7 +66,7 @@ export function stopSound() {
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
 
-export async function playAnimal(id, volume = 0.65) {
+export async function playAnimal(id, volume = 0.65, allowFocusRequest = true) {
   stopSound();
   const token = generation;
   try {
@@ -71,6 +74,7 @@ export async function playAnimal(id, volume = 0.65) {
     // context, including on mobile browsers that restrict media autoplay.
     const ctx = getContext();
     await ctx.resume();
+    if (!(await requestNativeAudioFocus(allowFocusRequest))) return false;
     if (token !== generation) return false;
     const buffer = await loadRecording(id);
     if (token !== generation) return false;
@@ -106,10 +110,12 @@ export async function playAnimal(id, volume = 0.65) {
   }
 }
 
-function playNotes(notes, volume) {
+async function playNotes(notes, volume) {
   try {
+    const token = generation;
     const ctx = getContext();
     void ctx.resume();
+    if (!(await requestNativeAudioFocus(true)) || token !== generation) return;
     stopEffects();
     notes.forEach(({ frequency, endFrequency = frequency, at, duration, level }) => {
       const oscillator = ctx.createOscillator();
@@ -150,9 +156,16 @@ export function tryAgainTone(volume = 0.65) {
   ], volume);
 }
 
-export function speakPersian(text, volume) {
+export async function speakPersian(text, volume) {
+  const token = generation;
+  if (!hasNarration(text) && import.meta.env?.VITE_STORE_BUILD === '1') return;
+  if (!(await requestNativeAudioFocus(false)) || token !== generation) return;
+  if (await playNarration(text, volume) || token !== generation) return;
+  // The Android product must never delegate speech to a network-backed voice.
+  // Missing local clips leave the picture and musical guidance available.
+  if (import.meta.env?.VITE_STORE_BUILD === '1') return;
   if (!('speechSynthesis' in window)) return;
-  const voice = speechSynthesis.getVoices().find((item) => /^fa(?:-|_|$)/i.test(item.lang));
+  const voice = speechSynthesis.getVoices().find((item) => item.localService === true && /^fa(?:-|_|$)/i.test(item.lang));
   if (!voice) return;
   speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);

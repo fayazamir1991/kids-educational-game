@@ -1,0 +1,86 @@
+{
+  "checkedAt": "2026-10-28",
+  "status": "not-cleared-for-release",
+  "enabledClipCount": 0,
+  "requiredPromptCount": 37,
+  "candidate": {
+    "id": "picture-sleeping",
+    "text": "کی خوابیده؟",
+    "spokenText": "کی خوابیده؟",
+    "path": "/narration/picture-sleeping.mp3",
+    "sha256": "d7804b6618515ca045c4eb9d6520174931d8b61f30add7bfd46bd188b32d649e",
+    "durationSeconds": 3.28,
+    "sampleRate": 48000,
+    "generationFrames": 41,
+    "enabled": false,
+    "redistributionApproved": false,
+    "review": {
+      "status": "pending-human-listening",
+      "reviewer": null,
+      "reviewedAt": null
+    },
+    "provenance": {
+      "source": "https://huggingface.co/nimaaaAI/MOSS-TTS-Nano-Persian/tree/dcfd7f2baab4bb69434895f51eae6a0c0059c59f",
+      "license": "Apache-2.0",
+      "model": "nimaaaAI/MOSS-TTS-Nano-Persian",
+      "modelRevision": "dcfd7f2baab4bb69434895f51eae6a0c0059c59f",
+      "weightsSha256": "00648a0551d9a326355a38c2149fd5c35390e51d376f2b035f5be638e4e4e6b0",
+      "codec": "OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano",
+      "codecRevision": "6aa02b01e445cc585582cf0ba480bc3ea6c8dd68",
+      "codecWeightsSha256": "34d9880d805eecb21bde975202b1c256dbd0eb98c8680b9d3aeffd2bc6ac2f67",
+      "dataset": "Mozilla Common Voice Persian v13 (CC0, as documented by model author)",
+      "mode": "continuation-without-reference",
+      "seed": 42,
+      "synthetic": true
+    },
+    "automaticChecks": {
+      "decode": "passed",
+      "finiteWaveform": true,
+      "spokenContent": "not verified by listening"
+    },
+    "localReviewPage": "/workspace/narration-tools/candidates/batch/review.html",
+    "localCandidateMp3": "/workspace/narration-tools/candidates/batch/picture-sleeping.mp3"
+  },
+  "localASR": {
+    "model": "Systran/faster-whisper-base",
+    "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+    "runtime": "faster-whisper 1.2.1 / CTranslate2 4.8.4 / CPU int8",
+    "results": [
+      {
+        "path": "/workspace/narration-tools/candidates/picture-sleeping.wav",
+        "language": "fa",
+        "segments": [
+          {
+            "text": " چی خویده",
+            "avgLogprob": -0.8752846777439117,
+            "noSpeechProbability": 0.028340836986899376
+          }
+        ]
+      },
+      {
+        "path": "/workspace/narration-tools/candidates/batch/picture-sleeping.mp3",
+        "language": "fa",
+        "segments": [
+          {
+            "text": " چی خویده",
+            "avgLogprob": -0.8707414448261261,
+            "noSpeechProbability": 0.022884955629706383
+          }
+        ]
+      }
+    ],
+    "interpretation": "Transcript differs from target. ASR alone cannot determine correct pronunciation. Do not enable without Persian-speaking human listening."
+  },
+  "humanListening": {
+    "performed": false,
+    "status": "pending"
+  },
+  "runtimeChecks": [
+    "Missing prompt returns false without network access",
+    "Known injected local clip starts",
+    "stopNarration stops active source",
+    "Cancelled pending request returns true and does not start stale speech",
+    "Catalog checksum and review validation --check passes with zero enabled clips"
+  ],
+  "recommendedNextStep": "Listen to the trial with a Persian-speaking adult. If unsuitable, record the fixed prompts with a licensed human narrator; the player/catalog is compatible."
+}

@@ -1,0 +1,119 @@
+{
+  "status": "browser_review_previews_only_native_capture_blocked",
+  "appVersion": "1.0.0",
+  "versionCode": 1,
+  "finalStoreScreenshots": [],
+  "browserPreviews": [
+    {
+      "filename": "browser-previews/browser-preview-catalog-960x540.png",
+      "scene": "catalog",
+      "captureType": "desktop_browser_review_preview",
+      "finalStoreScreenshot": false,
+      "nativeAndroidCapture": false,
+      "browserVersion": "154.0.8037.57",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "sourceBuild": "dist-store",
+      "sourceBuildManifestSha256": "202c21f7f0d272162988c09b4c887d175336888eedc000329694dd16a5478111",
+      "appVersion": "1.0.0",
+      "artifactSha256": null,
+      "capturedAtUtc": "2026-10-28T06:52:33.506Z",
+      "screenshotSha256": "ec00afb5feaa7d76ed333b9ca80e7d3a19e9076d482fe67fe70062d574353806",
+      "reviewed": true,
+      "reviewScope": "Visually reviewed intended scene and browser-preview label only; no native/device QA implied."
+    },
+    {
+      "filename": "browser-previews/browser-preview-animal-sounds-960x540.png",
+      "scene": "animal-sounds",
+      "captureType": "desktop_browser_review_preview",
+      "finalStoreScreenshot": false,
+      "nativeAndroidCapture": false,
+      "browserVersion": "154.0.8037.57",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "sourceBuild": "dist-store",
+      "sourceBuildManifestSha256": "202c21f7f0d272162988c09b4c887d175336888eedc000329694dd16a5478111",
+      "appVersion": "1.0.0",
+      "artifactSha256": null,
+      "capturedAtUtc": "2026-10-28T06:52:33.841Z",
+      "screenshotSha256": "bf567ef5915f78348c05a870d292d904724e567723b4bdfbc4435f7d71d1861e",
+      "reviewed": true,
+      "reviewScope": "Visually reviewed intended scene and browser-preview label only; no native/device QA implied."
+    },
+    {
+      "filename": "browser-previews/browser-preview-picture-960x540.png",
+      "scene": "picture",
+      "captureType": "desktop_browser_review_preview",
+      "finalStoreScreenshot": false,
+      "nativeAndroidCapture": false,
+      "browserVersion": "154.0.8037.57",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "sourceBuild": "dist-store",
+      "sourceBuildManifestSha256": "202c21f7f0d272162988c09b4c887d175336888eedc000329694dd16a5478111",
+      "appVersion": "1.0.0",
+      "artifactSha256": null,
+      "capturedAtUtc": "2026-10-28T06:52:33.979Z",
+      "screenshotSha256": "cdc8b02a490f80442aae96712d8f61a696975331b9febdbbbdb03b762dfe69de",
+      "reviewed": true,
+      "reviewScope": "Visually reviewed intended scene and browser-preview label only; no native/device QA implied."
+    },
+    {
+      "filename": "browser-previews/browser-preview-lunch-960x540.png",
+      "scene": "lunch",
+      "captureType": "desktop_browser_review_preview",
+      "finalStoreScreenshot": false,
+      "nativeAndroidCapture": false,
+      "browserVersion": "154.0.8037.57",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "sourceBuild": "dist-store",
+      "sourceBuildManifestSha256": "202c21f7f0d272162988c09b4c887d175336888eedc000329694dd16a5478111",
+      "appVersion": "1.0.0",
+      "artifactSha256": null,
+      "capturedAtUtc": "2026-10-28T06:52:36.615Z",
+      "screenshotSha256": "923b88e2325f9bd27f55ef06855ce92357e3a008d457764eae7b0c4714ba4f7c",
+      "reviewed": true,
+      "reviewScope": "Visually reviewed intended scene and browser-preview label only; no native/device QA implied."
+    },
+    {
+      "filename": "browser-previews/browser-preview-shapes-960x540.png",
+      "scene": "shapes",
+      "captureType": "desktop_browser_review_preview",
+      "finalStoreScreenshot": false,
+      "nativeAndroidCapture": false,
+      "browserVersion": "154.0.8037.57",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "sourceBuild": "dist-store",
+      "sourceBuildManifestSha256": "202c21f7f0d272162988c09b4c887d175336888eedc000329694dd16a5478111",
+      "appVersion": "1.0.0",
+      "artifactSha256": null,
+      "capturedAtUtc": "2026-10-28T06:52:36.742Z",
+      "screenshotSha256": "0bda90078d58568ec6107c8d102ac2010830ac740350e744402c88c3b2d6aceb",
+      "reviewed": true,
+      "reviewScope": "Visually reviewed intended scene and browser-preview label only; no native/device QA implied."
+    }
+  ],
+  "requiredCaptureFields": [
+    "filename",
+    "deviceOrEmulator",
+    "androidApi",
+    "appVersion",
+    "artifactSha256",
+    "capturedAtUtc",
+    "finalStoreScreenshot",
+    "reviewed"
+  ],
+  "nativeCaptureBlocker": "Guest Android WebView crashed on the app and an independent official WebViewShell local data-URL reproduction. Native gameplay screenshots and gameplay/device QA remain unavailable; see native validation reports."
+}

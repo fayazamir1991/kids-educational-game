@@ -1,0 +1,24 @@
+Android emulator runtime comparison — 2026-10-28
+
+Game: com.fayazamir.kidsgarden
+PID: 2128; fatal time: 2026-10-28T06:42:45Z; signal: SIGTRAP
+
+Independent baseline: org.chromium.webview_shell
+Content: local data:text/html heading
+PID: 3836; fatal time: 2026-10-28T06:48:26Z; signal: SIGTRAP
+INTERNET permission granted: True
+
+Both failures identify the same system WebView native library:
+Library: libwebviewchromium.so
+Relative PC: 0x249c840
+Build ID: 3fed08901ee0e6620bf486e4e9e34fba0a577d62
+
+The same failure occurs without game or Capacitor code. The exact internal
+engine/emulator cause is unresolved. No responsive gameplay page was observed,
+no native gameplay assertions passed, and no physical phone was tested.
+The APK was installed in airplane mode with Wi-Fi disabled before first launch.
+Blank emulator framebuffers are not store screenshots.
+
+Current Android product has zero approved Persian narration clips. Its visual
+instructions, musical feedback and local animal recordings require supported
+physical-device acceptance before store release.

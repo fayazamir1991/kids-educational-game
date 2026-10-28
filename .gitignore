@@ -1,5 +1,16 @@
 node_modules/
 dist/
+dist-store/
+android/.gradle/
+android/local.properties
+android/**/build/
+release/android/
+*.jks
+*.keystore
+*.p12
+*.pem
+signing.properties
+.env.signing*
 test-results/
 playwright-report/
 .DS_Store

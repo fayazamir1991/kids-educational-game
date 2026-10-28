@@ -1,0 +1,106 @@
+{
+  "recordedAt": "2026-10-28T06:51:00Z",
+  "status": "native_gameplay_unverified_emulator_webview_runtime_failure",
+  "nativeGameplayVerified": false,
+  "physicalDeviceQaPerformed": false,
+  "toolchainVerified": true,
+  "tools": {
+    "jdk": "Temurin21.0.13+9",
+    "sdkPlatform": "36r2",
+    "buildTools": [
+      "35.0.0",
+      "36.0.0"
+    ],
+    "platformTools": "37.0.1",
+    "emulator": "37.2.12",
+    "commandLineTools": "19.0"
+  },
+  "apk": {
+    "path": "/workspace/kids-educational-game/android/app/build/outputs/apk/debug/app-debug.apk",
+    "sha256": "9e8f4f96ebcc8eed6c2df3aa36853f9cb378f3c93624b6acbc64abe147f49bc2",
+    "package": "com.fayazamir.kidsgarden",
+    "versionName": "1.0.0",
+    "versionCode": 1,
+    "minimumSdk": 26,
+    "targetSdk": 36,
+    "internetPermission": false,
+    "minimumWebView": 105,
+    "installed": true
+  },
+  "environment": {
+    "serial": "emulator-5556",
+    "api": 36,
+    "image": "system-images;android-36;aosp_atd;x86_64",
+    "webView": "133.0.6943.137",
+    "kvm": false,
+    "acceleration": "TCG software",
+    "graphics": "GPU off; Vulkan disabled; official fallback ANGLE/lavapipe",
+    "ramMB": 3072,
+    "osBootCompleted": true,
+    "airplaneMode": true,
+    "wifiDisabledBeforeFirstLaunch": true,
+    "appDataClearedBeforeLaunch": true
+  },
+  "launch": {
+    "processCreated": true,
+    "pid": 2128,
+    "responsivePageObserved": false,
+    "gameplayScreenshotsAvailable": false,
+    "fatalAt": "2026-10-28T06:42:45Z",
+    "signal": "SIGTRAP",
+    "thread": "main",
+    "library": "libwebviewchromium.so",
+    "pc": "0x249c840",
+    "buildId": "3fed08901ee0e6620bf486e4e9e34fba0a577d62",
+    "preciseInternalCauseResolved": false
+  },
+  "independentBaseline": {
+    "package": "org.chromium.webview_shell",
+    "activity": ".WebViewBrowserActivity",
+    "content": "local data:text/html heading",
+    "internetPermissionGranted": true,
+    "fatalAt": "2026-10-28T06:48:26Z",
+    "pid": 3836,
+    "signal": "SIGTRAP",
+    "library": "libwebviewchromium.so",
+    "pc": "0x249c840",
+    "buildId": "3fed08901ee0e6620bf486e4e9e34fba0a577d62",
+    "sameNativeFailureAsGame": true
+  },
+  "harness": {
+    "path": "/workspace/android-toolchain/native-smoke.mjs",
+    "started": true,
+    "uiAssertionsExecuted": 0,
+    "outcome": "stopped while WebView page attachment remained unresponsive after native fatal; no gameplay pass result"
+  },
+  "diagnosticProbes": {
+    "builtAndSignatureVerified": true,
+    "installedOrRun": false,
+    "path": "/workspace/android-toolchain/webview-probe"
+  },
+  "pendingPhysicalAcceptance": [
+    "offline first launch",
+    "offline animal audio and narration",
+    "all eight games",
+    "correct and incorrect full-screen feedback",
+    "landscape orientation",
+    "Android back/home",
+    "notification shade/focus interruption recovery",
+    "audio focus denial and gain",
+    "parent gate and background session relock",
+    "old-WebView fallback message"
+  ],
+  "evidence": [
+    "NATIVE_QA.md",
+    "api36-game-process-logcat.txt",
+    "api36-app-crash.txt",
+    "api36-baseline-crash-buffer.txt",
+    "api36-baseline-package.txt",
+    "api36-after-launch-logcat.txt",
+    "api36-boot-logcat.txt",
+    "emulator-api36-software.log",
+    "api36-launch-framebuffer.png"
+  ],
+  "blankFramebuffersAreGameplayScreenshots": false,
+  "appSourceOrSecurityChangedDuringInvestigation": false
+}

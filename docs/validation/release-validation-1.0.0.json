@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-28",
+  "profile": "Little Play Garden Android 1.0.0 (review build)",
+  "browser": {
+    "runner": "Playwright / system Chromium",
+    "tests": 49,
+    "passed": 49,
+    "failed": 0,
+    "sourceSnapshotMatchesCurrentSrcAndPublic": true,
+    "viewports": [
+      "667x375",
+      "844x390",
+      "915x412",
+      "390x844",
+      "320x568"
+    ]
+  },
+  "gameLogic": {
+    "runner": "node --test tests/game.test.js",
+    "tests": 4,
+    "passed": 4
+  },
+  "standaloneRegression": {
+    "passed": true,
+    "documentDelivery": "Exact HTML bytes via offline page.setContent; direct file navigation not validated",
+    "animalRecordingsDecoded": 17,
+    "playableAnimalCalls": 14,
+    "withheldFromQuiz": 3,
+    "miniGamesWithCorrectAnswers": [
+      "colors",
+      "shapes",
+      "counting",
+      "puzzle",
+      "sizes",
+      "picture",
+      "lunch"
+    ],
+    "externalNetworkRequests": 0
+  },
+  "releaseAssetGuards": {
+    "source": "passed",
+    "endProduct": "passed",
+    "distStore": "passed",
+    "nativeCopiedAssets": "passed",
+    "includedAnimalRecordings": 14,
+    "excluded": [
+      "chick",
+      "monkey",
+      "donkey"
+    ]
+  },
+  "nativeBuildEvidence": "android-build-1.0.0.json",
+  "nativeRuntime": {
+    "status": "blocked_by_independent_emulator_webview_failure",
+    "apkInstalled": true,
+    "androidApi": 36,
+    "webViewVersion": "133.0.6943.137",
+    "airplaneModeBeforeFirstLaunch": true,
+    "wifiDisabled": true,
+    "gameplayPassed": false,
+    "physicalDeviceTested": false,
+    "failure": "System WebView native SIGTRAP before responsive page",
+    "independentBaseline": "Official org.chromium.webview_shell also fails on local data:text/html with identical native library PC and BuildId; its INTERNET permission is granted",
+    "library": "libwebviewchromium.so",
+    "relativePc": "0x249c840",
+    "buildId": "3fed08901ee0e6620bf486e4e9e34fba0a577d62",
+    "requiredNextStep": "Acceptance on a supported physical Android phone or functioning accelerated emulator; do not treat browser tests as native runtime success"
+  },
+  "humanAudioListening": false,
+  "enabledPersianNarrationClips": 0,
+  "storePublication": "not performed; owner identity, contact, public privacy URL, signing and final acceptance pending"
+}

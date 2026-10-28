@@ -11,30 +11,30 @@
     "bee": {
       "enabled": true,
       "status": "machine-screened",
-      "sha256": "ac26194dbc2186b9609528c20f4204fd64303f29949e1d8ffee5deb203f051dd",
+      "sha256": "dda8d0c3d2c76057179bc1967e2b414575dcaacd7cfa44dadfa78f0727dcab4a",
       "expected_event": "Bee, wasp, etc.",
-      "event_score_mean": 0.977865,
+      "event_score_mean": 0.977051,
       "event_score_max": 0.996094,
       "top_events": [
         [
-          "Bee, wasp, etc.",
-          0.9779
+          "Insect",
+          0.9858
         ],
         [
-          "Insect",
-          0.972
+          "Bee, wasp, etc.",
+          0.9771
         ],
         [
           "Wild animals",
-          0.9414
+          0.9653
         ],
         [
           "Animal",
-          0.9271
+          0.9443
         ],
         [
           "Fly, housefly",
-          0.651
+          0.8247
         ]
       ],
       "reason_fa": "در بررسی ماشینی، رویداد صوتی هدف پشتیبانی شد؛ این نتیجه تضمین شنیداری انسانی نیست."
@@ -383,30 +383,30 @@
     "lion": {
       "enabled": true,
       "status": "machine-screened",
-      "sha256": "885501f8ac69fa14fc35b9dfa106b47f3b42acafd511f105a279c8e3e644a59a",
+      "sha256": "da745ea62c22e5c1b6197357794289fbfc73816432dce507ae2480dace58fee0",
       "expected_event": "Roar",
-      "event_score_mean": 0.859375,
-      "event_score_max": 0.980469,
+      "event_score_mean": 0.879883,
+      "event_score_max": 0.996094,
       "top_events": [
         [
           "Roaring cats (lions, tigers)",
-          0.8945
+          0.9082
         ],
         [
           "Roar",
-          0.8594
-        ],
-        [
-          "Animal",
-          0.666
+          0.8799
         ],
         [
           "Wild animals",
-          0.625
+          0.7842
         ],
         [
-          "Growling",
-          0.084
+          "Animal",
+          0.7803
+        ],
+        [
+          "Cattle, bovinae",
+          0.1465
         ]
       ],
       "reason_fa": "در بررسی ماشینی، رویداد صوتی هدف پشتیبانی شد؛ این نتیجه تضمین شنیداری انسانی نیست."
@@ -536,5 +536,5 @@
       "reason_fa": "در بررسی ماشینی، رویداد صوتی هدف پشتیبانی شد؛ این نتیجه تضمین شنیداری انسانی نیست."
     }
   },
-  "revision": "audio-v2"
+  "revision": "audio-v3-release"
 }

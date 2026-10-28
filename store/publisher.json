@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "appName": "باغ بازی‌های کوچولو",
+  "appNameEnglish": "Little Play Garden",
+  "applicationId": "com.fayazamir.kidsgarden",
+  "applicationIdConfirmed": false,
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "publisherName": null,
+  "supportEmail": null,
+  "supportWebsiteUrl": null,
+  "privacyPolicyUrl": null,
+  "countryOfPublisher": null,
+  "googlePlayAccountType": null,
+  "googlePlayPersonalAccountCreatedAfter2023_11_13": null,
+  "googlePlayAccountReady": null,
+  "bazaarAccountReady": null,
+  "releaseModel": {
+    "price": "free",
+    "ads": false,
+    "inAppPurchases": false,
+    "accounts": false,
+    "language": "fa",
+    "intendedAges": [3, 4, 5],
+    "googlePlayTargetAudience": ["Ages 5 & Under"]
+  },
+  "publicationStatus": "blocked",
+  "readiness": {
+    "publisherIdentityConfirmed": false,
+    "privacyPolicyPubliclyHostedAndReviewed": false,
+    "finalBinaryDataPracticesReviewed": false,
+    "releaseAssetLicensesCleared": false,
+    "releaseSigningOwnershipConfirmed": false,
+    "googlePlayTestingRequirementSatisfiedOrNotApplicable": false,
+    "storeListingsAndScreenshotsApproved": false,
+    "finalUploadAuthorized": false
+  },
+  "notes": "Public publisher metadata only. Never put passwords, signing keys, service-account credentials, tester personal details, or child data in this file. Values remain pending until the publisher confirms them and the final binary is reviewed."
+}

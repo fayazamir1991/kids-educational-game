@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openAdultSettings } from './parent-helpers.js';
 
 const actions = {
   run: /می.?دو(?:د|ه)/,
@@ -256,7 +257,7 @@ test('new games clean up full-screen feedback on leaving, mute, rotation and res
     await expect(page.locator('#mini-orientation-notice')).toBeVisible();
     await expect(response(page)).not.toBeVisible();
     await page.setViewportSize({ width: 844, height: 390 });
-    await page.locator('#mini-settings').click();
+    await openAdultSettings(page, '#mini-settings');
     await page.locator('#restart-button').click();
     await expect(earned(page)).toHaveCount(0);
   }

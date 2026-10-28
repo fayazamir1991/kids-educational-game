@@ -38,7 +38,7 @@ function gameCard(game) {
 export function renderHome() {
   return `<main id="home-screen" class="home-screen" aria-labelledby="home-title">
     <div class="home-content">
-      <header class="home-header"><div class="home-brand"><span class="home-brand-mark">${brandIcon}</span><span>باغ بازی‌های کوچولو</span></div><span class="home-header-note">برای دل‌های کنجکاو <span aria-hidden="true">♡</span></span></header>
+      <header class="home-header"><div class="home-brand"><span class="home-brand-mark">${brandIcon}</span><span>باغ بازی‌های کوچولو</span></div><button id="parents-button" class="home-parents-button" aria-label="بخش والدین"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg><span>والدین</span></button></header>
       <section class="home-intro">
         <span class="home-eyebrow"><span aria-hidden="true"></span>بازی‌های کوچک، کشف‌های بزرگ</span>
         <h1 id="home-title" tabindex="-1">امروز چی <span>بازی کنیم؟<svg viewBox="0 0 230 14" fill="none" aria-hidden="true"><path d="M3 8c54-7 132-9 224-2M21 12c63-5 126-5 182-1" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span></h1>

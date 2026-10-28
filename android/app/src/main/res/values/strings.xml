@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">باغ بازی‌های کوچولو</string>
+    <string name="title_activity_main">باغ بازی‌های کوچولو</string>
+    <string name="package_name">com.fayazamir.kidsgarden</string>
+    <string name="custom_url_scheme">com.fayazamir.kidsgarden</string>
+</resources>

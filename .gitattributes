@@ -1,0 +1,3 @@
+android/gradlew.bat text eol=crlf
+# Preserve verbatim upstream license files, including their final blank lines.
+android/app/src/main/assets/native-licenses/*.txt whitespace=-blank-at-eof

@@ -1,0 +1,6 @@
+Version 1.0.0
+• Eight picture-based games in Persian for children around ages 3–5
+• Offline play with large tap and drag targets
+• Visual cues, short celebrations and friendly retries
+• Parent area and sound settings
+• No ads, accounts or in-app purchases

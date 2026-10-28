@@ -1,3 +1,4 @@
+import { openAdultSettings } from './parent-helpers.js';
 import { test, expect } from '@playwright/test';
 
 const games = ['colors', 'shapes', 'counting', 'puzzle', 'sizes'];
@@ -147,7 +148,7 @@ test('every new home entry and deep link routes independently; leaving feedback 
 test('shared settings restart the active game and rotation preserves its challenge', async ({ page }) => {
   await page.locator('#open-colors').click();
   await answer(page, 'colors');
-  await page.locator('#mini-settings').click();
+  await openAdultSettings(page, '#mini-settings');
   await expect(page.locator('#settings-dialog')).toBeVisible();
   await expect(page.locator('#credits-button')).not.toBeVisible();
   await page.locator('#narration').uncheck();
@@ -207,7 +208,7 @@ for (const interruption of ['settings', 'portrait']) {
       if (piece < 2) await expect(page.locator('#mini-answer-feedback')).not.toBeVisible();
     }
     if (interruption === 'settings') {
-      await page.locator('#mini-settings').click();
+      await openAdultSettings(page, '#mini-settings');
       await expect(page.locator('#settings-dialog')).toBeVisible();
     } else {
       await page.setViewportSize({ width: 390, height: 844 });

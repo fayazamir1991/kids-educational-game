@@ -1,47 +1,71 @@
-# Recorded animal sounds — audio revision 2
+# Recorded animal sounds — audio revision 3
 
-Original source/license attributions for all17 reviewable recordings. 14 are active in the child quiz; chick, monkey and donkey are deliberately withheld pending stronger identity/recognizability evidence. Full metadata and exact output SHA256 are in sources.json.
+Source/license attributions for all 17 web-review recordings. The Android product includes only the 14 active recordings; chick, monkey and donkey remain withheld. Exact final-file hashes and processing are in sources.json.
 
-The current files were machine-screened with the official Google YAMNet model. This is NOT human listening or certification; see docs/audio-review.md in the repository. Hash-bound evidence is src/audio-review.json.
+These files were screened with the pinned Google YAMNet model. This is automated event support, not human listening, species certification or toddler recognizability approval. See docs/audio-review.md and docs/asset-release-audit.md.
 
-| Animal | Original recording | Creator | License | Quiz |
+| Animal | Original recording | Creator | License | Android |
 | --- | --- | --- | --- | --- |
-| گاو (cow) | [Cow moos](https://bigsoundbank.com/cow-moos-s0546.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| گوسفند (sheep) | [Sheep_in_field.aiff](https://www.freesound.org/people/zwier/sounds/200329/) | zwier | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| جوجه (chick) | [Rooster and chicks.mp3](https://freesound.org/people/Barbamiz/sounds/116135/) | Barbamiz | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | withheld |
-| کلاغ (crow) | [Crows_01.wav](https://www.freesound.org/people/Q.K./sounds/56233/) | Q.K. | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| میمون (monkey) | [Monkey screaming](https://freesound.org/people/Archeos/sounds/325549/) | Archeos; excerpt distributed by ALEX11BR / AltSFX | [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/) | withheld |
-| شیر (lion) | [Lion roar (Mixkit; original item ID not supplied by mirror)](https://mixkit.co/free-sound-effects/lion/) | Mixkit (via credited Roary Pet audio asset) | [Mixkit Free Sound Effects License](https://mixkit.co/license/#sfxFree) | active |
-| مگس (fly) | [flys-I.wav](https://freesound.org/people/galeku/sounds/46938/) | galeku | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| زنبور (bee) | [Bees in treetop.wav](https://www.freesound.org/people/J.Zazvurek/sounds/73585/) | J.Zazvurek | [CC-BY](https://creativecommons.org/licenses/) | active |
-| خروس (rooster) | [Rooster song](https://bigsoundbank.com/detail-0283-rooster-song.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| مرغ (hen) | [chicken_chatter.aif](https://freesound.org/people/jsbarrett/sounds/200330/) | jsbarrett | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| اسب (horse) | [Horse neighing 3](https://bigsoundbank.com/horse-neighing-3-s0863.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| الاغ (donkey) | [Donkey call (VoxeLibre mobs_mc_donkey_random.2.ogg excerpt)](https://freesound.org/people/JarredGibb/sounds/233131/) | JarredGibb | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | withheld |
-| سگ (dog) | [2 dogs barking](https://bigsoundbank.com/2-dogs-barking-s0868.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| گربه (cat) | [Meow cat 1](https://bigsoundbank.com/detail-1889-meow-cat-1.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| اردک (duck) | [Ducks](https://bigsoundbank.com/detail-0276-ducks.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| خوک (pig) | [Pig_Grunts_Snorts_Breathing_Hackney_City_Farm.wav](https://www.freesound.org/people/tompallant/sounds/257858/) | tompallant | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
-| قورباغه (frog) | [Frogs 1](https://bigsoundbank.com/frogs-1-s0997.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | active |
+| cow | [Cow moos](https://bigsoundbank.com/cow-moos-s0546.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| sheep | [Sheep_in_field.aiff](https://www.freesound.org/people/zwier/sounds/200329/) | zwier | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| chick | [Rooster and chicks.mp3](https://freesound.org/people/Barbamiz/sounds/116135/) | Barbamiz | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | excluded |
+| crow | [Crows_01.wav](https://www.freesound.org/people/Q.K./sounds/56233/) | Q.K. | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| monkey | [Monkey screaming](https://freesound.org/people/Archeos/sounds/325549/) | Archeos; excerpt distributed by ALEX11BR / AltSFX | [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/) | excluded |
+| lion | [Lion raring-sound1TamilNadu178.ogg — male lion roaring in captivity](https://commons.wikimedia.org/wiki/File:Lion_raring-sound1TamilNadu178.ogg) | த*உழவன் (Commons user தகவலுழவன்) | [Public domain (PD-self)](https://commons.wikimedia.org/wiki/Template:PD-self) | included |
+| fly | [flys-I.wav](https://freesound.org/people/galeku/sounds/46938/) | galeku | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| bee | [Bees, honeybees — a swarm buzzing among flowers (Apis mellifera)](https://www.freesound.org/people/YleArkisto/sounds/263673/) | YleArkisto / Finnish Broadcasting Company Yle Archives | [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/) | included |
+| rooster | [Rooster song](https://bigsoundbank.com/detail-0283-rooster-song.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| hen | [chicken_chatter.aif](https://freesound.org/people/jsbarrett/sounds/200330/) | jsbarrett | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| horse | [Horse neighing 3](https://bigsoundbank.com/horse-neighing-3-s0863.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| donkey | [Donkey call (VoxeLibre mobs_mc_donkey_random.2.ogg excerpt)](https://freesound.org/people/JarredGibb/sounds/233131/) | JarredGibb | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | excluded |
+| dog | [2 dogs barking](https://bigsoundbank.com/2-dogs-barking-s0868.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| cat | [Meow cat 1](https://bigsoundbank.com/detail-1889-meow-cat-1.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| duck | [Ducks](https://bigsoundbank.com/detail-0276-ducks.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| pig | [Pig_Grunts_Snorts_Breathing_Hackney_City_Farm.wav](https://www.freesound.org/people/tompallant/sounds/257858/) | tompallant | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
+| frog | [Frogs 1](https://bigsoundbank.com/frogs-1-s0997.html) | Joseph SARDIN | [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/) | included |
 
-## Processing and notices
+## Attribution and changes
 
-Short target-event sections were selected, normalized around -20 LUFS/-3dBTP, and gently faded. Full processing details are per-recording in sources.json. No animal voice synthesis or pitch shifting was used. The withheld monkey/donkey excerpts repeat genuine short recordings, but are not used as quiz answers or distractors.
+All excerpts were trimmed, filtered, normalized and gently faded; exact parameters are recorded per file in sources.json. No animal voice synthesis or pitch shifting was used. Credit to a creator does not imply endorsement.
 
 - **cow**: Original BigSoundBank recording; bundled CC0 mirror identifies the creator and exact source page.
+
 - **sheep**: Original per-recording license is retained. The ESC-50 dataset compilation has a separate CC BY-NC license; preserve its notice. No CC-BY version is inferred where upstream gives only the license family.
+
 - **chick**: Original Freesound field recording is explicitly marked CC0 in the dataset per-clip licensing details; the ESC-50 collection as a whole has a separate CC-BY-NC-3.0 license.
+
 - **crow**: Original per-recording license is retained. The ESC-50 dataset compilation has a separate CC BY-NC license; preserve its notice. No CC-BY version is inferred where upstream gives only the license family.
+
 - **monkey**: Original recording is CC0; conservative attribution also preserves the AltSFX sound-set-wide CC-BY 3.0 credit.
-- **lion**: The same pinned themes/roary/README.md documents relocation to assets/sounds/roary-roar.mp3. Direct Mixkit access is blocked in this environment; sourced from this explicitly attributed GitHub mirror, not downloaded from Mixkit directly. The mirror does not identify the original Mixkit catalog ID. Third-party audio has a separate license from the surrounding AGPL code/artwork, neither of which is used here.
+
+- **lion**: Uploader identifies own work and explicitly dedicates it to the public domain (PD-self). Commons description and exact revision identify the original natural zoo recording. This is a public-domain dedication, not a claim of CC0 licensing. Credit is voluntarily retained. Replaces the source-redistribution-restricted Mixkit item.
+
 - **fly**: Original recording is CC0 per per-recording license evidence; ESC-50 compilation metadata has a separate CC-BY-NC license.
-- **bee**: Original per-recording license is retained. The ESC-50 dataset compilation has a separate CC BY-NC license; preserve its notice. No CC-BY version is inferred where upstream gives only the license family.
+
+- **bee**: Documented Yle archival field recording of honeybees among flowers, recorded on Nagra analog tape, Joensuu/Kaltimo, Finland, 1975-08-02. Exact CC BY 3.0 version is explicit in the Commons source description. Attribution, source, license link and changes are retained; no endorsement is implied. Replaces Freesound73585, whose precise CC-BY version was not verified.
+
 - **rooster**: Original BigSoundBank recording; bundled CC0 mirror identifies the creator and exact source page.
+
 - **hen**: Original Freesound field recording is explicitly marked CC0 in the dataset per-clip licensing details; the ESC-50 collection as a whole has a separate CC-BY-NC-3.0 license.
+
+- **horse**: All bundled sounds in sounds/animals/ are from bigsoundbank.com, released under a CC0 (public domain equivalent) license by Joseph SARDIN.
+
+- **donkey**: JarredGibb (https://freesound.org/people/JarredGibb/sounds/233131/): mobs_mc_donkey_random.2.ogg (CC0)
+
 - **dog**: Original BigSoundBank recording; bundled CC0 mirror identifies the creator and exact source page.
+
 - **cat**: Original BigSoundBank recording; bundled CC0 mirror identifies the creator and exact source page.
+
 - **duck**: Original BigSoundBank recording; bundled CC0 mirror identifies the creator and exact source page.
+
 - **pig**: Original per-recording license is retained. The ESC-50 dataset compilation has a separate CC BY-NC license; preserve its notice. No CC-BY version is inferred where upstream gives only the license family.
+
 - **frog**: Original BigSoundBank recording; bundled CC0 mirror identifies the creator and exact source page.
 
-ESC-50 by Karol J. Piczak has a separate CC BY-NC compilation license. Preserve its full upstream ESC-50-LICENSE.txt and per-recording notices. The Mixkit roar comes from an explicitly attributed pinned GitHub mirror; direct Mixkit access was blocked, and the original catalog item ID is not known. The mirror specifically identifies the independent third-party audio under the Mixkit Free Sound Effects License; no surrounding AGPL program code or proprietary art was used. See Mixkit-mirror-NOTICE.md. Audio licenses are separate from application code and font licenses.
+The YleArkisto honeybee excerpt is adapted under CC BY 3.0: source Freesound 263673 / Wikimedia Commons, recorded 1975-08-02; changes: trimming, mono conversion, rumble filtering, loudness normalization, fades and MP3 encoding. The original license link and exact description revision appear in sources.json and release-license-evidence.json.
+
+The lion recording is the uploader’s own work, explicitly dedicated using Commons PD-self; it is not described as CC0. Source: த*உழவன் / Commons user தகவலுழவன், 2010-09-04. Credit is retained voluntarily.
+
+ESC-50 by Karol J. Piczak has a separate CC BY-NC 3.0 compilation license; its individual original recordings have the distinct licenses shown above. Retain ESC-50-LICENSE.txt and the per-recording notices. This audit relies on the explicit independent CC0 permissions, not on a commercial grant for the complete ESC-50 dataset.
+
+No Mixkit recording remains in the current audio files. Historical versions used Mixkit item 6; its source-file redistribution restriction and byte-level identification are documented in Mixkit-mirror-NOTICE.md and docs/asset-release-audit.md. Repository history has not been rewritten. Audio and font licenses are separate from application code and original project art.

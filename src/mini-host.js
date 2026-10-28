@@ -32,7 +32,7 @@ const icon = (name) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke
 const flower = '<svg class="flower" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 17C9-3 0 21 16 24-4 34 20 48 24 32c7 20 25 0 9-8 21-7 0-25-9-7Z" fill="currentColor"/><circle cx="24" cy="24" r="6" fill="#e9b94e"/></svg>';
 const fa = (n) => n.toLocaleString('fa-IR');
 
-export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundToggle, onFullscreen, isActive }) {
+export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundToggle, onFullscreen, isActive, isSuspended = () => false }) {
   root.innerHTML = `
     <main class="game-canvas mini-canvas" aria-labelledby="mini-title">
       <header class="game-toolbar">
@@ -76,7 +76,7 @@ export function createMiniHost({ root, getSettings, onHome, onSettings, onSoundT
   let reactionTimer;
   let hintTimer;
   const portrait = () => innerWidth < 700 && innerHeight > innerWidth;
-  const blocked = () => !game || !isActive(game.id) || portrait() || document.hidden || !!document.querySelector('dialog[open]');
+  const blocked = () => !game || !isActive(game.id) || isSuspended() || portrait() || document.hidden || !!document.querySelector('dialog[open]');
 
   function setPrompt(text) {
     prompt = text;

@@ -1,0 +1,45 @@
+Native Android distribution notices
+
+This directory is included as APK/AAB assets, in addition to the web bundle's
+Capacitor MIT, Vazirmatn OFL and individual animal recording licenses.
+No advertising, analytics or remote-update SDK is included.
+
+AndroidX runtime libraries
+Copyright The Android Open Source Project and AndroidX contributors.
+Apache License 2.0: AndroidX-Apache-2.0.txt
+Source and license: https://github.com/androidx/androidx
+
+Apache Cordova Android framework 14.0.1
+Copyright The Apache Software Foundation.
+Apache License 2.0: Cordova-14.0.1-LICENSE.txt
+Upstream redistribution notice: Cordova-14.0.1-NOTICE.txt
+Source: https://github.com/apache/cordova-android/tree/rel/14.0.1
+
+Kotlin standard library 2.0.21
+Copyright JetBrains s.r.o. and Kotlin Programming Language contributors.
+Apache License 2.0: Kotlin-2.0.21-LICENSE.txt
+Source: https://github.com/JetBrains/kotlin/tree/v2.0.21
+
+Kotlin coroutines runtime 1.8.1
+Copyright JetBrains s.r.o. and Kotlin Programming Language contributors.
+Apache License 2.0: Kotlin-coroutines-1.8.1-LICENSE.txt
+Source: https://github.com/Kotlin/kotlinx.coroutines/tree/1.8.1
+
+JetBrains Java annotations 23.0.0
+Copyright JetBrains s.r.o.
+Apache License 2.0: JetBrains-annotations-23.0.0-LICENSE.txt
+Source: https://github.com/JetBrains/java-annotations/tree/23.0.0
+
+JSpecify annotations 1.0.0
+Copyright The JSpecify Authors.
+Apache License 2.0: JSpecify-1.0.0-LICENSE.txt
+Source: https://github.com/jspecify/jspecify/tree/v1.0.0
+
+Guava listenablefuture 1.0
+Copyright Google Inc. and contributors.
+Apache License 2.0: Guava-listenablefuture-LICENSE.txt
+Source: https://github.com/google/guava
+
+For the complete resolved module/version list for this initial build, see
+runtime-dependencies.txt. Regenerate that inventory when upgrading dependencies.
+No third-party native library source has been modified for this distribution.

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-28",
+  "recordings": [
+    {
+      "id": "lion",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lion_raring-sound1TamilNadu178.ogg",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Lion_raring-sound1TamilNadu178.ogg",
+      "originalSha256": "ab237d0f960e83412251d0c11f69959f3c2e8d3b14595f7181c3056f7fa18bf7",
+      "license": "Public domain (PD-self)",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-self",
+      "evidenceUrl": "https://commons.wikimedia.org/w/index.php?title=File%3ALion_raring-sound1TamilNadu178.ogg&oldid=1050777795",
+      "sourceDescriptionWikitext": "== {{int:filedesc}} ==\n{{Information\n|Description={{en|1=the roaring of a lion in captivity{{ta|விலங்கியல் பூங்காவிலுள்ள, ஆண் சிங்கத்தின் குரல்.ஒலி சீரமைப்புச் செய்யப்பட்டது.}}}}\n|Source={{own}}\n|Author=[[User:தகவலுழவன்|த*உழவன்]]\n|Date=2010-09-04\n|Permission=\n|other_versions=\n}}\n== {{int:license-header}} ==\n{{PD-self}}\n\n[[Category:Audio files of 2010]]\n[[Category:Audio files of Felidae]]\n[[Category:Panthera leo (male)| ]]\n[[Category:Link zu Audio]]",
+      "humanListeningPerformed": false
+    },
+    {
+      "id": "bee",
+      "sourceUrl": "https://www.freesound.org/people/YleArkisto/sounds/263673/",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/1/11/263673_ylearkisto_mehilainen-tarhamehilainen-parvi-bees-honeybees-a-swarm-of-bees-buzzing-among-the-flowers-apis-mellifera.wav",
+      "originalSha256": "1418432c64293a50c70f7c45a3c4ab9f5a84fefd89e5e21b076e100fa9dbc94a",
+      "license": "CC-BY-3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "evidenceUrl": "https://commons.wikimedia.org/w/index.php?title=File%3A263673_ylearkisto_mehilainen-tarhamehilainen-parvi-bees-honeybees-a-swarm-of-bees-buzzing-among-the-flowers-apis-mellifera.wav&oldid=1187049516",
+      "sourceDescriptionWikitext": "=={{int:filedesc}}==\n{{Information\n|description={{fi|1=Kesymehiläiset, mehiläiset, surisevat, lentelevät ja keräävät mettä kukissa, mehiläisparvi, kesä. (Apis mellifera).\n\nÄänitetty / Rec: Analoginen nauha, Nagra / Analog tape, Nagra\n\nPaikka/Place: Suomi / Finland / Joensuu, Kaltimo\nAika/Date: 02.08.1975}}\n|date=02.08.1975\n|source=https://www.freesound.org/people/YleArkisto/sounds/263673/\n|author=YleArkisto\n|permission=\n|other versions=\n}}\n\n=={{int:license-header}}==\n{{cc-by-3.0}}\n\n[[Category:Finnish Broadcasting Company Yle Archives]]\n[[Category:Apis mellifera illustrations]]\n[[Category:Paltamo]]\n[[Category:Audio files of Apidae]]",
+      "humanListeningPerformed": false
+    }
+  ]
+}

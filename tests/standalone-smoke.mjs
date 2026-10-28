@@ -1,3 +1,4 @@
+import { openAdultSettings } from './parent-helpers.js';
 import assert from 'node:assert/strict';
 import { mkdir, readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
@@ -138,14 +139,14 @@ try {
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => window.__audioStarts.length)).toBe(++expectedPlaybackCount);
 
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await page.locator('#restart-button').click();
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
   assert.equal(page.url(), initialUrl, 'Restart must stay in the standalone document');
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight + 1), true);
   await page.waitForTimeout(400);
   await page.screenshot({ path: `${outputDirectory}/little-farm-mobile.png`, fullPage: true });
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await page.locator('.review-details summary').click();
   await expect(page.locator('#withheld-list li')).toHaveCount(ANIMALS.length - PLAYABLE_ANIMALS.length);
   await page.locator('#credits-button').click();

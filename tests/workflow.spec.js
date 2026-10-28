@@ -1,3 +1,4 @@
+import { openAdultSettings } from './parent-helpers.js';
 import { test, expect } from '@playwright/test';
 import { ANIMALS, PLAYABLE_ANIMALS, AUDIO_REVIEW, createRounds } from '../src/game.js';
 
@@ -108,7 +109,7 @@ test('real recordings, a gentle retry, random trios, automatic next sound, and r
 });
 
 test('preferences persist and the replay button recovers from mute', async ({ page }) => {
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await expect(page.locator('#settings-dialog')).toBeVisible();
   await page.locator('#volume').fill('40');
   await page.locator('#narration').uncheck();
@@ -117,7 +118,7 @@ test('preferences persist and the replay button recovers from mute', async ({ pa
   await expect(page.locator('#sound-toggle')).toHaveAttribute('aria-pressed', 'true');
   await page.reload();
   await expect(page.locator('#sound-toggle')).toHaveAttribute('aria-pressed', 'true');
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await expect(page.locator('#volume')).toHaveValue('40');
   await expect(page.locator('#narration')).not.toBeChecked();
   await page.locator('#restart-button').click();
@@ -130,7 +131,7 @@ test('preferences persist and the replay button recovers from mute', async ({ pa
 test('restart cancels playback and makes old answers inactive', async ({ page }) => {
   await page.locator('#listen-button').click();
   await expectStarted(page, 1);
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await page.locator('#restart-button').click();
   await expect(page.locator('#listen-button')).not.toHaveClass(/is-playing/);
   await expect(page.locator('.progress-flower.earned')).toHaveCount(0);
@@ -168,7 +169,7 @@ test('mobile landscape is a single screen and portrait asks for rotation while s
 });
 
 test('recording sources and licenses are accessible to the parent', async ({ page }) => {
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await page.locator('#credits-button').click();
   await expect(page.locator('#credits-dialog')).toBeVisible();
   expect(await page.locator('#credits-dialog a[href^="http"]').count()).toBeGreaterThanOrEqual(17);
@@ -178,7 +179,7 @@ test('recording sources and licenses are accessible to the parent', async ({ pag
 test('parents can audition actual lion/crow clips without starting the quiz and see held-out recordings', async ({ page }) => {
   const initialChoices = await page.locator('[data-animal]').evaluateAll((buttons) => buttons.map((button) => button.dataset.animal));
   const heldOut = ANIMALS.filter(({ id }) => !PLAYABLE_ANIMALS.some((animal) => animal.id === id));
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await page.locator('.review-details summary').click();
   await expect(page.locator('#withheld-list')).toBeVisible();
   await expect(page.locator('#withheld-list li')).toHaveCount(heldOut.length);

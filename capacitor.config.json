@@ -1,0 +1,17 @@
+{
+  "appId": "com.fayazamir.kidsgarden",
+  "appName": "باغ بازی‌های کوچولو",
+  "webDir": "dist-store",
+  "server": {
+    "hostname": "localhost",
+    "androidScheme": "https",
+    "cleartext": false,
+    "errorPath": "unsupported-webview.html"
+  },
+  "android": {
+    "backgroundColor": "#FCF8ED",
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false,
+    "minWebViewVersion": 105
+  }
+}

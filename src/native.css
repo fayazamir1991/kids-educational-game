@@ -1,0 +1,4 @@
+/* Android supplies cutout/system-bar insets in CSS pixels, including edge-to-edge Android 16. */
+:root[data-native-app=true] .game-canvas{padding-top:max(env(safe-area-inset-top,0px),var(--native-safe-top,0px));padding-bottom:max(env(safe-area-inset-bottom,0px),var(--native-safe-bottom,0px));padding-left:max(14px,env(safe-area-inset-left,0px),var(--native-safe-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px),var(--native-safe-right,0px))}
+:root[data-native-app=true] .home-screen{padding-top:var(--native-safe-top,0px);padding-bottom:var(--native-safe-bottom,0px);padding-left:var(--native-safe-left,0px);padding-right:var(--native-safe-right,0px)}
+:root[data-native-app=true] .modal{max-height:calc(100dvh - 40px - var(--native-safe-top,0px) - var(--native-safe-bottom,0px))}

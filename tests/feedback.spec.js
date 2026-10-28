@@ -1,3 +1,4 @@
+import { openAdultSettings } from './parent-helpers.js';
 import { test, expect } from '@playwright/test';
 import { createRounds } from '../src/game.js';
 
@@ -172,7 +173,7 @@ for (const pause of ['modal', 'rotation']) {
   test(`${pause} clears wrong-answer feedback and prevents the queued retry`, async ({ page }) => {
     await startAndAnswerWrong(page);
     if (pause === 'modal') {
-      await page.locator('#settings-button').click();
+      await openAdultSettings(page);
       await expect(page.locator('#settings-dialog')).toBeVisible();
     } else {
       await page.setViewportSize({ width: 390, height: 844 });

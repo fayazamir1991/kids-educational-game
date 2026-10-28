@@ -5,6 +5,11 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "node scripts/verify-recordings.mjs && vite build",
+    "build:store": "node scripts/build-store.mjs",
+    "android:sync": "npm run build:store && cap sync android",
+    "android:debug": "bash scripts/android-build.sh debug",
+    "android:release": "bash scripts/android-build.sh release",
+    "store:check": "node store/verify-publication-ready.mjs",
     "build:standalone": "npm run build && node scripts/build-standalone.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --test tests/game.test.js",
@@ -25,10 +30,14 @@
   },
   "homepage": "https://github.com/fayazamir1991/kids-educational-game#readme",
   "devDependencies": {
+    "@capacitor/cli": "8.5.3",
     "@playwright/test": "^1.64.1",
     "vite": "^8.3.5"
   },
   "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3",
     "@fontsource/vazirmatn": "^5.3.0"
   },
   "private": true

@@ -1,3 +1,4 @@
+import { openAdultSettings } from './parent-helpers.js';
 import { test, expect } from '@playwright/test';
 import { createRounds } from '../src/game.js';
 
@@ -89,7 +90,7 @@ test('browser history closes previews and routes deep links and unknown games sa
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.locator('#open-animal-sounds').click();
-  await page.locator('#settings-button').click();
+  await openAdultSettings(page);
   await page.locator('#credits-button').click();
   await page.locator('[data-audition="lion"]').click();
   await expect.poll(() => page.evaluate(() => window.__audioStarts)).toBe(1);

@@ -1,0 +1,87 @@
+{
+  "applicationId": "com.fayazamir.kidsgarden",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minSdk": 26,
+  "targetSdk": 36,
+  "minWebView": 105,
+  "artifacts": {
+    "debug_apk": {
+      "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 7657254,
+      "sha256": "9e8f4f96ebcc8eed6c2df3aa36853f9cb378f3c93624b6acbc64abe147f49bc2",
+      "verifiedAnimalCalls": 14,
+      "nativeSharedLibraries": 0,
+      "nativeLicenseFiles": 10,
+      "excludedCallsAbsent": true,
+      "unsupportedWebViewPage": true,
+      "signatureVerificationExitCode": 0,
+      "signatureVerification": "Verifies\nVerified using v1 scheme (JAR signing): false\nVerified using v2 scheme (APK Signature Scheme v2): true\nVerified using v3 scheme (APK Signature Scheme v3): false\nVerified using v3.1 scheme (APK Signature Scheme v3.1): false\nVerified using v4 scheme (APK Signature Scheme v4): false\nVerified for SourceStamp: false\nNumber of signers: 1\nSigner #1 certificate DN: C=US, O=Android, CN=Android Debug\nSigner #1 certificate SHA-256 digest: 385a5598a29e1a0191d071134d4c013eb048e00ecf193697a4f02b9bda16c263\nSigner #1 certificate SHA-1 digest: d8bce8e68717e28130178ab2661d87c951c5142d\nSigner #1 certificate MD5 digest: 144d4775b61dc7b8fdd9118d5f659f95\nSigner #1 key algorithm: RSA\nSigner #1 key size (bits): 2048\nSigner #1 public key SHA-256 digest: ac0c21cf3e8c00caf5fe9a1a50f19365ec4691ce1c3d66b94dbe97ccef133530\nSigner #1 public key SHA-1 digest: a604dd4dcfab0e3a57d3150be8dc4a3b661d2fbf\nSigner #1 public key MD5 digest: c6f3d0008eaa27ebe1180795a5974914"
+    },
+    "unsigned_release_apk": {
+      "path": "android/app/build/outputs/apk/release/app-release-unsigned.apk",
+      "bytes": 6399924,
+      "sha256": "b8a02f5c3e754a4ca82412c9328dc18810717c73d10552e8822bb4fcec25aac1",
+      "verifiedAnimalCalls": 14,
+      "nativeSharedLibraries": 0,
+      "nativeLicenseFiles": 10,
+      "excludedCallsAbsent": true,
+      "unsupportedWebViewPage": true,
+      "signatureVerificationExitCode": 1,
+      "signatureVerification": "ERROR: Missing META-INF/MANIFEST.MF"
+    },
+    "unsigned_release_aab": {
+      "path": "android/app/build/outputs/bundle/release/app-release.aab",
+      "bytes": 6155745,
+      "sha256": "59a3a273c576c2efbd3b20f4e8a2f9a807dd39165cc4ab70c4f3e64c131e7e45",
+      "verifiedAnimalCalls": 14,
+      "nativeSharedLibraries": 0,
+      "nativeLicenseFiles": 10,
+      "excludedCallsAbsent": true,
+      "unsupportedWebViewPage": true,
+      "signatureVerification": "no manifest.\n\njar is unsigned."
+    }
+  },
+  "tests": [
+    {
+      "name": "com.fayazamir.kidsgarden.InteractionStateTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0"
+    },
+    {
+      "name": "com.fayazamir.kidsgarden.NavigationPolicyTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0"
+    }
+  ],
+  "requestedPermissions": [
+    "com.fayazamir.kidsgarden.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+  ],
+  "releaseDebuggable": "false",
+  "lint": {
+    "errors": 0,
+    "warnings": 22,
+    "categories": [
+      "AndroidGradlePluginVersion",
+      "ObsoleteSdkInt",
+      "UnusedResources",
+      "IconLauncherShape",
+      "IconDuplicates"
+    ]
+  },
+  "deviceQa": {
+    "status": "blocked_by_emulator_system_webview",
+    "install": "Debug APK installed successfully on API36 AOSP ATD; fresh app data, airplane mode enabled, Wi-Fi disabled.",
+    "gameplay": "Not verified on native device. No native gameplay/screenshot/audio-pass claim.",
+    "failure": "System WebView133 main-process SIGTRAP, PC0x249c840, libwebviewchromium.so BuildId3fed08901ee0e6620bf486e4e9e34fba0a577d62 before bridge/JavaScript startup.",
+    "control": "Official preinstalled org.chromium.webview_shell loading local data:text/html crashed at the identical PC/BuildId. Its INTERNET permission is granted. This isolates the observed failure from game code, Capacitor and the game’s missing INTERNET permission.",
+    "evidence": [
+      "/workspace/android-toolchain/api36-app-crash.txt",
+      "/workspace/android-toolchain/api36-baseline-crash-buffer.txt",
+      "/workspace/android-toolchain/api36-baseline-package.txt"
+    ],
+    "requiredAcceptance": "Install final debug APK on a physical Android device with WebView105+ and verify offline cold start, eight games, orientation/back, parent gate, audio/focus interruptions, touch layout and sound quality before production signing/store upload."
+  }
+}

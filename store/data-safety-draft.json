@@ -1,0 +1,39 @@
+{
+  "status": "draft_not_submitted",
+  "reviewedAgainstFinalSignedBinary": false,
+  "intendedBehavior": {
+    "collectsDataOffDevice": false,
+    "sharesData": false,
+    "accounts": false,
+    "ads": false,
+    "analyticsOrTrackingSdk": false,
+    "inAppPurchases": false,
+    "camera": false,
+    "microphone": false,
+    "preciseOrApproximateLocation": false,
+    "advertisingId": false,
+    "cloudSavesOrBackupsManagedByApp": false,
+    "localStorage": ["volume", "mute preference", "narration preference"]
+  },
+  "proposedGooglePlayAnswers": {
+    "doesAppCollectOrShareRequiredUserDataTypes": "No, only if final binary and every SDK match the intended behavior above.",
+    "securityPracticesEncryptionInTransit": "Answer the current form according to the final data flow; do not invent an encryption claim for data the app does not send.",
+    "accountDeletion": "No app accounts are created. Verify the current Play form requirements for apps without accounts.",
+    "localDataDeletion": "Parent settings can reset local app preferences. Android Clear storage or uninstall removes local app storage subject to the final backup configuration.",
+    "familiesCommitmentBadge": "Select only after checking the final binary and listing against all applicable Families requirements."
+  },
+  "parentExternalActions": "An adult may open a source, support or privacy-policy link in the system browser. Those destinations have their own data practices. Do not attach child identifiers, progress or device IDs to their URLs.",
+  "mandatoryChecksBeforeSubmission": [
+    "Inspect merged Android permissions, exported components and network security configuration.",
+    "Confirm no development server, remote code download, external font, third-party analytics, advertising or crash-reporting SDK is bundled.",
+    "Inspect all native and web dependencies and the production assets actually inside the APK/AAB.",
+    "Verify native speech and any bundled narration do not upload speech text or child audio. No microphone recording is part of the product.",
+    "Confirm the backup configuration matches local-only privacy claims and the published privacy policy.",
+    "Run the release offline and inspect any attempted network requests; distinguish adult-initiated system browser traffic from app traffic.",
+    "Complete the live Play Console Data safety and Bazaar privacy forms truthfully. These draft answers do not submit or certify either form."
+  ],
+  "officialReferences": [
+    "https://support.google.com/googleplay/android-developer/answer/10787469?hl=en",
+    "https://support.google.com/googleplay/android-developer/answer/9893335?hl=en"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "note": "Build tools only. Weights are not shipped. Published licensing statements do not establish spoken-word correctness.",
+  "models": [
+    {
+      "id": "persian",
+      "repository": "nimaaaAI/MOSS-TTS-Nano-Persian",
+      "revision": "dcfd7f2baab4bb69434895f51eae6a0c0059c59f",
+      "source": "https://huggingface.co/nimaaaAI/MOSS-TTS-Nano-Persian/tree/dcfd7f2baab4bb69434895f51eae6a0c0059c59f",
+      "declaredLicense": "Apache-2.0",
+      "licenseEvidence": "https://huggingface.co/nimaaaAI/MOSS-TTS-Nano-Persian/blob/dcfd7f2baab4bb69434895f51eae6a0c0059c59f/LICENSE",
+      "files": {
+        "LICENSE": "33f2f1f91b8b42fa926276184c5ee7b29e2adf33472a5583bf07d7c84b32886f",
+        "README.md": "3411dcb80e7e13a93f324b0a40dd0de9d493009ca70ce85dbffe4e1be3f43937",
+        "__init__.py": "1e297cb29e5780863a21415c8f5c61aad9aebaae807bae20a9a94492249495cb",
+        "config.json": "8c85a97f6d4231ca70001e42ba9502a4745f3ec8133dca1448548efa88b30675",
+        "configuration_moss_tts_nano.py": "6f77da729d829e57f08872fcee10e05bb4358305cb175747650d8d05f23c1020",
+        "finetune_config.json": "033fd7c4f41cf362f674c6c99fd6512c814e0ab34b948815cdc5e9b5a585cd1c",
+        "gpt2_decoder.py": "cee01966c5eeeb8f84b83c7a197615b2d7fa876118992dae8a8f851688d868d7",
+        "modeling_moss_tts_nano.py": "b68ffef1173eb39625dc9321f4ca4bfb7644dff54463e08df348e045b8cb5e04",
+        "prompting.py": "24c1675e08071fc4b70fbc8f531c5f073234b029c55f3f6a8590891c2cb5f583",
+        "pytorch_model.bin": "00648a0551d9a326355a38c2149fd5c35390e51d376f2b035f5be638e4e4e6b0",
+        "special_tokens_map.json": "358c249e2fb29060c6b73157d428853b0c48710deffc8ee670ab1013880946c9",
+        "tokenization_moss_tts_nano.py": "22872a5cf91aaefcd93b2563a7c9f01996ec4c8da8f1efd670cbe4710474a6cd",
+        "tokenizer.model": "c353ee1479b536bf414c1b247f5542b6607fb8ae91320e5af1781fee200fddff",
+        "tokenizer_config.json": "2e00db82fd2ba8020e7263a25f31bb8ec6c5cefbfe0b5e0bbd4723ae874d1be1"
+      }
+    },
+    {
+      "id": "codec",
+      "repository": "OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano",
+      "revision": "6aa02b01e445cc585582cf0ba480bc3ea6c8dd68",
+      "source": "https://huggingface.co/OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano/tree/6aa02b01e445cc585582cf0ba480bc3ea6c8dd68",
+      "declaredLicense": "Apache-2.0",
+      "licenseEvidence": "https://huggingface.co/OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano/blob/6aa02b01e445cc585582cf0ba480bc3ea6c8dd68/README.md",
+      "files": {
+        "README.md": "83cae343211c7c482433c9758f16fc9d17046a0cd450d185b473542e87e35ef8",
+        "__init__.py": "ed0b4910a5e53b1dfc3234cfcf96e2c6890d339f9134a3dfed8481d01b3768fd",
+        "config.json": "b38892f8ba00efc18af2ad9eca999c7603f871548c2e7f99258cb1cefc70ee06",
+        "configuration_moss_audio_tokenizer.py": "b2d67dc4581e70f4b69b2d7eccefe32581d0c5192fe4d97fe1830e94a255b8aa",
+        "model-00001-of-00001.safetensors": "34d9880d805eecb21bde975202b1c256dbd0eb98c8680b9d3aeffd2bc6ac2f67",
+        "model.safetensors.index.json": "2bf639e2c37c8502b1d0d92bf616b8108cb9975d42f587487a103682575b1d6d",
+        "modeling_moss_audio_tokenizer.py": "b14af7c188944da5101adbd4aaa9c3617d66b83507f0efbd6eb416381a105930"
+      }
+    }
+  ]
+}
