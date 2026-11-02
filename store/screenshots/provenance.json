@@ -127,5 +127,16 @@
     "source": "Unmodified UI assets extracted from signed APK; mobile Chromium render",
     "provenance": "bazaar-10/provenance.json",
     "contactSheet": "bazaar-10-contact.png"
+  },
+  "portraitPromotionalSet": {
+    "directory": "bazaar-portrait",
+    "count": 10,
+    "width": 1080,
+    "height": 1920,
+    "format": "JPEG",
+    "type": "designed-poster-with-landscape-screenshot",
+    "provenance": "bazaar-portrait/provenance.json",
+    "contactSheet": "bazaar-portrait-contact.jpg",
+    "nativeAndroidCapture": false
   }
 }
