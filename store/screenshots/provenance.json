@@ -115,5 +115,17 @@
     "finalStoreScreenshot",
     "reviewed"
   ],
-  "nativeCaptureBlocker": "Guest Android WebView crashed on the app and an independent official WebViewShell local data-URL reproduction. Native gameplay screenshots and gameplay/device QA remain unavailable; see native validation reports."
+  "nativeCaptureBlocker": "Guest Android WebView crashed on the app and an independent official WebViewShell local data-URL reproduction. Native gameplay screenshots and gameplay/device QA remain unavailable; see native validation reports.",
+  "bazaarTenUiCaptureSet": {
+    "directory": "bazaar-10",
+    "count": 10,
+    "format": "JPEG",
+    "width": 1920,
+    "height": 1080,
+    "nativeAndroidCapture": false,
+    "finalStoreApproval": false,
+    "source": "Unmodified UI assets extracted from signed APK; mobile Chromium render",
+    "provenance": "bazaar-10/provenance.json",
+    "contactSheet": "bazaar-10-contact.png"
+  }
 }

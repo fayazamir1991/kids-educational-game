@@ -1,0 +1,120 @@
+{
+  "appVersion": "1.0.0",
+  "sourceApk": "release/bazaar-v1/kids-garden-1.0.0.apk",
+  "sourceApkSha256": "f920c883f586451fbe7f4ebdb4f33359c87a4cddb8d1443b3b88ef1e9415047f",
+  "source": "Unmodified assets/public extracted from the signed APK; rendered in mobile Chromium. No game UI elements added or removed.",
+  "browserVersion": "154.0.8037.57",
+  "capturedAt": "2026-11-02T12:16:53.773Z",
+  "viewport": {
+    "width": 960,
+    "height": 540
+  },
+  "deviceScaleFactor": 2,
+  "nativeAndroidCapture": false,
+  "physicalDeviceComparisonPending": true,
+  "finalStoreApproval": false,
+  "errors": [],
+  "entries": [
+    {
+      "filename": "01-catalog.jpg",
+      "title": "فهرست بازی‌ها",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 169127,
+      "sha256": "ce01b86d8be37e0ddbb902acf42c51d89bd05678be027330f0c9aa4024f00e56",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "02-animal-sounds.jpg",
+      "title": "کی صدا کرد؟",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 517213,
+      "sha256": "b8691a625c2df0f0289a529d25e8270a51db1f766aaeeb571d8542ec6150e341",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "03-picture-detective.jpg",
+      "title": "کارآگاه تصویر",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 153489,
+      "sha256": "b48c258a43afdd43c27b818bba445fb216f4deea4217745d3be1863a724fc4b3",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "04-color-baskets.jpg",
+      "title": "سبدهای رنگی",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 146318,
+      "sha256": "eb8dfabdbd1b72206b5cf0d2708882e47d58e5120715eef8afc5cc877b9462bf",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "05-shape-house.jpg",
+      "title": "خانهٔ شکل‌ها",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 129668,
+      "sha256": "b1265cb02a1cb6a3887a3efb03161931fc36b59ce75520e7c5f5ed11e247a74d",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "06-friends-lunch.jpg",
+      "title": "ناهار سه دوست",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 175044,
+      "sha256": "94ebbb7779299824e1c06a8fc2ec0ce223024eed9f5a9740e28fe2ad44a4aae2",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "07-feed-the-rabbit.jpg",
+      "title": "به خرگوش غذا بده",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 142679,
+      "sha256": "1b32d96b6bfe9fba01a954a1cd4536844f1d31e8d32f699289e5520725588556",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "08-little-puzzle.jpg",
+      "title": "پازل کوچولو",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 143733,
+      "sha256": "946ffa89eda698ca9914d4fc9fb71754dd469ac040d9af4c53a579aa5c4838ea",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "09-big-and-small.jpg",
+      "title": "بزرگ و کوچولو",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 139625,
+      "sha256": "76ef44010a8cdb0ec390ca583105a319bf6002a79fafd34cc1fb60d8559eafce",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    },
+    {
+      "filename": "10-celebration.jpg",
+      "title": "جشن پاسخ درست",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 467554,
+      "sha256": "8069ca1a5d93a2a0a9a9a5fd449e1a1d2ddd6a93d5b81b28fd5516d785c57d25",
+      "capture": "shipped-apk-ui-in-mobile-chromium",
+      "nativeAndroidCapture": false
+    }
+  ],
+  "visualInspection": "All ten inspected in a contact sheet by the assistant; not a physical-device comparison."
+}
