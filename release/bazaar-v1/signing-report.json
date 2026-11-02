@@ -1,0 +1,31 @@
+{
+  "applicationId": "com.fayazamir.kidsgarden",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "bundleSignerVersion": "0.1.14",
+  "bundleSignerJarSha256": "aef2c387f678558e3a4baddab9730fbdca64ef28a0e2e0245491e1088b4968f5",
+  "certificateSha256": "8592e21ccc6a6228f2a4ae9f8b3dd88de202e8941caf80fcc772b2fb86f7c0c3",
+  "apkSignatureVerified": true,
+  "aabJarSignatureVerified": true,
+  "genbinExitCode": 0,
+  "uploadedToBazaar": false,
+  "physicalDeviceAcceptance": "pending",
+  "privateKeyBackupDelivery": "private local files prepared; owner receipt not confirmed",
+  "files": [
+    {
+      "file": "kids-garden-1.0.0.aab",
+      "bytes": 6187365,
+      "sha256": "b28188eafcbd98a7cd844723cbb8a2d7042501204fa8d13a2768790f0318ef11"
+    },
+    {
+      "file": "kids-garden-1.0.0.bin",
+      "bytes": 1143683,
+      "sha256": "f32d5e4d51b3cac08a575ba5081f977121432df6cc1795fa8818e4806941c865"
+    },
+    {
+      "file": "kids-garden-1.0.0.apk",
+      "bytes": 6408116,
+      "sha256": "f920c883f586451fbe7f4ebdb4f33359c87a4cddb8d1443b3b88ef1e9415047f"
+    }
+  ]
+}
